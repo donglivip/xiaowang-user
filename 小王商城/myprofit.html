@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="wrapper myprofit">
+			<!--头部-->
+			<div class="header">
+				<div class="aside  mui-action-back">
+					<img src="img/Shape.png" class="back"/>
+				</div>
+				<div class="head-main">
+					我的豆
+				</div>
+				<div class="aside" @click="opennew('ddetail')">
+					明细
+				</div>
+			</div>
+			<div class="main">
+				<div class="profir-my">
+					<div class="mytitiel">当前拥有</div>
+					<div class="mytext">40</div>
+				</div>
+				<div class="profit-top">
+					购买豆
+				</div>
+				<div class="profit-main">
+					<img src="img/douzi.png" class="douzi"/>
+					<div class="profit-wrapper">
+						<div class="title">
+							<strong>50</strong>颗豆自动转化1颗金豆，次日可获得收益金
+						</div>
+						<div class="text">每人限购500颗豆</div>
+					</div>
+				</div>
+				<div class="profit-box">
+					<div class="title">豆单价</div>
+					<div class="subtitle">￥1</div>
+				</div>
+				<div class="profit-box">
+					<div class="title">购买数量</div>
+					<div class="subtitle">
+						<img src="img/removered.png"/>
+						<input type="number" value="1" readonly="readonly"/>
+						<img src="img/removeadd.png"/>
+					</div>
+				</div>
+				<div class="pay">
+					确认购买
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		new Vue({
+			el:'.wrapper',
+			data:{
+				
+			},
+			mounted:function(){
+				
+			},
+			methods:{
+				opennew: function(target, id) {
+					mui.openWindow({
+						url: './' + target + '.html',
+						id: target
+					})
+				}
+			}
+		})
+	</script>
+</html>

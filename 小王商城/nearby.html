@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="wrapper index nearby">
+			<div class="header header02">
+				<div class="aside"></div>
+				<div class="head-main" action="search.html">
+					我的收藏
+				</div>
+				<div class="aside" @click="opennew('newcenter')">
+					<img src="img/Mail.png" class="news" />
+				</div>
+			</div>
+			<div class="main">
+				<div class="nearby-top">
+					<span :class="index==0?'active':''" @click="indexchange(0)">店铺</span>
+					<span :class="index==1?'active':''" @click="indexchange(1)">商品</span>
+				</div>
+				<div class="near-main" v-if="index==0">
+					<div class="near-tab">
+						<img src="img/index.jpg" class="avatar"/>
+						<div class="near-text">
+							<div class="near-title">天成洗护店</div>
+							<div class="near-sub">经营类型：洗护类</div>
+						</div>
+						<div class="adress-box">
+							<div class="into" @click="opennew('store')">进入店铺</div>
+							<div class="near-sub">距离：1200km</div>
+						</div>
+					</div>
+					<div class="near-tab">
+						<img src="img/index.jpg" class="avatar"/>
+						<div class="near-text">
+							<div class="near-title">天成洗护店</div>
+							<div class="near-sub">经营类型：洗护类</div>
+						</div>
+						<div class="adress-box">
+							<div class="into" @click="opennew('store')">进入店铺</div>
+							<div class="near-sub">距离：1200km</div>
+						</div>
+					</div>
+				</div>
+				<div class="near-main shop-box" v-if="index==1">
+					<div class="shop-tab" @click="opennew('shop')">
+						<div class="shopimg-box">
+							<img src="img/index.jpg" class="shop-img" />
+						</div>
+						<div class="title">XXXXXXXX</div>
+						<div class="label-box">
+							<div class="label grey">广告</div>
+							<div class="label blue">标签</div>
+							<div class="label yellow">标签</div>
+						</div>
+						<div class="price">
+							<div class="money">￥266</div>
+							<div class="join">
+								团购
+							</div>
+						</div>
+						<div class="num">
+							已售12668件
+						</div>
+					</div>
+					<div class="shop-tab" @click="opennew('shop')">
+						<div class="shopimg-box">
+							<img src="img/index.jpg" class="shop-img" />
+						</div>
+						<div class="title">XXXXXXXX</div>
+						<div class="label-box">
+							<div class="label grey">广告</div>
+							<div class="label blue">标签</div>
+							<div class="label yellow">标签</div>
+						</div>
+						<div class="price">
+							<div class="money">￥266</div>
+							<div class="join">
+								团购
+							</div>
+						</div>
+						<div class="num">
+							已售12668件
+						</div>
+					</div>
+					<div class="shop-tab" @click="opennew('shop')">
+						<div class="shopimg-box">
+							<img src="img/index.jpg" class="shop-img" />
+						</div>
+						<div class="title">XXXXXXXX</div>
+						<div class="label-box">
+							<div class="label grey">广告</div>
+							<div class="label blue">标签</div>
+							<div class="label yellow">标签</div>
+						</div>
+						<div class="price">
+							<div class="money">￥266</div>
+							<div class="join">
+								团购
+							</div>
+						</div>
+						<div class="num">
+							已售12668件
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="bottom">
+				<div class="bottom-box" @click="opennew('index')">
+					<img src="img/HomeCopy.png"/>
+					<div class="bottom-text">
+						首页
+					</div>
+				</div>
+				<div class="bottom-box">
+					<img src="img/collect.png"/>
+					<div class="bottom-text active">
+						筛选店铺
+					</div>
+				</div>
+				<div class="bottom-box" @click="opennew('nav')">
+					<img src="img/bottom03.png" />
+					<div class="bottom-text">
+						分类
+					</div>
+				</div>
+				<div class="bottom-box" @click="opennew('shopcart')">
+					<img src="img/bottom04.png" />
+					<div class="bottom-text">
+						购物车
+					</div>
+				</div>
+				<div class="bottom-box" @click="opennew('usercenter')">
+					<img src="img/bottom05.png" />
+					<div class="bottom-text">
+						个人中心
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		new Vue({
+			el:'.wrapper',
+			data:{
+				index:0
+			},
+			methods:{
+				opennew: function(target, id) {
+					mui.openWindow({
+						url: './' + target + '.html',
+						id: target
+					})
+				},
+				indexchange:function(index){
+					this.index=index
+				}
+			},
+			mounted:function(){
+				
+			}
+		})
+	</script>
+</html>

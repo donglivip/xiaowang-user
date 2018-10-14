@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div class="wrapper discount shop">
+			<!--头部-->
+			<div class="header">
+				<div class="aside mui-action-back">
+					<img src="img/Shape.png" class="back" />
+				</div>
+				<div class="head-main">
+					我的优惠券
+				</div>
+				<div class="aside">
+
+				</div>
+			</div>
+			<div class="main big-main">
+				<div class="discount-box">
+					<div class="discount-top">
+						<img src="img/index.jpg" class="avatar" />
+						<div class="name">XXXXX店</div>
+						<div class="join" @click="opennew('store')">进入店铺</div>
+					</div>
+					<div class="discount-tab">
+						<div class="cart-box">
+							<div class="cart-tab">
+								<div class="money-box">
+									<div class="pricecart">
+										￥<strong>10</strong>
+									</div>
+									<div class="price-text">优惠券</div>
+								</div>
+								<div class="cart-main">
+									<div class="cart-title">10元店铺优惠券</div>
+									<div class="cart-sub">满30元可用，限本店铺使用</div>
+									<div class="cart-sub">有效期至：2018-7-30</div>
+								</div>
+							</div>
+						</div>
+						<div class="cart-box">
+							<div class="cart-tab">
+								<div class="money-box">
+									<div class="pricecart">
+										￥<strong>10</strong>
+									</div>
+									<div class="price-text">优惠券</div>
+								</div>
+								<div class="cart-main">
+									<div class="cart-title">10元店铺优惠券</div>
+									<div class="cart-sub">满30元可用，限本店铺使用</div>
+									<div class="cart-sub">有效期至：2018-7-30</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="discount-box">
+					<div class="discount-top">
+						<img src="img/index.jpg" class="avatar" />
+						<div class="name">XXXXX店</div>
+						<div class="join" @click="opennew('store')">进入店铺</div>
+					</div>
+					<div class="discount-tab">
+						<div class="cart-box">
+							<div class="cart-tab">
+								<div class="money-box">
+									<div class="pricecart">
+										￥<strong>10</strong>
+									</div>
+									<div class="price-text">优惠券</div>
+								</div>
+								<div class="cart-main">
+									<div class="cart-title">10元店铺优惠券</div>
+									<div class="cart-sub">满30元可用，限本店铺使用</div>
+									<div class="cart-sub">有效期至：2018-7-30</div>
+								</div>
+							</div>
+						</div>
+						<div class="cart-box">
+							<div class="cart-tab">
+								<div class="money-box">
+									<div class="pricecart">
+										￥<strong>10</strong>
+									</div>
+									<div class="price-text">优惠券</div>
+								</div>
+								<div class="cart-main">
+									<div class="cart-title">10元店铺优惠券</div>
+									<div class="cart-sub">满30元可用，限本店铺使用</div>
+									<div class="cart-sub">有效期至：2018-7-30</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		new Vue({
+			el:'.wrapper',
+			data:{
+				
+			},
+			mounted:function(){
+				
+			},
+			methods:{
+				opennew: function(target, id) {
+					mui.openWindow({
+						url: './' + target + '.html',
+						id: target
+					})
+				}
+			}
+		})
+	</script>
+</html>

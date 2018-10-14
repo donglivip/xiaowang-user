@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="wrapper partner">
+			<!--头部-->
+			<div class="header">
+				<div class="aside mui-action-back">
+					<img src="img/Shape.png" class="back"/>
+				</div>
+				<div class="head-main">
+					商家入驻
+				</div>
+				<div class="aside"></div>
+			</div>
+			<div class="main">
+				宣传页
+			</div>
+			<div class="bottom" @click="opennew('join-partner')">
+				我要入驻
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		new Vue({
+			el:'.wrapper',
+			data:{
+				
+			},
+			methods:{
+				opennew: function(target, id) {
+					mui.openWindow({
+						url: './' + target + '.html',
+						id: target
+					})
+				}
+			},
+			mounted:function(){
+				
+			}
+		})
+	</script>
+</html>

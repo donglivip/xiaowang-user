@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="wrapper shopcart">
+			<div class="header">
+				<div class="aside"></div>
+				<div class="head-main">购物车</div>
+				<div class="aside">编辑</div>
+			</div>
+			<div class="main">
+				<div class="main-inner">
+					<div class="cart-box" @click="opennew('store')">
+						<div class="cart-top">
+							<img src="img/cart.png" class="cart01"/>
+							<img src="img/index.jpg" class="shopavatar"/>
+							<div class="shop-name">XXXXX店</div>
+						</div>
+						<div class="cart-tab">
+							<img src="img/cartyes.png" class="cart01"/>
+							<img src="img/index.jpg" class="shop-img"/>
+							<div class="shop-main">
+								<div class="shop-title">
+									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
+								</div>
+								<div class="shop-money">
+									<div class="shop-price">￥266</div>
+									<div class="num-box">
+										<img src="img/remove.png"/>
+										<input type="number" value="1"/>
+										<img src="img/add.png"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="cart-tab">
+							<img src="img/cart.png" class="cart01"/>
+							<img src="img/index.jpg" class="shop-img"/>
+							<div class="shop-main">
+								<div class="shop-title">
+									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
+								</div>
+								<div class="shop-money">
+									<div class="shop-price">￥266</div>
+									<div class="num-box">
+										<img src="img/remove.png"/>
+										<input type="number" value="1"/>
+										<img src="img/add.png"/>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="cart-box" @click="opennew('store')">
+						<div class="cart-top">
+							<img src="img/cart.png" class="cart01"/>
+							<img src="img/index.jpg" class="shopavatar"/>
+							<div class="shop-name">XXXXX店</div>
+						</div>
+						<div class="cart-tab">
+							<img src="img/cartyes.png" class="cart01"/>
+							<img src="img/index.jpg" class="shop-img"/>
+							<div class="shop-main">
+								<div class="shop-title">
+									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
+								</div>
+								<div class="shop-money">
+									<div class="shop-price">￥266</div>
+									<div class="num-box">
+										<img src="img/remove.png"/>
+										<input type="number" value="1"/>
+										<img src="img/add.png"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="cart-tab">
+							<img src="img/cart.png" class="cart01"/>
+							<img src="img/index.jpg" class="shop-img"/>
+							<div class="shop-main">
+								<div class="shop-title">
+									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
+								</div>
+								<div class="shop-money">
+									<div class="shop-price">￥266</div>
+									<div class="num-box">
+										<img src="img/remove.png"/>
+										<input type="number" value="1"/>
+										<img src="img/add.png"/>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="cart-box" @click="opennew('store')">
+						<div class="cart-top">
+							<img src="img/cartno.png" class="cart01"/>
+							<img src="img/index.jpg" class="shopavatar"/>
+							<div class="shop-name">XXXXX店</div>
+						</div>
+						<div class="cart-tab">
+							<img src="img/cartno.png" class="cart01"/>
+							<img src="img/index.jpg" class="shop-img"/>
+							<div class="shop-main">
+								<div class="shop-title">
+									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
+								</div>
+								<div class="shop-money">
+									<div class="shop-price" style="flex: none;">￥266</div>
+									<div class="time">
+										X月X日8：00开抢后可购买
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="main-bottom">
+					<img src="img/cart.png" class="cart01"/>
+					<div class="cart02">全选</div>
+					<div class="cart03">合计:￥266</div>
+					<div class="cart04">去结算</div>
+				</div>
+			</div>
+			<div class="bottom">
+				<div class="bottom-box" @click="opennew('index')">
+					<img src="img/HomeCopy.png"/>
+					<div class="bottom-text ">
+						首页
+					</div>
+				</div>
+				<div class="bottom-box" @click="opennew('nearby')">
+					<img src="img/collectno.png"/>
+					<div class="bottom-text">
+						我的收藏
+					</div>
+				</div>
+				<div class="bottom-box" @click="opennew('nav')">
+					<img src="img/bottom03.png" />
+					<div class="bottom-text">
+						分类
+					</div>
+				</div>
+				<div class="bottom-box">
+					<img src="img/bottom04-active.png"/>
+					<div class="bottom-text active">
+						购物车
+					</div>
+				</div>
+				<div class="bottom-box" @click="opennew('usercenter')">
+					<img src="img/bottom05.png" />
+					<div class="bottom-text">
+						个人中心
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		new Vue({
+			el:'.wrapper',
+			data:{
+				
+			},
+			methods:{
+				opennew: function(target, id) {
+					mui.openWindow({
+						url: './' + target + '.html',
+						id: target
+					})
+				}
+			},
+			mounted:function(){
+				
+			}
+		})
+	</script>
+</html>

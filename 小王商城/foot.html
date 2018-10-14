@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<!--我是html-->
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="wrapper shopcart foot">
+			<div class="header">
+				<div class="aside mui-action-back"><img src="img/Shape.png" class="back"/></div>
+				<div class="head-main">我的足迹</div>
+				<div class="aside"></div>
+			</div>
+			<div class="main">
+				<div class="main-inner">
+					<div class="cart-box" @click="opennew('store')">
+						<div class="cart-top">
+							<img src="img/index.jpg" class="shopavatar"/>
+							<div class="shop-name">XXXXX店</div>
+						</div>
+						<div class="cart-tab">
+							<img src="img/index.jpg" class="shop-img"/>
+							<div class="shop-main">
+								<div class="shop-title">
+									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
+								</div>
+								<div class="shop-money">
+									<div class="shop-price">￥266</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="cart-box" @click="opennew('store')">
+						<div class="cart-top">
+							<img src="img/index.jpg" class="shopavatar"/>
+							<div class="shop-name">XXXXX店</div>
+						</div>
+						<div class="cart-tab">
+							<img src="img/index.jpg" class="shop-img"/>
+							<div class="shop-main">
+								<div class="shop-title">
+									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
+								</div>
+								<div class="shop-money">
+									<div class="shop-price">￥266</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		new Vue({
+			el:'.wrapper',
+			data:{
+				
+			},
+			methods:{
+				opennew: function(target, id) {
+					mui.openWindow({
+						url: './' + target + '.html',
+						id: target
+					})
+				}
+			},
+			mounted:function(){
+				
+			}
+		})
+	</script>
+</html>

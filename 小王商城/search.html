@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div class="wrapper index search">
+			<div class="header header02">
+				<div class="aside mui-action-back">
+					<img src="img/Shape.png" class="back" />
+				</div>
+				<div class="head-main">
+					<img src="img/search-grey.png" />
+					<input type="text" placeholder="请输入您要搜索的内容" />
+				</div>
+				<div class="aside" @click="opennew('list')">
+					搜索
+				</div>
+			</div>
+			<div class="main big-main">
+				<div class="search-box">
+					<div class="search-top">
+						热搜
+					</div>
+					<div class="search-heat">
+						<div class="heart">冰箱</div>
+						<div class="heart">微波炉</div>
+						<div class="heart">游戏键盘</div>
+						<div class="heart">行车记录仪</div>
+					</div>
+				</div>
+				<div class="search-box">
+					<div class="search-top">
+						历史搜索
+					</div>
+					<div class="search-heat">
+						<div class="heart02">冰箱</div>
+						<div class="heart02">微波炉</div>
+						<div class="heart02">游戏键盘</div>
+						<div class="heart02">行车记录仪</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		new Vue({
+			el: '.wrapper',
+			data: {
+
+			},
+			methods: {
+				opennew: function(target, id) {
+					mui.openWindow({
+						url: './' + target + '.html',
+						id: target
+					})
+				}
+			},
+			mounted: function() {
+
+			}
+		})
+	</script>
+
+</html>

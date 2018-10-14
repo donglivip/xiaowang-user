@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="wrapper rob">
+			<div class="header">
+				<div class="aside mui-action-back">
+					<img src="img/Shape.png" class="back"/>
+				</div>
+				<div class="head-main">
+					抢购商品
+				</div>
+				<div class="aside" @click="opennew('newcenter')">
+					<img src="img/news.png" class="news" />
+				</div>
+			</div>
+			<div class="main big-main">
+				<div class="nav-box">
+					<div class="nav" :class="myindex==0?'active':''" @click="change(0)">
+						正在疯抢
+					</div>
+					<div class="nav" :class="myindex==1?'active':''" @click="change(1)">
+						即将开启
+					</div>
+					<div class="nav" :class="myindex==2?'active':''" @click="change(2)">
+						明日预告
+					</div>
+				</div>
+				<div class="nav-main">
+					<div class="nav-top" v-if="myindex==0">
+						<div class="ttitle">正在疯抢</div>
+						<div class="ttext">结束：20：00：00</div>
+					</div>
+					<div class="nav-top" v-if="myindex==1">
+						<div class="ttitle">8：30开始疯抢</div>
+					</div>
+					<div class="nav-top" v-if="myindex==2">
+						<div class="ttext">9月3日</div>
+						<div class="ttitle">8：30开始疯抢</div>
+					</div>
+					<div class="shop-box" @click="opennew('shop')">
+						<img src="img/index.jpg"/>
+						<div class="shop-main">
+							<div class="title">XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx</div>
+							<div class="progress">
+								<div class="progress-inner"></div>
+							</div>
+							<div class="num">已卖266件</div>
+							<div class="setting">
+								<div class="price">￥266</div>
+								<div class="pay">立即抢购</div>
+							</div>
+						</div>
+					</div>
+					<div class="shop-box" @click="opennew('shop')">
+						<img src="img/index.jpg"/>
+						<div class="shop-main">
+							<div class="title">XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx</div>
+							<div class="progress">
+								<div class="progress-inner"></div>
+							</div>
+							<div class="num">已卖266件</div>
+							<div class="setting">
+								<div class="price">￥266</div>
+								<div class="pay">立即抢购</div>
+							</div>
+						</div>
+					</div>
+					<div class="shop-box" @click="opennew('shop')">
+						<img src="img/index.jpg"/>
+						<div class="shop-main">
+							<div class="title">XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx</div>
+							<div class="progress">
+								<div class="progress-inner"></div>
+							</div>
+							<div class="num">已卖266件</div>
+							<div class="setting">
+								<div class="price">￥266</div>
+								<div class="pay">立即抢购</div>
+							</div>
+						</div>
+					</div>
+					<div class="shop-box" @click="opennew('shop')">
+						<img src="img/index.jpg"/>
+						<div class="shop-main">
+							<div class="title">XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx</div>
+							<div class="progress">
+								<div class="progress-inner"></div>
+							</div>
+							<div class="num">已卖266件</div>
+							<div class="setting">
+								<div class="price">￥266</div>
+								<div class="pay">立即抢购</div>
+							</div>
+						</div>
+					</div>
+					<div class="shop-box" @click="opennew('shop')">
+						<img src="img/index.jpg"/>
+						<div class="shop-main">
+							<div class="title">XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx</div>
+							<div class="progress">
+								<div class="progress-inner"></div>
+							</div>
+							<div class="num">已卖266件</div>
+							<div class="setting">
+								<div class="price">￥266</div>
+								<div class="pay">立即抢购</div>
+							</div>
+						</div>
+					</div>
+					<div class="shop-box" @click="opennew('shop')">
+						<img src="img/index.jpg"/>
+						<div class="shop-main">
+							<div class="title">XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx</div>
+							<div class="progress">
+								<div class="progress-inner"></div>
+							</div>
+							<div class="num">已卖266件</div>
+							<div class="setting">
+								<div class="price">￥266</div>
+								<div class="pay">立即抢购</div>
+							</div>
+						</div>
+					</div>
+					<div class="shop-box" @click="opennew('shop')">
+						<img src="img/index.jpg"/>
+						<div class="shop-main">
+							<div class="title">XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx</div>
+							<div class="progress">
+								<div class="progress-inner"></div>
+							</div>
+							<div class="num">已卖266件</div>
+							<div class="setting">
+								<div class="price">￥266</div>
+								<div class="pay">立即抢购</div>
+							</div>
+						</div>
+					</div>
+					<div class="shop-box" @click="opennew('shop')">
+						<img src="img/index.jpg"/>
+						<div class="shop-main">
+							<div class="title">XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx</div>
+							<div class="progress">
+								<div class="progress-inner"></div>
+							</div>
+							<div class="num">已卖266件</div>
+							<div class="setting">
+								<div class="price">￥266</div>
+								<div class="pay">立即抢购</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			new Vue({
+				el:'.wrapper',
+				data:{
+					myindex:0
+				},
+				mounted:function(){
+					
+				},
+				methods:{
+					change:function(index){
+						this.myindex=index
+					},
+					opennew: function(target, id) {
+						mui.openWindow({
+							url: './' + target + '.html',
+							id: target
+						})
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

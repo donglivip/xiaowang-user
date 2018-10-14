@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="wrapper adress">
+			<!--头部-->
+			<div class="header">
+				<div class="aside  mui-action-back">
+					<img src="img/Shape.png" class="back"/>
+				</div>
+				<div class="head-main">
+					收货地址
+				</div>
+				<div class="aside" @click="opennew('addadress')">
+					<img src="img/addadress.png" style="width: .3rem;"/>
+				</div>
+			</div>
+			<div class="main">
+				<div class="adress-box">
+					<div class="adress01">
+						<div class="label">收货人:</div>
+						<div class="text">
+							<span>XXXX</span>
+							<span>1786545568</span>
+						</div>
+					</div>
+					<div class="adress01">
+						<div class="label">收货地址:</div>
+						<div class="text">
+							XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxxXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
+						</div>
+					</div>
+					<div class="adress-setting">
+						<div class="adress-left">
+							<img src="img/cart.png"/>
+							<span>设为默认收货地址</span>
+						</div>
+						<div class="adress-left">
+							<span class="setting">删除</span>
+							<span class="setting" @click="opennew('editadress')">编辑</span>
+						</div>
+					</div>
+				</div>
+				<div class="adress-box">
+					<div class="adress01">
+						<div class="label">收货人:</div>
+						<div class="text">
+							<span>XXXX</span>
+							<span>1786545568</span>
+						</div>
+					</div>
+					<div class="adress01">
+						<div class="label">收货地址:</div>
+						<div class="text">
+							XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxxXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
+						</div>
+					</div>
+					<div class="adress-setting">
+						<div class="adress-left">
+							<img src="img/cart.png"/>
+							<span>设为默认收货地址</span>
+						</div>
+						<div class="adress-left">
+							<span class="setting">删除</span>
+							<span class="setting" @click="opennew('editadress')">编辑</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		new Vue({
+			el:'.wrapper',
+			data:{
+				
+			},
+			methods:{
+				opennew: function(target, id) {
+					mui.openWindow({
+						url: './' + target + '.html',
+						id: target
+					})
+				}
+			},
+			mounted:function(){
+				
+			}
+		})
+	</script>
+</html>

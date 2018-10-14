@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<title></title>
+	</head>
+	<body>
+		<div class="wrapper help">
+			<!--头部-->
+			<div class="header">
+				<div class="aside mui-action-back">
+					<img src="img/Shape.png" class="back"/>
+				</div>
+				<div class="head-main">
+					帮助
+				</div>
+				<div class="aside">
+					
+				</div>
+			</div>
+			<!--中间主体-->
+			<div class="main big-main">
+				<div class="help-item" @click="opennew('question-detail')">
+					<div>常见问题？</div>
+					<img src="img/arrright.png"/>
+				</div>
+				<div class="help-item" @click="opennew('question-detail')">
+					<div>常见问题？</div>
+					<img src="img/arrright.png"/>
+				</div>
+				<div class="help-item" @click="opennew('question-detail')">
+					<div>常见问题？</div>
+					<img src="img/arrright.png"/>
+				</div>
+				<div class="help-item" @click="opennew('question-detail')">
+					<div>常见问题？</div>
+					<img src="img/arrright.png"/>
+				</div>
+				<div class="help-item" @click="opennew('question-detail')">
+					<div>常见问题？</div>
+					<img src="img/arrright.png"/>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var myvue=new Vue({
+				el:'.wrapper',
+				data:{
+
+				},
+				methods:{
+					opennew:function(target){
+						mui.openWindow({
+							url:'./'+target+'.html',
+							id:target
+						})
+					}
+				},
+				mounted:function(){
+					
+				}
+			})
+		</script>
+	</body>
+</html>

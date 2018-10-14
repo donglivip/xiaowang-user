@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="wrapper myprofit">
+			<!--头部-->
+			<div class="header">
+				<div class="aside  mui-action-back">
+					<img src="img/Shape.png" class="back"/>
+				</div>
+				<div class="head-main">
+					我的金豆
+				</div>
+				<div class="aside">
+					
+				</div>
+			</div>
+			<div class="main">
+				<div class="profir-my">
+					<div class="mytitiel">当前拥有</div>
+					<div class="mytext">66</div>
+				</div>
+				<p>金豆规则：</p>
+				<p>
+					一、50颗豆自动转化成1颗金豆。<br />
+					二、当日获得的豆，次日可获得收益金。<br />
+					三、1颗金豆最高可获得收益金200元或365次，二者满足其一则停止分红。
+				</p>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		new Vue({
+			el:'.wrapper',
+			data:{
+				
+			},
+			mounted:function(){
+				
+			},
+			methods:{
+				opennew: function(target, id) {
+					mui.openWindow({
+						url: './' + target + '.html',
+						id: target
+					})
+				}
+			}
+		})
+	</script>
+</html>

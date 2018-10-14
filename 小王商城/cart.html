@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="wrapper index nearby">
+			<div class="header header02">
+				<div class="aside mui-action-back">
+					<img src="img/Shape.png" class="back"/>
+				</div>
+				<div class="head-main" action="search.html">
+					我的卡包
+				</div>
+				<div class="aside">
+					
+				</div>
+			</div>
+			<div class="main big-main cart">
+				<div class="near-main">
+					<div class="near-tab">
+						<img src="img/index.jpg" class="avatar"/>
+						<div class="near-text">
+							<div class="near-title">天成洗护店</div>
+							<span class="near-sub">高级会员卡</span>
+						</div>
+						<div class="adress-box">
+							<div class="into" @click="opennew('store')">立即进店</div>
+						</div>
+						<img src="img/arrright02.png" class="arr"/>
+					</div>
+					<div class="near-tab">
+						<img src="img/index.jpg" class="avatar"/>
+						<div class="near-text">
+							<div class="near-title">天成洗护店</div>
+							<span class="near-sub">高级会员卡</span>
+						</div>
+						<div class="adress-box">
+							<div class="into" @click="opennew('store')">立即进店</div>
+						</div>
+						<img src="img/arrright02.png" class="arr"/>
+					</div>
+					<div class="near-tab">
+						<img src="img/index.jpg" class="avatar"/>
+						<div class="near-text">
+							<div class="near-title">天成洗护店</div>
+							<span class="near-sub">高级会员卡</span>
+						</div>
+						<div class="adress-box">
+							<div class="into" @click="opennew('store')">立即进店</div>
+						</div>
+						<img src="img/arrright02.png" class="arr"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		new Vue({
+			el:'.wrapper',
+			data:{
+				index:0
+			},
+			methods:{
+				opennew: function(target, id) {
+					mui.openWindow({
+						url: './' + target + '.html',
+						id: target
+					})
+				},
+				indexchange:function(index){
+					this.index=index
+				}
+			},
+			mounted:function(){
+				
+			}
+		})
+	</script>
+</html>

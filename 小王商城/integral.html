@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<title></title>
+	</head>
+	<body>
+		<div class="wrapper profit integral">
+			<!--头部-->
+			<div class="header">
+				<div class="aside mui-action-back">
+					<img src="img/Shape.png" class="back"/>
+				</div>
+				<div class="head-main">
+					我的收益金
+				</div>
+				<div class="aside" @click="opennew('profitdetail')">
+					明细
+				</div>
+			</div>
+			<!--中间主体-->
+			<div class="main big-main">
+				<div class="profit-top">
+					<div class="profit-tab">
+						<div class="subtitile">总收益金</div>
+						<div class="price">￥66</div>
+					</div>
+					<div class="profit-tab">
+						<div class="subtitile">今日收益金</div>
+						<div class="price">￥1.6</div>
+					</div>
+				</div>
+				<div class="integral-tab" @click="opennew('rname')"> 
+					<div>
+						绑定支付宝
+					</div>
+					<img src="img/arrright.png"/>
+				</div>
+				<div class="integral-tab" @click="opennew('profitgo')">
+					<div>
+						提现
+					</div>
+					<img src="img/arrright.png"/>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var myvue=new Vue({
+				el:'.wrapper',
+				data:{
+
+				},
+				methods:{
+					opennew:function(target,id){
+						mui.openWindow({
+							url:'./'+target+'.html',
+							id:target
+						})
+					}
+				},
+				mounted:function(){
+					
+				}
+			})
+		</script>
+	</body>
+</html>

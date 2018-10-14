@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="wrapper shop">
+			<div class="header">
+				<div class="aside mui-action-back">
+					<div class="img-box">
+						<img src="img/back-white.png" class="back"/>
+					</div>
+				</div>
+				<div class="head-main">
+					
+				</div>
+				<div class="aside">
+					<div class="img-box rightj" @click="opennew('store')">
+						<img src="img/mycart.png"/>
+					</div>
+					<div class="img-box">
+						<img src="img/share-white.png" class="back"/>
+					</div>
+				</div>
+			</div>
+			<div class="main index-main">
+				<!--商品图-->
+				<img src="img/index.jpg" class="banner"/>
+				<!--商品价格-->
+				<div class="price-box">
+					<div class="price-left">
+						<div class="price">￥200</div>
+						<div class="old-price">原价￥260</div>
+					</div>
+					<div class="price-right">
+						<span>距离结束还剩</span>
+						<span>24：00：00</span>
+					</div>
+				</div>
+				<div class="title-box">
+					<div class="title">
+						XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
+					</div>
+					<div class="collect">
+						<img src="img/collect-active.png"/>
+					</div>
+				</div>
+				<div class="num-box">
+					<div class="num">
+						月销2677件
+					</div>
+					<div class="num">
+						江苏南京
+					</div>
+				</div>
+				<div class="ensure-box">
+					<div class="ensure">
+						<img src="img/Authorization_success@3x.png"/>
+						<span>全场包邮</span>
+					</div>
+					<div class="ensure">
+						<img src="img/Authorization_success@3x.png"/>
+						<span>7天退换</span>
+					</div>
+					<div class="ensure">
+						<img src="img/Authorization_success@3x.png"/>
+						<span>48小时发货</span>
+					</div>
+					<div class="ensure">
+						<img src="img/Authorization_success@3x.png"/>
+						<span>假一赔十</span>
+					</div>
+				</div>
+				<!--优惠卷-->
+				<div class="discount-box" @click="cartshow">
+					<img src="img/ticket@3x.png"/>
+					<div class="discount-title">优惠卷</div>
+					<div class="discont-text">满4000元减100元;满8000元减300元</div>
+				</div>
+				<!--团购-->
+				<div class="group-box" @click="cartshow02">
+					<div class="group-title">23人在团购</div>
+					<div class="group-text">查看全部</div>
+				</div>
+				<div class="group-tab">
+					<img src="img/index.jpg" class="avatar"/>
+					<div class="name">常怡夏</div>
+					<div class="time-box">
+						<div class="titel">还差<strong>1人</strong>成团</div>
+						<div class="time">剩余24：00：00</div>
+					</div>
+					<div class="pay">立即参团</div>
+				</div>
+				<div class="group-tab">
+					<img src="img/index.jpg" class="avatar"/>
+					<div class="name">常怡夏</div>
+					<div class="time-box">
+						<div class="titel">还差<strong>1人</strong>成团</div>
+						<div class="time">剩余24：00：00</div>
+					</div>
+					<div class="pay">立即参团</div>
+				</div>
+				<!--评价-->
+				<div class="group-box" @click="opennew('allrating')">
+					<div class="group-title">商品评价（6500）</div>
+					<div class="group-text">查看全部</div>
+				</div>
+				<div class="rating-tab">
+					<div class="rating-top">
+						<img src="img/index.jpg" class="avatar"/>
+						<div class="name">何婷芳</div>
+						<div class="star-box">
+							<img src="img/collect-active.png"/>
+							<img src="img/collect-active.png"/>
+							<img src="img/collect-active.png"/>
+							<img src="img/collect-active.png"/>
+							<img src="img/collect.png"/>
+						</div>
+					</div>
+					<div class="rating-text">
+						很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好
+					</div>
+				</div>
+				<!--商品详情-->
+				<div class="group-box">
+					<div class="group-title">商品详情</div>
+					<div class="group-text"></div>
+				</div>
+				<img src="img/index.jpg" class="detail"/>
+			</div>
+			<!--底部导航栏-->
+			<div class="bottom">
+				<div class="bottom01" @click="opennew('store')">
+					<img src="img/bottom02.png"/>
+					<span>店铺</span>
+				</div>
+				<div class="bottom01">
+					<img src="img/qq.png"/>
+					<span>客服</span>
+				</div>
+				<div class="bottom01" @click="opennew('shopcart')">
+					<img src="img/bottom04.png"/>
+					<span>购物车</span>
+				</div>
+				<div class="bottom02" @click="cartshow03">
+					加入购物车
+				</div>
+				<div class="bottom04" @click="cartshow03">
+					<div class="text01">立即购买</div>
+				</div>
+			</div>
+			<!--优惠卷弹出框-->
+			<transition name='donghua'>
+				<div class="alert" v-if="cartboo">
+					<div class="alert-inner">
+						<div class="alert-top">
+							<div class="aside"></div>
+							<div class="text">正在拼单</div>
+							<img src="img/close.png" class="aside" @click="cartshow"/>
+						</div>
+						<div class="alert-main">
+							<div class="cart-box">
+								<div class="cart-tab">
+									<div class="money-box">
+										<div class="pricecart">
+											￥<strong>10</strong>
+										</div>
+										<div class="price-text">优惠券</div>
+									</div>
+									<div class="cart-main">
+										<div class="cart-title">10元店铺优惠券</div>
+										<div class="cart-sub">满30元可用，限本店铺使用</div>
+										<div class="cart-sub">有效期至：2018-7-30</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</transition>
+			<!--拼团弹出框-->
+			<transition name='donghua'>
+				<div class="alert" v-if="cartboo02">
+					<div class="alert-inner">
+						<div class="alert-top">
+							<div class="aside"></div>
+							<div class="text">正在拼单</div>
+							<img src="img/close.png" class="aside" @click="cartshow02"/>
+						</div>
+						<div class="alert-main">
+							<div class="group-tab">
+								<img src="img/index.jpg" class="avatar"/>
+								<div class="name">常怡夏</div>
+								<div class="time-box">
+									<div class="titel">还差<strong>1人</strong>成团</div>
+									<div class="time">剩余24：00：00</div>
+								</div>
+								<div class="pay">立即参团</div>
+							</div>
+							<div class="group-tab">
+								<img src="img/index.jpg" class="avatar"/>
+								<div class="name">常怡夏</div>
+								<div class="time-box">
+									<div class="titel">还差<strong>1人</strong>成团</div>
+									<div class="time">剩余24：00：00</div>
+								</div>
+								<div class="pay">立即参团</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</transition>
+			<!--购买弹出框-->
+			<transition name='donghua'>
+				<div class="alert" v-if="cartboo03" @click="cartshow03">
+					<div class="alert-inner">
+						<div class="shop-introduce">
+							<img src="img/index.jpg" class="shop-img"/>
+							<div class="introduce-main">
+								<div class="introduce-title">
+									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
+								</div>
+								<div class="bprice">
+									￥266
+								</div>
+							</div>
+						</div>
+						<div class="btop">
+							<div class="btitle">颜色</div>
+							<div class="bmain"></div>
+						</div>
+						<div class="nav-box">
+							<div class="nav-tab active">
+								XXXXXXXXXXXXXXX
+							</div>
+							<div class="nav-tab">
+								XXXXXXXXXXXXXXX
+							</div>
+							<div class="nav-tab">
+								XXXXXXXXXXXXXXX
+							</div>
+						</div>
+						<div class="btop">
+							<div class="btitle">数量</div>
+							<div class="bmain">
+								<div class="add-box">
+									<img src="img/remove.png"/>
+									<input type="number" readonly="readonly" value="1"/>
+									<img src="img/add.png"/>
+								</div>
+							</div>
+						</div>
+						<div class="bpay">
+							<div class="bottom02">
+								加入购物车
+							</div>
+							<div class="bottom04">
+								<div class="text01">发起团购</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</transition>
+			<!--购买记录-->
+			<div class="record">
+				<img src="img/index.jpg" class="avatar"/>
+				<div class="recordtext">XXXX正在发起团购</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		new Vue({
+			el:'.wrapper',
+			data:{
+				cartboo:false,
+				cartboo02:false,
+				cartboo03:false
+			},
+			methods:{
+				cartshow:function(){
+					this.cartboo=!this.cartboo
+				},
+				cartshow02:function(){
+					this.cartboo02=!this.cartboo02
+				},
+				cartshow03:function(){
+					this.cartboo03=!this.cartboo03
+				},
+				opennew: function(target, id) {
+					mui.openWindow({
+						url: './' + target + '.html',
+						id: target
+					})
+				}
+			},
+			mounted:function(){
+				
+			}
+		})
+	</script>
+</html>

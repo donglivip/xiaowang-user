@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div class="wrapper store index">
+			<!--头部-->
+			<div class="header">
+				<div class="aside mui-action-back">
+					<img src="img/Shape.png" class="back" />
+				</div>
+				<form class="head-main" action="search.html">
+					<img src="img/search-grey.png" />
+					<input type="search" placeholder="请输入您要搜索的内容"/>
+				</form>
+				<div class="aside">
+					<img src="img/ahare02.png" class="share" />
+					<img src="img/mycart02.png" class="share" style="margin-left: .2rem;width: .45rem;" @click="opennew('join-partner')"/>
+				</div>
+			</div>
+			<div class="main">
+				<!--顶部店铺信息-->
+				<div class="store-top">
+					<img src="img/index.jpg" class="avatar" />
+					<div class="top-main">
+						<div class="name">天成建材店</div>
+						<div class="subtitle">经营类型：建材类</div>
+					</div>
+					<img src="img/collect-active.png" class="collect" />
+				</div>
+				<!--中间店铺分类-->
+				<div class="nav-box">
+					<div class="nav-tab" @click="navchange(0)" :class="navindex==0?'active':''">首页</div>
+					<div class="nav-tab" @click="navchange(1)" :class="navindex==1?'active':''">商品</div>
+					<div class="nav-tab" @click="navchange(2)" :class="navindex==2?'active':''">新品</div>
+				</div>
+				<!--商品-->
+				<div class="shop-box">
+					<div class="shop-tab">
+						<div class="shopimg-box">
+							<img src="img/index.jpg" class="shop-img" />
+						</div>
+						<div class="title">XXXXXXXX</div>
+						<div class="label-box">
+							<div class="label grey">广告</div>
+							<div class="label blue">标签</div>
+							<div class="label yellow">标签</div>
+						</div>
+						<div class="price">
+							<div class="money">￥266</div>
+							<div class="join">
+								团购
+							</div>
+						</div>
+						<div class="num">
+							已售12668件
+						</div>
+					</div>
+					<div class="shop-tab">
+						<div class="shopimg-box">
+							<img src="img/index.jpg" class="shop-img" />
+						</div>
+						<div class="title">XXXXXXXX</div>
+						<div class="label-box">
+							<div class="label grey">广告</div>
+							<div class="label blue">标签</div>
+							<div class="label yellow">标签</div>
+						</div>
+						<div class="price">
+							<div class="money">￥266</div>
+							<div class="join">
+								团购
+							</div>
+						</div>
+						<div class="num">
+							已售12668件
+						</div>
+					</div>
+					<div class="shop-tab">
+						<div class="shopimg-box">
+							<img src="img/index.jpg" class="shop-img" />
+						</div>
+						<div class="title">XXXXXXXX</div>
+						<div class="label-box">
+							<div class="label grey">广告</div>
+							<div class="label blue">标签</div>
+							<div class="label yellow">标签</div>
+						</div>
+						<div class="price">
+							<div class="money">￥266</div>
+							<div class="join">
+								团购
+							</div>
+						</div>
+						<div class="num">
+							已售12668件
+						</div>
+					</div>
+					<div class="shop-tab">
+						<div class="shopimg-box">
+							<img src="img/index.jpg" class="shop-img" />
+						</div>
+						<div class="title">XXXXXXXX</div>
+						<div class="label-box">
+							<div class="label grey">广告</div>
+							<div class="label blue">标签</div>
+							<div class="label yellow">标签</div>
+						</div>
+						<div class="price">
+							<div class="money">￥266</div>
+							<div class="join">
+								团购
+							</div>
+						</div>
+						<div class="num">
+							已售12668件
+						</div>
+					</div>
+					<div class="shop-tab">
+						<div class="shopimg-box">
+							<img src="img/index.jpg" class="shop-img" />
+						</div>
+						<div class="title">XXXXXXXX</div>
+						<div class="label-box">
+							<div class="label grey">广告</div>
+							<div class="label blue">标签</div>
+							<div class="label yellow">标签</div>
+						</div>
+						<div class="price">
+							<div class="money">￥266</div>
+							<div class="join">
+								团购
+							</div>
+						</div>
+						<div class="num">
+							已售12668件
+						</div>
+					</div>
+					<div class="shop-tab">
+						<div class="shopimg-box">
+							<img src="img/index.jpg" class="shop-img" />
+						</div>
+						<div class="title">XXXXXXXX</div>
+						<div class="label-box">
+							<div class="label grey">广告</div>
+							<div class="label blue">标签</div>
+							<div class="label yellow">标签</div>
+						</div>
+						<div class="price">
+							<div class="money">￥266</div>
+							<div class="join">
+								团购
+							</div>
+						</div>
+						<div class="num">
+							已售12668件
+						</div>
+					</div>
+					<div class="shop-tab">
+						<div class="shopimg-box">
+							<img src="img/index.jpg" class="shop-img" />
+						</div>
+						<div class="title">XXXXXXXX</div>
+						<div class="label-box">
+							<div class="label grey">广告</div>
+							<div class="label blue">标签</div>
+							<div class="label yellow">标签</div>
+						</div>
+						<div class="price">
+							<div class="money">￥266</div>
+							<div class="join">
+								团购
+							</div>
+						</div>
+						<div class="num">
+							已售12668件
+						</div>
+					</div>
+					<div class="shop-tab">
+						<div class="shopimg-box">
+							<img src="img/index.jpg" class="shop-img" />
+						</div>
+						<div class="title">XXXXXXXX</div>
+						<div class="label-box">
+							<div class="label grey">广告</div>
+							<div class="label blue">标签</div>
+							<div class="label yellow">标签</div>
+						</div>
+						<div class="price">
+							<div class="money">￥266</div>
+							<div class="join">
+								团购
+							</div>
+						</div>
+						<div class="num">
+							已售12668件
+						</div>
+					</div>
+					<div class="shop-tab">
+						<div class="shopimg-box">
+							<img src="img/index.jpg" class="shop-img" />
+						</div>
+						<div class="title">XXXXXXXX</div>
+						<div class="label-box">
+							<div class="label grey">广告</div>
+							<div class="label blue">标签</div>
+							<div class="label yellow">标签</div>
+						</div>
+						<div class="price">
+							<div class="money">￥266</div>
+							<div class="join">
+								团购
+							</div>
+						</div>
+						<div class="num">
+							已售12668件
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="bottom">
+				<div class="bottom-tab">
+					<div class="text">全部商品</div>
+				</div>
+				<div class="bottom-tab" @click="ejectchange">
+					<img src="img/more.png" />
+					<div class="text">热门分类</div>
+					<transition name='donghua'>
+						<div class="eject" v-if="ejectboo">
+							<div class="eject-inner">
+								<div class="eject-tab">
+									一级分类
+								</div>
+								<div class="eject-tab">
+									二级分类
+								</div>
+								<div class="eject-tab">
+									三级分类
+								</div>
+							</div>
+							<img src="img/down02.png"/>
+						</div>
+					</transition>
+				</div>
+				<div class="bottom-tab02">
+					<img src="img/qq.png" />
+					<span>客服 </span>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		new Vue({
+			el: '.wrapper',
+			data: {
+				navindex: 0,
+				ejectboo:false
+			},
+			methods: {
+				navchange: function(index) {
+					this.navindex = index
+				},
+				ejectchange:function(){
+					this.ejectboo=!this.ejectboo
+				},
+				inputsubmit:function(){
+					this.opennew('search')
+				},
+				opennew: function(target, id) {
+					mui.openWindow({
+						url: './' + target + '.html',
+						id: target
+					})
+				}
+			},
+			mounted: function() {
+
+			}
+		})
+	</script>
+
+</html>

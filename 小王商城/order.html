@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="wrapper myorder">
+			<!--头部-->
+			<div class="header">
+				<div class="aside mui-action-back">
+					<img src="img/Shape.png" class="back"/>
+				</div>
+				<div class="head-main">
+					我的订单
+				</div>
+				<div class="aside">
+					
+				</div>
+			</div>
+			<div class="main big-main">
+				<div class="nav">
+					<div class="nav-tab" :class="index==0?'active':''" @click="navchange(0)">
+						<span>全部</span>
+					</div>
+					<div class="nav-tab" :class="index==1?'active':''" @click="navchange(1)">
+						<span>待付款</span>
+					</div>
+					<div class="nav-tab" :class="index==2?'active':''" @click="navchange(2)">
+						<span>待收货</span>
+					</div>
+					<div class="nav-tab" :class="index==3?'active':''" @click="navchange(3)">
+						<span>待评价</span>
+					</div>
+					<div class="nav-tab" :class="index==4?'active':''" @click="navchange(4)">
+						<span>已完成</span>
+					</div>
+				</div>
+				<div class="order-main">
+					<div class="order-box" @click="opennew('orderdetail')">
+						<div class="order-top">
+							<img src="img/index.jpg" class="avatar"/>
+							<div class="shop-name">XXXXX店</div>
+						</div>
+						<div class="order-wrapepr">
+							<img src="img/index.jpg" class="shop-img"/>
+							<div class="order-text">
+								<div class="order-title">
+									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
+								</div>
+								<div class="order-monry">
+									<div class="order-price">￥266</div>
+									<div class="order-num">x4</div>
+								</div>
+							</div>
+						</div>
+						<div class="allnum">
+							<div class="num02">共4件商品</div>
+							<div class="allprice">实付款：<strong>￥966</strong></div>
+						</div>
+						<div class="setting">
+							<div class="noorder">取消订单</div>
+							<div class="haveorder">立即支付</div>
+						</div>
+					</div>
+					<div class="order-box" @click="opennew('orderdetail')">
+						<div class="order-top">
+							<img src="img/index.jpg" class="avatar"/>
+							<div class="shop-name">XXXXX店</div>
+						</div>
+						<div class="order-wrapepr">
+							<img src="img/index.jpg" class="shop-img"/>
+							<div class="order-text">
+								<div class="order-title">
+									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
+								</div>
+								<div class="order-monry">
+									<div class="order-price">￥266</div>
+									<div class="order-num">x4</div>
+								</div>
+							</div>
+						</div>
+						<div class="allnum">
+							<div class="num02">共4件商品</div>
+							<div class="allprice">实付款：<strong>￥966</strong></div>
+						</div>
+						<div class="setting">
+							<div class="noorder">查看物流</div>
+							<div class="haveorder">确认收货</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		new Vue({
+			el:'.wrapper',
+			data:{
+				index:0
+			},
+			methods:{
+				navchange:function(index){
+					this.index=index
+				},
+				opennew: function(target, id) {
+					mui.openWindow({
+						url: './' + target + '.html',
+						id: target
+					})
+				}
+			},
+			mounted:function(res){
+				
+			}
+		})
+	</script>
+</html>
