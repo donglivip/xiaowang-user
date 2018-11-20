@@ -59,7 +59,7 @@
 					</div>
 				</div>
 				<!--广告图-->
-				<img src="img/index.jpg" class="advaer" @click="opennew('profit')" />
+				<img src="img/index.jpg" class="advaer" @click="opennew('myprofit')" />
 				<!--为您推荐-->
 				<div class="index-top">
 					<div class="hr"></div>
@@ -291,11 +291,7 @@
 									<img src="${obj.pricon}" class="shop-img"/>
 								</div>
 								<div class="title">${obj.goodsname}</div>
-								<div class="label-box">
-									<div class="label grey">广告</div>
-									<div class="label blue">标签</div>
-									<div class="label yellow">标签</div>
-								</div>
+
 								<div class="price">
 									<div class="money">￥${obj.goodsprices}</div>
 									<div class="join">
@@ -308,7 +304,11 @@
 							</div>
 						`);
 					});
-
+//													<div class="label-box">
+//									<div class="label grey">广告</div>
+//									<div class="label blue">标签</div>
+//									<div class="label yellow">标签</div>
+//								</div>
 					// 存储商品id
 					$('.goods-id').click(function() {
 						var goodsid = $(this).attr('goods-id');

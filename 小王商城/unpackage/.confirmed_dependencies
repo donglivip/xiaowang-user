@@ -1,116 +1,142 @@
 {
-  "index.html": {
-    "refer": [
-      "newcenter.html",
-      "adresschange.html",
-      "search.html",
-      "nearby.html",
-      "rob.html",
-      "usercenter.html",
-      "list.html"
-    ],
-    "resources": []
-  },
-  "search.html": {
-    "refer": [
-      "index.html",
-      "nearby.html",
-      "list.html"
-    ],
-    "resources": []
-  },
-  "nearby.html": {
-    "refer": [
-      "search.html",
-      "shopcart.html",
-      "store.html",
-      "newcenter.html",
-      "usercenter.html",
-      "nav.html",
-      "index.html"
-    ],
-    "resources": []
-  },
-  "shopcart.html": {
-    "refer": [
-      "store.html",
-      "usercenter.html",
-      "nav.html"
-    ],
-    "resources": []
-  },
-  "usercenter.html": {
-    "refer": [
-      "share.html",
-      "question.html",
-      "setting.html",
-      "rname.html",
-      "nearby.html",
-      "index.html",
-      "shopcart.html",
-      "integral.html",
-      "order.html",
-      "myprofit.html",
-      "newcenter.html",
-      "mygold.html"
-    ],
-    "resources": []
-  },
-  "question.html": {
-    "refer": [
-      "question-detail.html"
-    ],
-    "resources": []
-  },
-  "setting.html": {
-    "refer": [
-      "wlogin.html",
-      "namechange.html"
-    ],
-    "resources": []
-  },
-  "share.html": {
-    "refer": [
-      "sharedetail.html"
-    ]
-  },
-  "rob.html": {
-    "refer": [
-      "shop.html"
-    ]
-  },
-  "shop.html": {
-    "refer": [
-      "store.html"
-    ]
-  },
-  "store.html": {
-    "refer": [
-      "search.html"
-    ]
-  },
-  "nav.html": {
-    "refer": [
-      "nearby.html"
-    ]
-  },
-  "integral.html": {
-    "refer": [
-      "profitdetail.html",
-      "rname.html",
-      "profitgo.html"
-    ]
-  },
-  "myprofit.html": {
-    "refer": [
-      "ddetail.html"
-    ]
-  },
-  "newcenter.html": {
-    "refer": [
-      "new-gonggao.html",
-      "chat.html",
-      "new-order.html"
-    ]
-  }
+	"index.html": {
+		"refer": [
+			"newcenter.html",
+			"adresschange.html",
+			"search.html",
+			"nearby.html",
+			"rob.html",
+			"usercenter.html",
+			"list.html",
+			"nav02.html",
+			"profit.html",
+			"shop.html",
+			"mygold.html",
+			"myprofit.html"
+		],
+		"resources": []
+	},
+	"search.html": {
+		"refer": [
+			"index.html",
+			"nearby.html",
+			"list.html"
+		],
+		"resources": []
+	},
+	"nearby.html": {
+		"refer": [
+			"search.html",
+			"shopcart.html",
+			"store.html",
+			"newcenter.html",
+			"usercenter.html",
+			"nav.html",
+			"index.html"
+		],
+		"resources": []
+	},
+	"shopcart.html": {
+		"refer": [
+			"store.html",
+			"usercenter.html",
+			"nav.html"
+		],
+		"resources": []
+	},
+	"usercenter.html": {
+		"refer": [
+			"share.html",
+			"question.html",
+			"setting.html",
+			"rname.html",
+			"nearby.html",
+			"index.html",
+			"shopcart.html",
+			"integral.html",
+			"order.html",
+			"myprofit.html",
+			"newcenter.html",
+			"mygold.html",
+			"mlogin.html",
+			"return.html"
+		],
+		"resources": []
+	},
+	"question.html": {
+		"refer": [
+			"question-detail.html"
+		],
+		"resources": []
+	},
+	"setting.html": {
+		"refer": [
+			"wlogin.html",
+			"namechange.html",
+			"mlogin.html"
+		],
+		"resources": []
+	},
+	"share.html": {
+		"refer": [
+			"sharedetail.html"
+		]
+	},
+	"rob.html": {
+		"refer": [
+			"shop.html"
+		]
+	},
+	"shop.html": {
+		"refer": [
+			"store.html",
+			"allrating.html",
+			"shopcart.html"
+		]
+	},
+	"store.html": {
+		"refer": [
+			"search.html"
+		]
+	},
+	"nav.html": {
+		"refer": [
+			"nearby.html",
+			"join-shop.html"
+		]
+	},
+	"integral.html": {
+		"refer": [
+			"profitdetail.html",
+			"rname.html",
+			"profitgo.html"
+		]
+	},
+	"myprofit.html": {
+		"refer": [
+			"ddetail.html"
+		]
+	},
+	"newcenter.html": {
+		"refer": [
+			"new-gonggao.html",
+			"chat.html",
+			"new-order.html"
+		]
+	},
+	"nav02.html": {
+		"refer": [
+			"nav01.html"
+		]
+	},
+	"join-shop.html": {
+		"refer": [
+			"usercenter.html"
+		]
+	},
+	"mlogin.html": {
+		"refer": [
+			"index.html"
+		]
+	}
 }

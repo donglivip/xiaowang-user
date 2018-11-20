@@ -67,18 +67,22 @@
 				</div>
 				<div class="nav-tab02">
 					<div class="nav" @click="opennew('order')">
+						<div class="redcir" v-if='ordernum>0'></div>
 						<div class="num"><img src="img/order01.png" /></div>
 						<div class="num">待付款</div>
 					</div>
 					<div class="nav" @click="opennew('order')">
+						<div class="redcir" v-if='ordernum02>0'></div>
 						<div class="num"><img src="img/order02.png" /></div>
 						<div class="num">待收货</div>
 					</div>
 					<div class="nav" @click="opennew('shopcart')">
+						<div class="redcir" v-if='ordernum03>0'></div>
 						<div class="num"><img src="img/bottom04.png" /></div>
 						<div class="num">购物车 </div>
 					</div>
 					<div class="nav" @click="opennew('return')">
+						<div class="redcir" v-if='ordernum04>0'></div>
 						<div class="num"><img src="img/order0.png" /></div>
 						<div class="num">退换/售后</div>
 					</div>
@@ -166,7 +170,10 @@
 					avatar: localStorage.getItem('userphoto'),
 					files: [],
 					name: localStorage.getItem('loginname'),
-					navdata:''
+					navdata: '',
+					ordernum: 0,
+					ordernum02: 0,
+					ordernum03:0
 				},
 				methods: {
 					opennew: function(target) {
@@ -176,20 +183,78 @@
 						})
 					},
 					myajax: function() {
-//						获取用户信息
+						//						获取用户信息
 						var that = this
 						$.ajax({
 							type: "post",
 							url: url + "shopsmain/?service=Users.getUserInfor",
 							async: true,
-							data:{
-								userid:localStorage.getItem('userid')
+							data: {
+								userid: localStorage.getItem('userid')
 							},
 							dataType: 'json',
 							success: function(res) {
-								console.log(localStorage.getItem('userid'))
-								console.log(JSON.stringify(res))
 								that.navdata = res.data
+							}
+						});
+						$.ajax({
+							type: "post",
+							url: url + "shopsmain/?service=Order.getUserOrder",
+							async: true,
+							data: {
+								userid: localStorage.getItem('userid'),
+								page: 1,
+								limit: 20,
+								type: 'notPay'
+							},
+							dataType: 'json',
+							success: function(res) {
+								that.ordernum = res.data.length
+							}
+						});
+						$.ajax({
+							type: "post",
+							url: url + "shopsmain/?service=Order.getUserOrder",
+							async: true,
+							data: {
+								userid: localStorage.getItem('userid'),
+								page: 1,
+								limit: 20,
+								type: 'notFaHuo'
+							},
+							dataType: 'json',
+							success: function(res) {
+								that.ordernum02 = res.data.length
+							}
+						});
+//						获取购物车
+						$.ajax({
+							type: 'POST',
+							url: url + 'shopsmain/?service=Cart.getCartList',
+							datatype: 'json',
+							data: {
+								userid: localStorage.getItem('userid'),
+								page: 1,
+								limit: 15
+							},
+							success: function(data) {
+								that.ordernum03 = data.data.length
+							}
+						});
+//						退货
+						$.ajax({
+							type: "post",
+							url: url + "shopsmain/?service=Order.getUserOrder",
+							async: true,
+							data: {
+								userid: localStorage.getItem('userid'),
+								page: 1,
+								limit: 10,
+								type: 'daiTuiHuo'
+							},
+							dataType: 'json',
+							success: function(res) {
+								that.ordernum04 = res.data.length
 							}
 						});
 					}
@@ -197,10 +262,10 @@
 				mounted: function() {
 					if(localStorage.getItem('userid') == null || localStorage.getItem('userid') == 'null') {
 						window.location.href = 'mlogin.html'
-					}else{
+					} else {
 						this.myajax()
 					}
-					
+
 				}
 			})
 		</script>

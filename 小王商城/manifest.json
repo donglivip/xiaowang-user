@@ -3,7 +3,7 @@
     "id": "H5CF5E194",/*应用的标识，创建应用时自动生成，勿手动修改*/
     "name": "小王商城",/*应用名称，程序桌面图标名称*/
     "version": {
-        "name": "1.0",/*应用版本名称*/
+        "name": "6.5",/*应用版本名称*/
         "code": ""
     },
     "description": "",/*应用描述信息*/
@@ -127,5 +127,242 @@
                 }
             }
         }
-    }
+    },
+	"dependencies": {
+		"pages": {
+			"index.html": {
+				"resources": [],
+				"refer": [
+					"nav02.html",
+					"profit.html",
+					"shop.html",
+					"nearby.html",
+					"usercenter.html",
+					"mygold.html",
+					"myprofit.html"
+				],
+				"priority": 0
+			},
+			"nav02.html": {
+				"resources": [],
+				"refer": [
+					"nav01.html"
+				],
+				"priority": 0
+			},
+			"nearby.html": {
+				"resources": [],
+				"refer": [
+					"nav.html",
+					"store.html"
+				],
+				"priority": 0
+			},
+			"usercenter.html": {
+				"resources": [],
+				"refer": [
+					"mlogin.html",
+					"share.html",
+					"rname.html",
+					"order.html",
+					"setting.html",
+					"integral.html",
+					"myprofit.html",
+					"return.html",
+					"shopcart.html"
+				],
+				"priority": 0
+			},
+			"join-shop.html": {
+				"resources": [],
+				"refer": [
+					"usercenter.html"
+				],
+				"priority": 0
+			},
+			"nav.html": {
+				"resources": [],
+				"refer": [
+					"join-shop.html"
+				],
+				"priority": 0
+			},
+			"mlogin.html": {
+				"resources": [],
+				"refer": [
+					"index.html"
+				],
+				"priority": 0
+			},
+			"setting.html": {
+				"resources": [],
+				"refer": [
+					"mlogin.html"
+				],
+				"priority": 0
+			},
+			"shop.html": {
+				"resources": [],
+				"refer": [
+					"allrating.html",
+					"shopcart.html"
+				],
+				"priority": 0
+			}
+		},
+		"idle": {
+			"resources": [
+				"wlogin.html",
+				"img/user04.png",
+				"img/bottom03.png",
+				"img/ticket@3x.png",
+				"img/addadress.png",
+				"img/number (2).png",
+				"ordersure.html",
+				"img/Arrow_up.png",
+				"img/sf.png",
+				"img/down.png",
+				"css/main-old.css",
+				"img/wxin.png",
+				"img/add.png",
+				"namechange.html",
+				"img/ahare02.png",
+				"img/shop-white.png",
+				"img/nav02.png",
+				"img/photo.png",
+				"new-order.html",
+				"sharedetail.html",
+				"wplogin.html",
+				"img/collect01.png",
+				"img/QQ@2x.png",
+				"editadress.html",
+				"img/bottom02.png",
+				"img/bottom03-active.png",
+				"img/removeadd.png",
+				"css/scs.min.css",
+				"addadress.html",
+				"img/nav07.png",
+				"img/user01.png",
+				"img/qq (2).png",
+				"logo/Artboard(1).png",
+				"img/Shape.png",
+				"img/Group 6@2x.png",
+				"img/Share@3x.png",
+				"img/cartyes.png",
+				"img/more.png",
+				"img/arrright.png",
+				"img/search-grey.png",
+				"img/collectno.png",
+				"list.html",
+				"img/cart.png",
+				"logo/Artboard 2(1).png",
+				"logo/Artboard 3(1).png",
+				"css/swiper-3.4.2.min.css",
+				"img/count.png",
+				"js/mui.min.js",
+				"img/cartno.png",
+				"img/order01.png",
+				"js/jquery.qrcode.min.js",
+				"js/config.js",
+				"img/mycart02.png",
+				"img/arrright02.png",
+				"img/join-red.png",
+				"question.html",
+				"img/nav03.png",
+				"img/wquan.png",
+				"img/nav2.png",
+				"img/addimg.png",
+				"img/up.png",
+				"img/down02.png",
+				"js/CNAddrArr.min.js",
+				"foot.html",
+				"img/erweima.png",
+				"rob.html",
+				"rating.html",
+				"collect.html",
+				"img/logo.png",
+				"logo/Group 15.png",
+				"img/join.png",
+				"img/bottom04.png",
+				"adress.html",
+				"img/Arrow_right@2x.png",
+				"ddetail.html",
+				"join-partner.html",
+				"logo/Artboard.png",
+				"img/order02.png",
+				"img/bottom04-active.png",
+				"plogin.html",
+				"img/user05.png",
+				"img/wpay.png",
+				"img/Arrow_right.png",
+				"img/nav04.png",
+				"img/close.png",
+				"img/nav08.png",
+				"new-gonggao.html",
+				"shopjoin.html",
+				"img/index.jpg",
+				"img/Search.png",
+				"img/adresss.png",
+				"logo/Group 20.png",
+				"img/nav09.png",
+				"img/order03.png",
+				"discount.html",
+				"css/main.css",
+				"profitgo.html",
+				"logo/Artboard 2.png",
+				"cart.html",
+				"img/bottom05.png",
+				"img/nav06.png",
+				"js/rem.js",
+				"img/cartbgi.png",
+				"img/user02.png",
+				"img/number (1).png",
+				"img/douzi.png",
+				"img/back-white.png",
+				"chat.html",
+				"agreement.html",
+				"img/removered.png",
+				"css/layout.min.css",
+				"img/Authorization_success@3x.png",
+				"orderdetail.html",
+				"newcenter.html",
+				"img/nav10.png",
+				"img/user03.png",
+				"img/bottom02-active.png",
+				"img/mycart.png",
+				"img/HomeCopy.png",
+				"img/Group 5@2x.png",
+				"img/news.png",
+				"profitdetail.html",
+				"list01.html",
+				"js/vue.js",
+				"img/hanger-1@3x.png",
+				"img/order0.png",
+				"img/share-white.png",
+				"img/remove.png",
+				"img/foot.png",
+				"question-detail.html",
+				"img/laugh.png",
+				"img/join0.png",
+				"img/qq.png",
+				"js/jquery.min.js",
+				"partner.html",
+				"search.html",
+				"js/jquery.scs.min.js",
+				"adresschange.html",
+				"img/collect.png",
+				"img/collect-active.png",
+				"css/main-lod.css",
+				"img/sz.png",
+				"logo/Artboard 3.png",
+				"img/Mail.png",
+				"js/swiper-3.4.2.min.js",
+				"img/bottom05-active.png",
+				"img/nav05.png",
+				"img/nav01.png",
+				"img/Home.png",
+				"css/reset.css"
+			]
+		}
+	}
 }
