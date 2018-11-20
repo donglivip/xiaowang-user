@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -25,47 +25,58 @@
 				<div class="left">
 					<div class="left-tab" @click="change(index)" v-for="(val,index) in adressdata" :class="index==myindex?'active':''">
 						<span>
-							{{val.text}}
+							{{val.name}}
 						</span>
 					</div>
 				</div>
+				<div class="left">
+					<div class="left-tab" v-for="(val,index) in adressdata[myindex].sub" @click="changesub(index)" :class="index==subindex?'active':''">
+						{{val.name}}
+					</div>
+				</div>
 				<div class="right">
-					<div class="rihgt-tab">
-						北京
+					<div class="rihgt-tab" v-for="(val,index) in adressdata[myindex].sub[subindex].sub">
+						{{val.name}}
 					</div>
 				</div>
 			</div>
 		</div>
 	</body>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		new Vue({
 			el:'.wrapper',
 			data:{
-				adressdata:[{
-					id:01,
-					text:'全部'
-				},{
-					id:01,
-					text:'北京市'
-				},{
-					id:01,
-					text:'天津市'
-				},{
-					id:01,
-					text:'河北省'
-				},{
-					id:01,
-					text:'山西省'
-				}],
-				myindex:0
+				adressdata:[],
+				myindex:0,
+				subindex:0
 			},
 			mounted:function(){
-				
+				this.myajax()
 			},
 			methods:{
+				changesub:function(index){
+					this.subindex=index
+				},
 				change:function(index){
 					this.myindex=index
+				},
+				myajax:function(){
+					var that=this
+					$.ajax({
+						type : "POST",
+						url : url + 'shopsmain/?service=Region.selectCrity',
+						datatype : 'json',
+						success : function (res){
+							that.adressdata=res.data
+							console.log(res)
+						},
+						error :function (){
+							alert('接收失败');
+						},
+					});
 				}
 			}
 		})

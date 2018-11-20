@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div class="wrapper list index">
+			<div class="header">
+				<div class="aside mui-action-back">
+					<img src="img/Shape.png" class="back" />
+				</div>
+				<div class="head-main">
+					<img src="img/search-grey.png" />
+					<input type="text" placeholder="请输入您要搜索的内容" v-model="searchtext"/>
+				</div>
+				<div class="aside" style="color: #333333;" @click="search">
+					搜索
+				</div>
+			</div>
+			<div class="main big-main" @scroll="myscroll">
+				<div class="listnav">
+					<div class="nav0tab" :class="navindex==1?'active':''" @click="navchange(1)">
+						销量
+					</div>
+					<div class="nav0tab" :class="navindex==2?'active':''" @click="navchange(2)">
+						价格
+					</div>
+				</div>
+				<div class="main-inner">
+					<div class="shop-box">
+						<div class="shop-tab" @click="opennew(val.goodsid)" v-for="val in mydata">
+							<div class="shopimg-box">
+								<img :src="val.pricon" class="shop-img" />
+							</div>
+							<div class="title">{{val.goodsname}}</div>
+							<div class="label-box">
+								<!--<div class="label grey">广告</div>
+								<div class="label blue">标签</div>
+								<div class="label yellow">标签</div>-->
+							</div>
+							<div class="price">
+								<div class="money">￥{{val.goodsprices}}</div>
+								<div class="join">
+									团购
+								</div>
+							</div>
+							<div class="num">
+								已售{{val.bynumber}}件
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		new Vue({
+			el: '.wrapper',
+			data: {
+				navindex: 1,
+				mydata: [],
+				pages:0,
+				pageNum:0,
+				searchtext:''
+			},
+			methods: {
+				search:function(){
+					localStorage.setItem('searchtext',this.searchtext)
+					this.mydata=[]
+					this.pageNum=0
+					this.myajax()
+				},
+				myscroll: function() {
+					var that = this
+					if(Math.abs($('.main-inner').offset().top) + $('.main').height() + 200 >= $('.main-inner').height()) {
+						if(that.pages > that.pageNum) {
+							function plusReady() {
+								// 弹出系统等待对话框
+								var w = plus.nativeUI.showWaiting("等待中...");
+							}
+							if(window.plus) {
+								plusReady();
+							} else {
+								document.addEventListener("plusready", plusReady, false);
+							}
+							that.myajax()
+						}
+
+					}
+				},
+				navchange: function(index) {
+					this.navindex = index
+				},
+				opennew: function(id) {
+					localStorage.setItem('goodsid',id)
+					mui.openWindow({
+						url: './shop.html',
+						id: 'shop'
+					})
+				},
+				myajax: function() {
+					var that = this,
+						type = 0
+					if(that.navindex == 1) {
+						type = 'sales_desc'
+					} else {
+						type = 'goodsprices_asc'
+					}
+					that.pageNum++
+					$.ajax({
+						type: "post",
+						url: url + "shopsmain/?service=Productinfo.searchGoods",
+						async: true,
+						data: {
+							type:type,
+							limit:15,
+							page:that.pageNum,
+							infor:JSON.stringify({type:0,goodsinfo:localStorage.getItem('searchtext')})
+						},
+						dataType: 'json',
+						success: function(res) {
+							console.log({
+							type:type,
+							limit:15,
+							page:that.pageNum,
+							infor:JSON.stringify({type:0,goodsinfo:localStorage.getItem('searchtext')})
+						})
+							for(var i = 0; i < res.data.length; i++) {
+									that.mydata.push(res.data[i])
+							}
+							console.log(that.mydata)
+						}
+					});
+				}
+			},
+			mounted: function() {
+				this.myajax()
+			}
+		})
+	</script>
+
+</html>

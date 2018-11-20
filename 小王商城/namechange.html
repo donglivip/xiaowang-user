@@ -25,22 +25,43 @@
 			<!--中间主体-->
 			<div class="main big-main">
 				<div class="help-item">
-					<input type="text" name="" id="" value="" placeholder="请输入新的昵称"/>
+					<input type="text" placeholder="请输入新的昵称" v-model="username"/>
 				</div>
-				<div class="submit">
+				<div class="submit" @click="mysubmit">
 					确认修改
 				</div>
 			</div>
 		</div>
 		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			var myvue=new Vue({
 				el:'.wrapper',
 				data:{
-
+					username:''
 				},
 				methods:{
-					
+					mysubmit:function(){
+						var that=this
+						$.ajax({
+							type:"post",
+							url:url +"shopsmain/?service=Users.updateNickName",
+							async:true,
+							dataType:'json',
+							data:{
+								userid:localStorage.getItem('userid'),
+								username:that.username
+							},
+							success:function(res){
+								console.log(res)
+								if(res.data==true){
+									plus.nativeUI.toast('修改完成,下次启动应用时生效')
+									mui.back()
+								}
+							}
+						});
+					}
 				},
 				mounted:function(){
 					

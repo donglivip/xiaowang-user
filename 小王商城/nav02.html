@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="wrapper nearby index">
+			<div class="header header02">
+				<div class="aside mui-action-back">
+					<img src="img/Shape.png" class="back"/>
+				</div>
+				<div class="head-main" style="background: none;border-bottom: 1px solid #F5F5F5;">
+					二级分类
+				</div>
+				<div class="aside"></div>
+			</div>
+			<div class="main adresschange mynav">
+				<div class="right">
+					<div class="nav-box02">
+						<div class="nav-tab" v-for="val in twodata" @click="openshop(val.goodsid)">
+							<img :src="val.icon" class="shopimg"/>
+							<div class="shoptext">{{val.goodsname}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		new Vue({
+			el:'.wrapper',
+			data:{
+				adressdata:[],
+				myindex:0,
+				twodata:[],
+				threedata:[]
+			},
+			methods:{
+				havetow:function(){
+					var that=this
+					$.ajax({
+						type:"post",
+						url:url + "shopsmain/?service=Goodstype.getChilden",
+						async:true,
+						data:{
+							goodsid:localStorage.getItem('goodsid02'),
+							page:1,
+							limit:50
+						},
+						dataType:'json',
+						success:function(res){
+							console.log(res)
+							that.twodata=res.data
+						}
+					});
+				},
+				openshop:function(id){
+					localStorage.setItem('goodsid01',id)
+					mui.openWindow({
+						url: './nav01.html',
+						id: 'nav01'
+					})
+				}
+			},
+			mounted:function(){
+				this.havetow()
+			}
+		})
+	</script>
+</html>

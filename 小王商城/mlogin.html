@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<link rel="stylesheet" type="text/css" href="css/main.css" />
 		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
-		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 		<title></title>
 	</head>
+
 	<body>
 		<div class="wrapper plogin">
 			<!--头部-->
 			<div class="header">
-				<div class="aside">
-					<img src="img/Shape.png" class="back"/>
+				<div class="aside mui-action-back">
+					<img src="img/Shape.png" class="back" />
 				</div>
 				<div class="head-main">
 					登录
 				</div>
 				<div class="aside">
-					
+
 				</div>
 			</div>
 			<!--中间主体-->
@@ -27,54 +28,132 @@
 				<div class="main-inner">
 					<div class="titile">账号密码登录 </div>
 					<div class="input-box">
-						<input type="number" placeholder="请输入手机号"/>
+						<input type="number" placeholder="请输入手机号" class="phone" />
 					</div>
 					<div class="input-box">
-						<input :type="ptype" placeholder="请输入密码"/>
-						<img src="img/number (1).png" @click="changetype('text')" v-if="ptype=='password'"/>
-						<img src="img/number (2).png" @click="changetype('password')" v-if="ptype=='text'"/>
+						<input type="password" placeholder="请输入密码" class="pass" />
+						<!--<img src="img/number (1).png" @click="changetype('text')" v-if="ptype=='password'"/>
+						<img src="img/number (2).png" @click="changetype('password')" v-if="ptype=='text'"/>-->
 					</div>
 					<div class="login-type" style="justify-content: space-between;">
 						<a href="wlogin.html">忘记密码?</a>
 						<a href="plogin.html">手机快捷登录</a>
 					</div>
-					<div class="login" @click="opennew('index','')">登录</div>
+					<div class="login logins">登录</div>
 					<div class="login-type">
-						<div @click="opennew('Agreement','')">登陆即视为同意 	<strong>《干股注册协议》</strong></div>
+						<input type="checkbox" id="boo" />
+						<div onclick="page('agreement','')">登陆即视为同意 <strong>《拼股注册协议》</strong></div>
 					</div>
-					
+
 					<div class="three">
 						<div class="thre-title">第三方登录 </div>
 						<div class="three-box">
-							<a href=""><img src="img/QQ@2x.png"/></a>
-							<a href=""><img src="img/wxin.png"/></a>
+							<a href="javascript:void(0)" onclick="authorize()"><img src="img/wxin.png" /></a>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			var myvue=new Vue({
-				el:'.wrapper',
-				data:{
-					ptype:'password'
-				},
-				methods:{
-					changetype:function(text){
-						this.ptype=text
-					},
-					opennew:function(target,id){
-						mui.openWindow({
-							url:'./'+target+'.html',
-							id:target
-						})
-					}
-				},
-				mounted:function(){
-					
+			//			15895225776 密码:123
+			$(function() {
+				$('.logins').click(function() {
+					var phone = $('.phone').val();
+					var pass = $('.pass').val();
+					loginsAjax(phone, pass);
+				});
+			});
+
+			function loginsAjax(phone, pass) {
+				if($('#boo').is(':checked') == false) {
+					alert('请同意注册协议')
+					return false
 				}
-			})
+				// console.log(url);
+				$.ajax({
+					type: 'GET',
+					url: url + 'shopsmain/?service=Users.land',
+					dataType: 'json',
+					data: {
+						loginname: phone,
+						password: pass
+					},
+					success: function(data) {
+						console.log(data)
+						var date = data.data;
+						if(date.code != 1) {
+							// console.log('sdfd');
+							alert('账号或者密码不正确');
+						}
+						var userinfo = date.userinfor;
+						var storage = window.localStorage;
+						storage["userid"] = userinfo.userid;
+						storage["userphoto"] = userinfo.userphoto;
+						storage["loginname"] = userinfo.loginname;
+						storage["token"] = userinfo.token;
+						// console.log(storage);
+						page('index');
+					},
+					error: function() {
+						alert('执行错误');
+					}
+				});
+			}
+
+			function page(target, id) {
+				mui.openWindow({
+					url: './' + target + '.html',
+					id: target
+				})
+			}
+
+			function authorize() {
+				var auths = null,
+					aweixin = null
+				// 扩展API加载完毕，现在可以正常调用扩展API
+				plus.oauth.getServices(function(services) {
+					auths = services;
+					aweixin = services['weixin'];
+					var s = auths[0];
+					s.login(function(e) {
+						alert(JSON.stringify(e))
+						// 获取登录操作结果
+						$.ajax({
+							type: 'post',
+							url: url + 'shopsmain/?service=Users.isBindWx',
+							dataType: 'json',
+							data: {
+								openid: e.target.userInfo.openid
+							},
+							success: function(data) {
+								alert(JSON.stringify(data))
+								if(data.data.code == 0) {
+									localStorage.setItem('openid', e.target.userInfo.openid)
+									localStorage.setItem('username', e.target.userInfo.nickname)
+									page('wplogin');
+								} else if(data.data.code == 1) {
+									var userinfo = data.data.infor;
+									var storage = window.localStorage;
+									storage["userid"] = userinfo.userid;
+									storage["userphoto"] = userinfo.userphoto;
+									storage["loginname"] = userinfo.loginname;
+									storage["token"] = userinfo.token;
+									page('index');
+								}
+							}
+						});
+					}, function(e) {
+						alert("登录认证失败！"+JSON.stringify(e));
+					}, {});
+				}, function(e) {
+					alert("获取分享服务列表失败：" + e.message + " - " + e.code);
+				});
+
+			}
 		</script>
 	</body>
+
 </html>

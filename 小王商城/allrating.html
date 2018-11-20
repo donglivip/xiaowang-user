@@ -22,100 +22,16 @@
 				</div>
 			</div>
 			<div class="main big-main">
-				<div class="rating-tab">
+				<div class="rating-tab" v-for="val in ratingdata">
 					<div class="rating-top">
-						<img src="img/index.jpg" class="avatar"/>
-						<div class="name">何婷芳</div>
+						<img :src="val.userphoto" class="avatar" />
+						<div class="name">{{val.loginname}}</div>
 						<div class="star-box">
-							<img src="img/collect-active.png"/>
-							<img src="img/collect-active.png"/>
-							<img src="img/collect-active.png"/>
-							<img src="img/collect-active.png"/>
-							<img src="img/collect.png"/>
+							{{val.ping_createtime}}
 						</div>
 					</div>
 					<div class="rating-text">
-						很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好
-					</div>
-				</div>
-				<div class="rating-tab">
-					<div class="rating-top">
-						<img src="img/index.jpg" class="avatar"/>
-						<div class="name">何婷芳</div>
-						<div class="star-box">
-							<img src="img/collect-active.png"/>
-							<img src="img/collect-active.png"/>
-							<img src="img/collect-active.png"/>
-							<img src="img/collect-active.png"/>
-							<img src="img/collect.png"/>
-						</div>
-					</div>
-					<div class="rating-text">
-						很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好
-					</div>
-				</div>
-				<div class="rating-tab">
-					<div class="rating-top">
-						<img src="img/index.jpg" class="avatar"/>
-						<div class="name">何婷芳</div>
-						<div class="star-box">
-							<img src="img/collect-active.png"/>
-							<img src="img/collect-active.png"/>
-							<img src="img/collect-active.png"/>
-							<img src="img/collect-active.png"/>
-							<img src="img/collect.png"/>
-						</div>
-					</div>
-					<div class="rating-text">
-						很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好
-					</div>
-				</div>
-				<div class="rating-tab">
-					<div class="rating-top">
-						<img src="img/index.jpg" class="avatar"/>
-						<div class="name">何婷芳</div>
-						<div class="star-box">
-							<img src="img/collect-active.png"/>
-							<img src="img/collect-active.png"/>
-							<img src="img/collect-active.png"/>
-							<img src="img/collect-active.png"/>
-							<img src="img/collect.png"/>
-						</div>
-					</div>
-					<div class="rating-text">
-						很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好
-					</div>
-				</div>
-				<div class="rating-tab">
-					<div class="rating-top">
-						<img src="img/index.jpg" class="avatar"/>
-						<div class="name">何婷芳</div>
-						<div class="star-box">
-							<img src="img/collect-active.png"/>
-							<img src="img/collect-active.png"/>
-							<img src="img/collect-active.png"/>
-							<img src="img/collect-active.png"/>
-							<img src="img/collect.png"/>
-						</div>
-					</div>
-					<div class="rating-text">
-						很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好
-					</div>
-				</div>
-				<div class="rating-tab">
-					<div class="rating-top">
-						<img src="img/index.jpg" class="avatar"/>
-						<div class="name">何婷芳</div>
-						<div class="star-box">
-							<img src="img/collect-active.png"/>
-							<img src="img/collect-active.png"/>
-							<img src="img/collect-active.png"/>
-							<img src="img/collect-active.png"/>
-							<img src="img/collect.png"/>
-						</div>
-					</div>
-					<div class="rating-text">
-						很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好很好
+						{{val.body}}
 					</div>
 				</div>
 			</div>
@@ -123,17 +39,37 @@
 		</div>
 	</body>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		new Vue({
 			el:'.wrapper',
 			data:{
-				
+				ratingdata:''
 			},
 			methods:{
-				
+				myajax:function(){
+					var that=this
+//					获取评论
+					$.ajax({
+						type:"post",
+						url:url + 'shopsmain/?service=Productinfo.getGoodsCommentsAll',
+						async:true,
+						dataType:'json',
+						data:{
+							goodsid:localStorage.getItem('goodsid'),
+							page:1,
+							limit:100
+						},
+						success:function(res){
+							console.log(res)
+							that.ratingdata=res.data.list
+						}
+					});
+				}
 			},
 			mounted:function(){
-				
+				this.myajax()
 			}
 		})
 	</script>

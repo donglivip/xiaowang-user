@@ -1,96 +1,76 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
-		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 	</head>
+	<style type="text/css">
+		.haveorder{display: flex;align-items: center;justify-content: center;border-radius: .2rem;padding: 0 .3rem;}
+	</style>
 	<body>
 		<div class="wrapper myorder">
 			<!--头部-->
 			<div class="header">
 				<div class="aside mui-action-back">
-					<img src="img/Shape.png" class="back"/>
+					<img src="img/Shape.png" class="back" />
 				</div>
 				<div class="head-main">
 					我的订单
 				</div>
 				<div class="aside">
-					
+
 				</div>
 			</div>
 			<div class="main big-main">
 				<div class="nav">
-					<div class="nav-tab" :class="index==0?'active':''" @click="navchange(0)">
-						<span>全部</span>
+					<div class="nav-tab" :class="myindex=='notPay'?'active':''" @click="navchange('notPay')">
+						<span>待支付</span>
 					</div>
-					<div class="nav-tab" :class="index==1?'active':''" @click="navchange(1)">
-						<span>待付款</span>
+					<div class="nav-tab" :class="myindex=='notFaHuo'?'active':''" @click="navchange('notFaHuo')">
+						<span>待发货</span>
 					</div>
-					<div class="nav-tab" :class="index==2?'active':''" @click="navchange(2)">
+					<div class="nav-tab" :class="myindex=='notShouHuo'?'active':''" @click="navchange('notShouHuo')">
 						<span>待收货</span>
 					</div>
-					<div class="nav-tab" :class="index==3?'active':''" @click="navchange(3)">
+					<div class="nav-tab" :class="myindex=='notPingJia'?'active':''" @click="navchange('notPingJia')">
 						<span>待评价</span>
-					</div>
-					<div class="nav-tab" :class="index==4?'active':''" @click="navchange(4)">
-						<span>已完成</span>
 					</div>
 				</div>
 				<div class="order-main">
-					<div class="order-box" @click="opennew('orderdetail')">
+					<div class="order-box" v-for="(val,index) in mydata" @click="opendetail(val.oderno)">
 						<div class="order-top">
-							<img src="img/index.jpg" class="avatar"/>
-							<div class="shop-name">XXXXX店</div>
+							<img :src="val.storeinfor.shopicon" class="avatar" />
+							<div class="shop-name">{{val.shopname}}</div>
 						</div>
-						<div class="order-wrapepr">
-							<img src="img/index.jpg" class="shop-img"/>
+						<div class="order-wrapepr" v-for="item in val.goodsList">
+							<img :src="item.pricon" class="shop-img" />
 							<div class="order-text">
 								<div class="order-title">
-									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
+									{{item.goodsname}}
 								</div>
 								<div class="order-monry">
-									<div class="order-price">￥266</div>
-									<div class="order-num">x4</div>
+									<div class="order-price">￥{{item.goodsprices}}</div>
+									<div class="order-num" style="flex: 1;">x{{item.bynumber}}</div>
+									<div class="haveorder" @click.stop="rating(index,item.goodsid)" v-if="myindex=='notPingJia'">立即评价</div>
 								</div>
 							</div>
 						</div>
 						<div class="allnum">
-							<div class="num02">共4件商品</div>
-							<div class="allprice">实付款：<strong>￥966</strong></div>
+							<div class="num02">共{{val.goodsList.length}}件</div>
+							<div class="allprice">实付款：<strong>￥{{val.paymoney}}</strong></div>
 						</div>
-						<div class="setting">
-							<div class="noorder">取消订单</div>
-							<div class="haveorder">立即支付</div>
+						<div class="setting" v-if="myindex=='notPay'">
+							<div class="noorder" @click.stop="settingorder('canel',val.oderno)">取消订单</div>
+							<div class="haveorder" @click.stop="pay(val.ordernum)">立即支付</div>
 						</div>
-					</div>
-					<div class="order-box" @click="opennew('orderdetail')">
-						<div class="order-top">
-							<img src="img/index.jpg" class="avatar"/>
-							<div class="shop-name">XXXXX店</div>
-						</div>
-						<div class="order-wrapepr">
-							<img src="img/index.jpg" class="shop-img"/>
-							<div class="order-text">
-								<div class="order-title">
-									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
-								</div>
-								<div class="order-monry">
-									<div class="order-price">￥266</div>
-									<div class="order-num">x4</div>
-								</div>
-							</div>
-						</div>
-						<div class="allnum">
-							<div class="num02">共4件商品</div>
-							<div class="allprice">实付款：<strong>￥966</strong></div>
-						</div>
-						<div class="setting">
-							<div class="noorder">查看物流</div>
-							<div class="haveorder">确认收货</div>
+						<div class="setting" v-if="myindex=='notShouHuo'">
+							<div class="noorder" style="border: 0;"></div>
+							<div class="haveorder"  @click.stop="settingorder('isOver',val.oderno)">确认收货</div>
 						</div>
 					</div>
 				</div>
@@ -98,26 +78,109 @@
 		</div>
 	</body>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		new Vue({
-			el:'.wrapper',
-			data:{
-				index:0
+			el: '.wrapper',
+			data: {
+				myindex: 'notPay',
+				mydata: [],
+				channel:''
 			},
-			methods:{
-				navchange:function(index){
-					this.index=index
+			methods: {
+				opendetail:function(id){
+					localStorage.setItem('orderno',id)
+					this.opennew('orderdetail')
+				},
+				rating:function(id,id02){
+					localStorage.setItem('oderno',this.mydata[id].oderno)
+					localStorage.setItem('shopid',id02)
+					this.opennew('rating')
+				},
+				settingorder:function(type,id){
+					var that=this
+					$.ajax({
+						type: "post",
+						url: url + 'shopsmain/?service=Order.setOrderState',
+						async: true,
+						data: {
+							oderno: id,
+							type:type
+						},
+						success: function(data) {
+							console.log(data)
+							that.myajax()
+						}
+					});
+				},
+				pay: function(num) {
+					var that=this
+					$.ajax({
+						type: "post",
+						url: url + 'shopsmain/?service=Pay.GoodsPay',
+						async: true,
+						data: {
+							orderNumber: JSON.stringify([{"ordernumber":num,"orderfrom":0}])
+						},
+						success: function(data) {
+							plus.payment.request(that.channel[0], data, function(result) {
+								plus.nativeUI.alert("支付成功！", function() {
+
+								});
+							}, function(error) {});
+						}
+					});
+				},
+				navchange: function(index) {
+					this.myindex = index
+					this.myajax()
 				},
 				opennew: function(target, id) {
 					mui.openWindow({
 						url: './' + target + '.html',
 						id: target
 					})
+				},
+				myajax: function() {
+					var that = this
+					$.ajax({
+						type: "post",
+						url: url + "shopsmain/?service=Order.getUserOrder",
+						async: true,
+						data: {
+							userid: localStorage.getItem('userid'),
+							page: 1,
+							limit: 20,
+							type: that.myindex
+						},
+						dataType: 'json',
+						success: function(res) {
+							console.log(res)
+							that.mydata = res.data
+						}
+					});
 				}
 			},
-			mounted:function(res){
-				
+			mounted: function(res) {
+				this.myajax()
+				var that = this
+					// 1. 获取支付通道
+					function plusReady() {
+						// 获取支付通道
+						plus.payment.getChannels(function(channels) {
+							that.channel = channels;
+						}, function(e) {
+							alert("获取支付通道失败：" + e.message);
+						});
+					}
+					if(window.plus) {
+						plusReady();
+					} else {
+						document.addEventListener('plusready', plusReady, false);
+					}
 			}
 		})
 	</script>
+
 </html>

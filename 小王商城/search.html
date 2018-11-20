@@ -18,33 +18,19 @@
 				</div>
 				<div class="head-main">
 					<img src="img/search-grey.png" />
-					<input type="text" placeholder="请输入您要搜索的内容" />
+					<input type="text" placeholder="请输入您要搜索的内容" v-model="text"/>
 				</div>
-				<div class="aside" @click="opennew('list')">
+				<div class="aside" @click="opennew()">
 					搜索
 				</div>
 			</div>
 			<div class="main big-main">
 				<div class="search-box">
 					<div class="search-top">
-						热搜
-					</div>
-					<div class="search-heat">
-						<div class="heart">冰箱</div>
-						<div class="heart">微波炉</div>
-						<div class="heart">游戏键盘</div>
-						<div class="heart">行车记录仪</div>
-					</div>
-				</div>
-				<div class="search-box">
-					<div class="search-top">
 						历史搜索
 					</div>
 					<div class="search-heat">
-						<div class="heart02">冰箱</div>
-						<div class="heart02">微波炉</div>
-						<div class="heart02">游戏键盘</div>
-						<div class="heart02">行车记录仪</div>
+						<div class="heart02" v-for="val in myhistory">{{val}}</div>
 					</div>
 				</div>
 			</div>
@@ -55,18 +41,22 @@
 		new Vue({
 			el: '.wrapper',
 			data: {
-
+				myhistory:[],
+				text:''
 			},
 			methods: {
-				opennew: function(target, id) {
+				opennew: function() {
+//					this.myhistory.push(this.text)
+//					localStorage.setItem('searchtext',this.myhistory)
+					localStorage.setItem('searchtext',this.text)
 					mui.openWindow({
-						url: './' + target + '.html',
-						id: target
+						url: './list01.html',
+						id: 'list01'
 					})
 				}
 			},
 			mounted: function() {
-
+//				this.myhistory=localStorage.getItem('searchtext')||[]
 			}
 		})
 	</script>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -8,83 +9,177 @@
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 		<title></title>
 	</head>
+
 	<body>
 		<div class="wrapper plogin">
 			<!--头部-->
 			<div class="header">
 				<div class="aside mui-action-back">
-					<img src="img/Shape.png" class="back"/>
+					<img src="img/Shape.png" class="back" />
 				</div>
 				<div class="head-main">
 					登录
 				</div>
 				<div class="aside">
-					
+
 				</div>
 			</div>
 			<!--中间主体-->
 			<div class="main big-main">
 				<div class="main-inner">
 					<div class="titile">手机快捷登录 </div>
-					<div class="subtitle">未注册的手机号将自动创建豆豆洗账号 </div>
+					<div class="subtitle">未注册的手机号将自动创建拼股帮账号 </div>
 					<div class="input-box">
-						<input type="number" placeholder="请输入手机号"/>
+						<input type="number" placeholder="请输入手机号" v-model="phone" />
 						<div class="addcode" @click="addcode">{{num}}</div>
 					</div>
 					<div class="input-box">
-						<input type="number" placeholder="请输入短信验证码"/>
+						<input type="number" placeholder="请输入短信验证码" v-model="pwd" />
 					</div>
 					<div class="login-type">
 						<a href="mlogin.html">密码账户登录</a>
 					</div>
-					<div class="login" @click="opennew('index','')">登录</div>
-					<div class="login-type">
-						<div @click="opennew('Agreement','')">登陆即视为同意 	<strong>《干股注册协议》</strong></div>
+					<div class="login" @click="pay">登录</div>
+					<div class="login-type" style="display: flex;align-items: center;">
+						<input type="checkbox" v-model="boo" />
+						<div @click="opennew('agreement','')">同意 <strong>《拼股注册协议》</strong></div>
 					</div>
 					<div class="three">
 						<div class="thre-title">第三方登录 </div>
 						<div class="three-box">
-							<a href=""><img src="img/QQ@2x.png"/></a>
-							<a href=""><img src="img/wxin.png"/></a>
+							<a href=""><img src="img/wxin.png" /></a>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			var myvue=new Vue({
-				el:'.wrapper',
-				data:{
-					num:'获取验证码'
+			var myvue = new Vue({
+				el: '.wrapper',
+				data: {
+					num: '获取验证码',
+					phone: '',
+					code: '',
+					boo: false,
+					pwd: ''
 				},
-				methods:{
-					addcode:function(){
+				methods: {
+					pay: function() {
+						var that = this
+						if(this.boo) {
+							if(this.code == this.pwd) {
+								$.ajax({
+									type: "post",
+									url: url + "shopsmain/?service=Users.landSms",
+									async: true,
+									data: {
+										loginname: that.phone,
+										token: that.token,
+										number: that.code
+									},
+									dataType: 'json',
+									success: function(res) {
+										console.log(res)
+										if(res.data.code==3){
+											$.ajax({
+												type: "post",
+												url: url + "shopsmain/?service=Users.registered",
+												async: true,
+												data: {
+													loginname: that.phone,
+													password:'123'
+												},
+												dataType: 'json',
+												success: function(data) {
+													console.log(data)
+													if(data.data.code==1){
+														var userinfo = data.data.userinfor;
+														var storage = window.localStorage;
+														storage["userid"] = userinfo.userid;
+														storage["userphoto"] = userinfo.userphoto;
+														storage["loginname"] = userinfo.loginname;
+														storage["token"] = that.token;
+														plus.nativeUI.toast('注册成功，初始密码为123')
+														that.opennew('index')
+													}
+												}
+											});
+										}else if(res.data.code==1){
+											var userinfo = res.data.userinfor;
+											var storage = window.localStorage;
+											storage["userid"] = userinfo.userid;
+											storage["userphoto"] = userinfo.userphoto;
+											storage["loginname"] = userinfo.loginname;
+											storage["token"] =  that.token;
+											that.opennew('index')
+										}
+									}
+								});
+							} else {
+								alert('手机号或验证码不正确')
+							}
+						} else {
+							alert('请同意注册协议')
+						}
+
+					},
+					addcode: function() {
 						var set
-							that=this;
-						if(this.num=='获取验证码'){
-							this.num=60
-							set=setInterval(function(){
-								if(that.num!=1){
-									that.num--
-								}else{
-									clearInterval(set)
-									that.num='获取验证码'
+						that = this;
+						if(that.phone == '') {
+							alert('手机号不能为空')
+							return false;
+						}
+						if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(that.phone))) {
+							return false;
+						}
+						if(this.num == '获取验证码') {
+							$.ajax({
+								type: "post",
+								url: url + "shopsmain/?service=Send.RegisteredVerification",
+								async: true,
+								data: {
+									phoneNumber: that.phone
+								},
+								dataType: 'json',
+								success: function(res) {
+									console.log(res)
+									if(res.data.code == 1) {
+										that.code = res.data.huoqu
+										that.num = 60
+										that.token = res.data.token
+										set = setInterval(function() {
+											if(that.num != 1) {
+												that.num--
+											} else {
+												clearInterval(set)
+												that.num = '获取验证码'
+											}
+										}, 1000)
+									} else {
+										alert('发送验证码失败！')
+									}
+
 								}
-							},1000)
+							});
+
 						}
 					},
-					opennew:function(target,id){
+					opennew: function(target, id) {
 						mui.openWindow({
-							url:'./'+target+'.html',
-							id:target
+							url: './' + target + '.html',
+							id: target
 						})
 					}
 				},
-				mounted:function(){
-					
+				mounted: function() {
+
 				}
 			})
 		</script>
 	</body>
+
 </html>

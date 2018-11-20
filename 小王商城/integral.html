@@ -18,21 +18,21 @@
 				<div class="head-main">
 					我的收益金
 				</div>
-				<div class="aside" @click="opennew('profitdetail')">
-					明细
+				<div class="aside">
+					<!--明细 @click="opennew('profitdetail')"-->
 				</div>
 			</div>
 			<!--中间主体-->
 			<div class="main big-main">
 				<div class="profit-top">
 					<div class="profit-tab">
-						<div class="subtitile">总收益金</div>
-						<div class="price">￥66</div>
+						<!--<div class="subtitile" style="text-align: center;">总收益金</div>-->
+						<div class="price">￥{{navdata.userinfor.yongjin}}</div>
 					</div>
-					<div class="profit-tab">
+					<!--<div class="profit-tab">
 						<div class="subtitile">今日收益金</div>
 						<div class="price">￥1.6</div>
-					</div>
+					</div>-->
 				</div>
 				<div class="integral-tab" @click="opennew('rname')"> 
 					<div>
@@ -49,11 +49,13 @@
 			</div>
 		</div>
 		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			var myvue=new Vue({
 				el:'.wrapper',
 				data:{
-
+					navdata:''
 				},
 				methods:{
 					opennew:function(target,id){
@@ -61,10 +63,27 @@
 							url:'./'+target+'.html',
 							id:target
 						})
+					},
+					myajax: function() {
+//						获取用户信息
+						var that = this
+						$.ajax({
+							type: "post",
+							url: url + "shopsmain/?service=Users.getUserInfor",
+							async: true,
+							data:{
+								userid:localStorage.getItem('userid')
+							},
+							dataType: 'json',
+							success: function(res) {
+								console.log(res)
+								that.navdata = res.data
+							}
+						});
 					}
 				},
 				mounted:function(){
-					
+					this.myajax()
 				}
 			})
 		</script>

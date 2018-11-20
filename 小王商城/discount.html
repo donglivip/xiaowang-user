@@ -26,78 +26,19 @@
 			</div>
 			<div class="main big-main">
 				<div class="discount-box">
-					<div class="discount-top">
-						<img src="img/index.jpg" class="avatar" />
-						<div class="name">XXXXX店</div>
-						<div class="join" @click="opennew('store')">进入店铺</div>
-					</div>
-					<div class="discount-tab">
+					<div class="discount-tab" v-for="val in mydata">
 						<div class="cart-box">
 							<div class="cart-tab">
 								<div class="money-box">
 									<div class="pricecart">
-										￥<strong>10</strong>
+										￥<strong>{{val.you_money}}</strong>
 									</div>
 									<div class="price-text">优惠券</div>
 								</div>
 								<div class="cart-main">
-									<div class="cart-title">10元店铺优惠券</div>
-									<div class="cart-sub">满30元可用，限本店铺使用</div>
-									<div class="cart-sub">有效期至：2018-7-30</div>
-								</div>
-							</div>
-						</div>
-						<div class="cart-box">
-							<div class="cart-tab">
-								<div class="money-box">
-									<div class="pricecart">
-										￥<strong>10</strong>
-									</div>
-									<div class="price-text">优惠券</div>
-								</div>
-								<div class="cart-main">
-									<div class="cart-title">10元店铺优惠券</div>
-									<div class="cart-sub">满30元可用，限本店铺使用</div>
-									<div class="cart-sub">有效期至：2018-7-30</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="discount-box">
-					<div class="discount-top">
-						<img src="img/index.jpg" class="avatar" />
-						<div class="name">XXXXX店</div>
-						<div class="join" @click="opennew('store')">进入店铺</div>
-					</div>
-					<div class="discount-tab">
-						<div class="cart-box">
-							<div class="cart-tab">
-								<div class="money-box">
-									<div class="pricecart">
-										￥<strong>10</strong>
-									</div>
-									<div class="price-text">优惠券</div>
-								</div>
-								<div class="cart-main">
-									<div class="cart-title">10元店铺优惠券</div>
-									<div class="cart-sub">满30元可用，限本店铺使用</div>
-									<div class="cart-sub">有效期至：2018-7-30</div>
-								</div>
-							</div>
-						</div>
-						<div class="cart-box">
-							<div class="cart-tab">
-								<div class="money-box">
-									<div class="pricecart">
-										￥<strong>10</strong>
-									</div>
-									<div class="price-text">优惠券</div>
-								</div>
-								<div class="cart-main">
-									<div class="cart-title">10元店铺优惠券</div>
-									<div class="cart-sub">满30元可用，限本店铺使用</div>
-									<div class="cart-sub">有效期至：2018-7-30</div>
+									<div class="cart-title">{{val.you_title}}</div>
+									<div class="cart-sub">限本店铺使用</div>
+									<div class="cart-sub">{{val.daoqi_time}}到期</div>
 								</div>
 							</div>
 						</div>
@@ -107,14 +48,16 @@
 		</div>
 	</body>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		new Vue({
 			el:'.wrapper',
 			data:{
-				
+				mydata:''
 			},
 			mounted:function(){
-				
+				this.myajax()
 			},
 			methods:{
 				opennew: function(target, id) {
@@ -122,6 +65,24 @@
 						url: './' + target + '.html',
 						id: target
 					})
+				},
+				myajax:function(){
+					var that=this
+					$.ajax({
+						type:"post",
+						url:url +"shopsmain/?service=Users.getMyYouHui",
+						async:true,
+						dataType:'json',
+						data:{
+							account:localStorage.getItem('userid'),
+							page:1,
+							limit:15
+						},
+						success:function(res){
+							console.log(res)
+							that.mydata=res.data
+						}
+					});
 				}
 			}
 		})

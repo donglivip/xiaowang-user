@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
-		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 	</head>
+
 	<body>
 		<div class="wrapper myorder nearby">
 			<!--头部-->
 			<div class="header">
 				<div class="aside mui-action-back">
-					<img src="img/Shape.png" class="back"/>
+					<img src="img/Shape.png" class="back" />
 				</div>
 				<div class="head-main">
 					我的收藏
 				</div>
 				<div class="aside">
-					
+
 				</div>
 			</div>
 			<div class="main big-main collect">
@@ -32,85 +34,36 @@
 					</div>
 				</div>
 				<div class="order-main" v-if="index==0">
-					<div class="near-tab">
-						<img src="img/index.jpg" class="avatar"/>
+					<div class="near-tab" v-for="val in mydata">
+						<img :src="val.shopicon" class="avatar" />
 						<div class="near-text">
-							<div class="near-title">天成洗护店</div>
-							<div class="near-sub">经营类型：洗护类</div>
+							<div class="near-title">{{val.shopname}}</div>
+							<div class="near-sub">经营类型：{{val.catname}}</div>
 						</div>
 						<div class="adress-box">
-							<div class="into" @click="opennew('store')">进入店铺</div>
-						</div>
-					</div>
-					<div class="near-tab">
-						<img src="img/index.jpg" class="avatar"/>
-						<div class="near-text">
-							<div class="near-title">天成洗护店</div>
-							<div class="near-sub">经营类型：洗护类</div>
-						</div>
-						<div class="adress-box">
-							<div class="into" @click="opennew('store')">进入店铺</div>
+							<div class="into" @click="opennew('store',val.storeinfoid)">进入店铺</div>
 						</div>
 					</div>
 				</div>
 				<div class="shop-box index" v-if="index==1">
-					<div class="shop-tab" @click="opennew('shop')">
+					<div class="shop-tab" @click="opennew('shop')"  v-for="val in mydata">
 						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
+							<img :src="val.pricon" class="shop-img" />
 						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
+						<div class="title">{{val.goodsname}}</div>
+						<!--<div class="label-box">
 							<div class="label grey">广告</div>
 							<div class="label blue">标签</div>
 							<div class="label yellow">标签</div>
-						</div>
+						</div>-->
 						<div class="price">
-							<div class="money">￥266</div>
+							<div class="money">￥{{val.goodsprices}}</div>
 							<div class="join">
 								团购
 							</div>
 						</div>
 						<div class="num">
-							已售12668件
-						</div>
-					</div><div class="shop-tab" @click="opennew('shop')">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
-						</div>
-					</div>
-					<div class="shop-tab" @click="opennew('shop')">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
+							已售{{val.goodsno}}件
 						</div>
 					</div>
 				</div>
@@ -118,26 +71,58 @@
 		</div>
 	</body>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		new Vue({
-			el:'.wrapper',
-			data:{
-				index:0
+			el: '.wrapper',
+			data: {
+				index: 0,
+				mydata:''
 			},
-			methods:{
-				navchange:function(index){
-					this.index=index
+			methods: {
+				navchange: function(index) {
+					this.index = index
+					if(index==0){
+						this.myajax('store')
+					}else{
+						this.myajax('goods')
+					}
+					
 				},
 				opennew: function(target, id) {
+					localStorage.setItem('storeinfoid',id)
 					mui.openWindow({
 						url: './' + target + '.html',
 						id: target
 					})
+				},
+				myajax: function(type) {
+					var that=this
+					$.ajax({
+						type: 'POST',
+						url: url + 'shopsmain/?service=Favorites.getAllData',
+						datatype: 'json',
+						data: {
+							userid: localStorage.getItem('userid'),
+							page: 1,
+							limit: 15,
+							types: type
+						},
+						success: function(data) {
+							console.log(data)
+							that.mydata=data.data;
+						},
+						error: function() {
+							alert('接收失败');
+						},
+					});
 				}
 			},
-			mounted:function(res){
-				
+			mounted: function(res) {
+				this.myajax('store')
 			}
 		})
 	</script>
+
 </html>

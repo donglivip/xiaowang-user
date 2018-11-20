@@ -1,0 +1,1 @@
+var url = 'http://api.pgsc2018.com/';

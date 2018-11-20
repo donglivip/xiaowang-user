@@ -1,186 +1,362 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
-		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 	</head>
+
 	<body>
 		<div class="wrapper shopcart">
 			<div class="header">
-				<div class="aside"></div>
+				<div class="aside mui-action-back">
+					<img src="img/Shape.png" class="back"/>
+				</div>
 				<div class="head-main">购物车</div>
-				<div class="aside">编辑</div>
+				<div class="aside" @click="godelete">删除</div>
 			</div>
-			<div class="main">
+			<div class="main big-main">
 				<div class="main-inner">
-					<div class="cart-box" @click="opennew('store')">
-						<div class="cart-top">
-							<img src="img/cart.png" class="cart01"/>
-							<img src="img/index.jpg" class="shopavatar"/>
-							<div class="shop-name">XXXXX店</div>
+					<div class="cart-box" v-for="(val,index) in mydata">
+						<div class="cart-top" @click="store(val.shopid)">
+							<img src="img/cart.png" class="cart01" v-if="!val.check" @click.stop="shopchange(index)" />
+							<img src="img/cartyes.png" class="cart01" v-if="val.check" @click.stop="shopchange(index)" />
+							<div class="shop-name">{{val.shopname}}</div>
 						</div>
-						<div class="cart-tab">
-							<img src="img/cartyes.png" class="cart01"/>
-							<img src="img/index.jpg" class="shop-img"/>
+						<div class="cart-tab" v-for="(item,index01) in val.children" @click="shop(item.goodsid)">
+							<img src="img/cart.png" class="cart01" v-if="!item.check" @click.stop="change(index,index01)" />
+							<img src="img/cartyes.png" class="cart01" v-if="item.check" @click.stop="change(index,index01)" />
+							<img :src="item.pricon" class="shop-img" />
 							<div class="shop-main">
 								<div class="shop-title">
-									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
+									{{item.goodsname}}
 								</div>
 								<div class="shop-money">
-									<div class="shop-price">￥266</div>
+									<div class="shop-price">￥{{item.goodsprices}}</div>
 									<div class="num-box">
-										<img src="img/remove.png"/>
-										<input type="number" value="1"/>
-										<img src="img/add.png"/>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="cart-tab">
-							<img src="img/cart.png" class="cart01"/>
-							<img src="img/index.jpg" class="shop-img"/>
-							<div class="shop-main">
-								<div class="shop-title">
-									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
-								</div>
-								<div class="shop-money">
-									<div class="shop-price">￥266</div>
-									<div class="num-box">
-										<img src="img/remove.png"/>
-										<input type="number" value="1"/>
-										<img src="img/add.png"/>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="cart-box" @click="opennew('store')">
-						<div class="cart-top">
-							<img src="img/cart.png" class="cart01"/>
-							<img src="img/index.jpg" class="shopavatar"/>
-							<div class="shop-name">XXXXX店</div>
-						</div>
-						<div class="cart-tab">
-							<img src="img/cartyes.png" class="cart01"/>
-							<img src="img/index.jpg" class="shop-img"/>
-							<div class="shop-main">
-								<div class="shop-title">
-									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
-								</div>
-								<div class="shop-money">
-									<div class="shop-price">￥266</div>
-									<div class="num-box">
-										<img src="img/remove.png"/>
-										<input type="number" value="1"/>
-										<img src="img/add.png"/>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="cart-tab">
-							<img src="img/cart.png" class="cart01"/>
-							<img src="img/index.jpg" class="shop-img"/>
-							<div class="shop-main">
-								<div class="shop-title">
-									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
-								</div>
-								<div class="shop-money">
-									<div class="shop-price">￥266</div>
-									<div class="num-box">
-										<img src="img/remove.png"/>
-										<input type="number" value="1"/>
-										<img src="img/add.png"/>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="cart-box" @click="opennew('store')">
-						<div class="cart-top">
-							<img src="img/cartno.png" class="cart01"/>
-							<img src="img/index.jpg" class="shopavatar"/>
-							<div class="shop-name">XXXXX店</div>
-						</div>
-						<div class="cart-tab">
-							<img src="img/cartno.png" class="cart01"/>
-							<img src="img/index.jpg" class="shop-img"/>
-							<div class="shop-main">
-								<div class="shop-title">
-									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
-								</div>
-								<div class="shop-money">
-									<div class="shop-price" style="flex: none;">￥266</div>
-									<div class="time">
-										X月X日8：00开抢后可购买
+										<img src="img/remove.png" @click.stop="changenum(0,index,index01,item.cartid)" />
+										<input type="number" :value="item.cartnum" />
+										<img src="img/add.png" @click.stop="changenum(1,index,index01,item.cartid)" />
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="main-bottom">
-					<img src="img/cart.png" class="cart01"/>
+				<div class="main-bottom" v-if="mydata!=''">
+					<img src="img/cart.png" class="cart01" @click="all" v-if="!allboo" />
+					<img src="img/cartyes.png" class="cart01" @click="all" v-if="allboo" />
 					<div class="cart02">全选</div>
-					<div class="cart03">合计:￥266</div>
-					<div class="cart04">去结算</div>
-				</div>
-			</div>
-			<div class="bottom">
-				<div class="bottom-box" @click="opennew('index')">
-					<img src="img/HomeCopy.png"/>
-					<div class="bottom-text ">
-						首页
-					</div>
-				</div>
-				<div class="bottom-box" @click="opennew('nearby')">
-					<img src="img/collectno.png"/>
-					<div class="bottom-text">
-						我的收藏
-					</div>
-				</div>
-				<div class="bottom-box" @click="opennew('nav')">
-					<img src="img/bottom03.png" />
-					<div class="bottom-text">
-						分类
-					</div>
-				</div>
-				<div class="bottom-box">
-					<img src="img/bottom04-active.png"/>
-					<div class="bottom-text active">
-						购物车
-					</div>
-				</div>
-				<div class="bottom-box" @click="opennew('usercenter')">
-					<img src="img/bottom05.png" />
-					<div class="bottom-text">
-						个人中心
-					</div>
+					<div class="cart03">合计:{{allnum}}</div>
+					<div class="cart04" @click="gopay">去结算</div>
 				</div>
 			</div>
 		</div>
 	</body>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		new Vue({
-			el:'.wrapper',
-			data:{
-				
+			el: '.wrapper',
+			data: {
+				mydata: '',
+				allnum: 0,
+				channel: '',
+				allboo: false
 			},
-			methods:{
-				opennew: function(target, id) {
+			methods: {
+				changenum: function(type, index, index01, cartid) {
+					var num = this.mydata[index].children[index01].cartnum,
+						that = this
+					if(type == 0 && this.mydata[index].children[index01].cartnum > 0) {
+						num--
+					} else {
+						num++
+					}
+					$.ajax({
+						type: "post",
+						url: url + 'shopsmain/?service=Cart.updateCart',
+						async: true,
+						dataType: 'json',
+						data: {
+							cartid: cartid,
+							cartnum: num
+						},
+						success: function(res) {
+							if(res.data.code == 1) {
+								that.myajax()
+							} else {
+								plus.nativeUI.toast('修改失败')
+							}
+							console.log(res)
+						}
+					});
+				},
+				all: function() {
+					var that = this
+					that.allboo = !that.allboo
+					for(var i = 0; i < that.mydata.length; i++) {
+						that.mydata[i].check = that.allboo
+						for(var j = 0; j < that.mydata[i].children.length; j++) {
+							that.mydata[i].children[j].check = that.allboo
+						}
+					}
+				},
+				gopay: function() {
+					var that = this
+					var alllist = []
+					var cartdata = {},
+						list = [],
+						listdata = {},
+						boo = true
+					for(var i = 0; i < that.mydata.length; i++) {
+						that.mydata[i].check = false
+						cartdata = {}
+						list = []
+						listdata = {}
+						boo = true
+						for(var j = 0; j < that.mydata[i].children.length; j++) {
+							if(that.mydata[i].children[j].check == true) {
+								that.mydata[i].children[j].check = false
+								cartdata.shopid = that.mydata[i].shopid
+								cartdata.shopname = that.mydata[i].shopname
+								listdata.id = that.mydata[i].children[j].goodsid
+								listdata.prices = that.mydata[i].children[j].goodsprices
+								listdata.num = that.mydata[i].children[j].cartnum
+								list.push(listdata)
+							}
+							cartdata.data = list
+							for(var k = 0; k < alllist.length; k++) {
+								if(alllist[k].shopid == that.mydata[i].shopid) {
+									boo = false
+								}
+							}
+							if(boo == true) {
+								alllist.push(cartdata)
+							}
+
+						}
+					}
+					if(alllist.length == 0) {
+						return false;
+					}
+					that.allboo = false
+					//					获取运费
+					var ajaxjson = {
+						userid: localStorage.getItem('userid'),
+						infor: JSON.stringify({
+							total: 0,
+							datainfo: [{
+								data: [{
+									id: that.mydata.goods_one_id,
+									num: that.cartnum
+								}]
+							}]
+						})
+					}
+					var yunfei = 0
+					$.ajax({
+						type: "post",
+						url: url + "/shopsmain/?service=Order.YunFei",
+						async: true,
+						data: ajaxjson,
+						success: function(res) {
+							console.log(res)
+							yunfei = res.data[0].sum
+						}
+					});
+					var ajaxjs = {
+						infor: JSON.stringify({
+							total: 0,
+							remarks: 0,
+							a: 0,
+							b: null,
+							datainfo: alllist,
+						}),
+						userid: localStorage.getItem('userid'),
+						yunfei: yunfei,
+						is_ruzhu: 0,
+						yindou: 0,
+						in_hehuo: 0
+					}
+					$.ajax({
+						type: "post",
+						url: url + 'shopsmain/?service=Order.createOrder',
+						async: false,
+						dataType: 'json',
+						data: ajaxjs,
+						success: function(res) {
+							console.log(res)
+							plus.nativeUI.confirm("请选择您的支付方式！", function(e) {
+								if(e.index == 0) {
+									$.ajax({
+										type: "post",
+										url: url + 'shopsmain/?service=Pay.GoodsPay',
+										async: true,
+										data: {
+											orderNumber: JSON.stringify(res.data)
+										},
+										success: function(data) {
+											plus.payment.request(that.channel[0], data, function(result) {
+												plus.nativeUI.alert("支付成功！", function() {
+
+												});
+											}, function(error) {
+												alert('支付失败')
+											});
+										}
+									});
+								} else {
+									$.ajax({
+										type: "post",
+										url: url + 'shopsmain/?service=Pay.Wx_GoodsPay',
+										async: true,
+										data: {
+											orderNumber: JSON.stringify(res.data)
+										},
+										success: function(data) {
+											plus.payment.request(that.channel[1], data, function(result) {
+												plus.nativeUI.alert("支付成功！", function() {
+
+												});
+											}, function(error) {
+												alert('支付失败')
+											});
+										}
+									});
+								}
+							}, {
+								"title": "支付方式",
+								"buttons": ["支付宝", "微信"]
+							});
+						},
+						error: function(err) {
+							alert(JSON.stringify(err))
+						}
+					});
+				},
+				godelete: function() {
+					var that = this,
+						list = []
+					for(var i = 0; i < that.mydata.length; i++) {
+						that.mydata[i].check = false
+						for(var j = 0; j < that.mydata[i].children.length; j++) {
+							if(that.mydata[i].children[j].check == true) {
+								list.push(parseInt(that.mydata[i].children[j].cartid))
+							}
+						}
+					}
+					$.ajax({
+						type: 'POST',
+						url: url + 'shopsmain/?service=Cart.removeCart',
+						datatype: 'json',
+						data: {
+							cartid: JSON.stringify(list)
+						},
+						success: function(data) {
+							if(data.data == true) {
+								that.myajax()
+							}
+						},
+						error: function() {
+							alert('删除错误');
+						},
+					});
+				},
+				shopchange: function(index) {
+					var that = this
+					that.mydata[index].check = !that.mydata[index].check
+					for(var j = 0; j < that.mydata[index].children.length; j++) {
+						that.mydata[index].children[j].check = that.mydata[index].check
+					}
+					that.countmoney()
+				},
+				change: function(index, index01) {
+					var that = this
+					that.mydata[index].children[index01].check = !that.mydata[index].children[index01].check
+					that.countmoney()
+				},
+				store: function(id) {
+					localStorage.setItem('storeinfoid', id)
+					this.opennew('store')
+				},
+				shop: function(id) {
+					localStorage.setItem('goodsid', id)
+					this.opennew('shop')
+				},
+				opennew: function(target) {
 					mui.openWindow({
 						url: './' + target + '.html',
 						id: target
 					})
+				},
+				myajax: function() {
+					var that = this
+					$.ajax({
+						type: 'POST',
+						url: url + 'shopsmain/?service=Cart.getCartList',
+						datatype: 'json',
+						data: {
+							userid: localStorage.getItem('userid'),
+							page: 1,
+							limit: 15
+						},
+						success: function(data) {
+							//							for(var i = 0; i < data.data.length; i++) {
+							//								data.data[i].check = false
+							//								for(var j = 0; j < data.data[i].children.length; j++) {
+							//									data.data[i].children[j].check = false
+							//								}
+							//							}
+							that.mydata = data.data;
+							that.countmoney()
+						},
+						error: function() {
+							alert('接收错误');
+						},
+					});
+				},
+				countmoney: function() {
+					var that = this
+					that.allnum = 0
+					for(var i = 0; i < that.mydata.length; i++) {
+						for(var j = 0; j < that.mydata[i].children.length; j++) {
+							if(that.mydata[i].children[j].check == true) {
+								that.allnum += that.mydata[i].children[j].cartnum * that.mydata[i].children[j].goodsprices
+							}
+
+						}
+					}
 				}
 			},
-			mounted:function(){
-				
+			mounted: function() {
+				if(localStorage.getItem('userid') == null || localStorage.getItem('userid') == 'null') {
+					window.location.href = 'mlogin.html'
+				} else {
+					this.myajax()
+					var that = this
+					// 1. 获取支付通道
+					function plusReady() {
+						// 获取支付通道
+						plus.payment.getChannels(function(channels) {
+							that.channel = channels;
+						}, function(e) {
+							alert("获取支付通道失败：" + e.message);
+						});
+					}
+					if(window.plus) {
+						plusReady();
+					} else {
+						document.addEventListener('plusready', plusReady, false);
+					}
+				}
 			}
 		})
 	</script>
+
 </html>

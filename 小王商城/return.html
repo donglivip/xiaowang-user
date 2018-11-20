@@ -24,64 +24,38 @@
 			</div>
 			<div class="main big-main">
 				<div class="nav">
-					<div class="nav-tab" :class="index==0?'active':''" @click="navchange(0)">
+					<div class="nav-tab" :class="index=='daiTuiHuo'?'active':''" @click="navchange('daiTuiHuo')">
 						<span>受理中</span>
 					</div>
-					<div class="nav-tab" :class="index==1?'active':''" @click="navchange(1)">
+					<div class="nav-tab" :class="index=='yiTuiHuo'?'active':''" @click="navchange('yiTuiHuo')">
 						<span>已受理</span>
 					</div>
 				</div>
 				<div class="order-main">
-					<div class="order-box" @click="opennew('orderdetail')">
+					<div class="order-box" @click="opennew('orderdetail')" v-for="val in mydata">
 						<div class="order-top">
-							<img src="img/index.jpg" class="avatar"/>
-							<div class="shop-name">XXXXX店</div>
+							<img :src="val.storeinfor.shopicon" class="avatar" />
+							<div class="shop-name">{{val.shopname}}</div>
 						</div>
-						<div class="order-wrapepr">
-							<img src="img/index.jpg" class="shop-img"/>
+						<div class="order-wrapepr" v-for="item in val.goodsList">
+							<img :src="item.pricon" class="shop-img" />
 							<div class="order-text">
 								<div class="order-title">
-									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
+									{{item.goodsname}}
 								</div>
 								<div class="order-monry">
-									<div class="order-price">￥266</div>
-									<div class="order-num">x4</div>
+									<div class="order-price">￥{{item.goodsprices}}</div>
+									<div class="order-num">x{{item.bynumber}}</div>
 								</div>
 							</div>
 						</div>
 						<div class="allnum">
-							<div class="num02">共4件商品</div>
-							<div class="allprice">实付款：<strong>￥966</strong></div>
+							<div class="num02">共{{val.goodsList.length}}件</div>
+							<div class="allprice">实付款：<strong>￥{{val.paymoney}}</strong></div>
 						</div>
-						<div class="setting">
-							<div class="noorder">取消订单</div>
-							<div class="haveorder">立即支付</div>
-						</div>
-					</div>
-					<div class="order-box" @click="opennew('orderdetail')">
-						<div class="order-top">
-							<img src="img/index.jpg" class="avatar"/>
-							<div class="shop-name">XXXXX店</div>
-						</div>
-						<div class="order-wrapepr">
-							<img src="img/index.jpg" class="shop-img"/>
-							<div class="order-text">
-								<div class="order-title">
-									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
-								</div>
-								<div class="order-monry">
-									<div class="order-price">￥266</div>
-									<div class="order-num">x4</div>
-								</div>
-							</div>
-						</div>
-						<div class="allnum">
-							<div class="num02">共4件商品</div>
-							<div class="allprice">实付款：<strong>￥966</strong></div>
-						</div>
-						<div class="setting">
-							<div class="noorder">查看物流</div>
-							<div class="haveorder">确认收货</div>
+						<div class="setting" v-if="index=='daiTuiHuo'">
+							<div class="noorder" style="border: 0;"></div>
+							<div class="haveorder" @click="settingorder('isOver',val.oderno)">确认收货</div>
 						</div>
 					</div>
 				</div>
@@ -89,25 +63,64 @@
 		</div>
 	</body>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		new Vue({
 			el:'.wrapper',
 			data:{
-				index:0
+				index:'daiTuiHuo',
+				mydata:[]
 			},
 			methods:{
+				settingorder:function(type,id){
+					var that=this
+					$.ajax({
+						type: "post",
+						url: url + 'shopsmain/?service=Order.setOrderState',
+						async: true,
+						data: {
+							orderno: id,
+							type:type
+						},
+						success: function(data) {
+							console.log(data)
+							that.myajax()
+						}
+					});
+				},
 				navchange:function(index){
 					this.index=index
+					this.myajax()
 				},
 				opennew: function(target, id) {
 					mui.openWindow({
 						url: './' + target + '.html',
 						id: target
 					})
+				},
+				myajax: function() {
+					var that = this
+					$.ajax({
+						type: "post",
+						url: url + "shopsmain/?service=Order.getUserOrder",
+						async: true,
+						data: {
+							userid: localStorage.getItem('userid'),
+							page: 1,
+							limit: 10,
+							type: that.index
+						},
+						dataType: 'json',
+						success: function(res) {
+							console.log(res)
+							that.mydata = res.data
+						}
+					});
 				}
 			},
 			mounted:function(res){
-				
+				this.myajax()
 			}
 		})
 	</script>

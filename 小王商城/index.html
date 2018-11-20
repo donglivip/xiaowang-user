@@ -10,15 +10,15 @@
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 	<body>
-		<div class="wrapper index">
+		<div class="wrapper index" id="all">
 			<div class="header" v-if="headboo==false">
 				<div class="aside" @click="opennew('adresschange')">
 					<span>北京</span>
 					<img src="img/down.png" class="downup" />
 				</div>
-				<form class="head-main" action="search.html">
+				<form class="head-main" @click="opennew('search')">
 					<img src="img/search-grey.png" />
-					<input type="search" placeholder="请输入您要搜索的内容"/>
+					<input type="search" placeholder="请输入您要搜索的内容" />
 				</form>
 				<div class="aside" @click="opennew('newcenter')">
 					<img src="img/news.png" class="news" />
@@ -30,8 +30,8 @@
 					<img src="img/Arrow_up.png" class="downup" />
 				</div>
 				<div class="head-main">
-					<img src="img/search-grey.png"/>
-					<input type="text" placeholder="请输入您要搜索的内容"  @blur="inputsubmit"/>
+					<img src="img/search-grey.png" />
+					<input type="text" placeholder="请输入您要搜索的内容" @blur="inputsubmit" />
 				</div>
 				<div class="aside" @click="opennew('newcenter')">
 					<img src="img/Mail.png" class="news" />
@@ -41,265 +41,41 @@
 				<!--轮播图-->
 				<div class="swiper-container">
 					<div class="swiper-wrapper">
-						<div class="swiper-slide"><img src="img/index.jpg" /></div>
-						<div class="swiper-slide"><img src="img/index.jpg" /></div>
-						<div class="swiper-slide"><img src="img/index.jpg" /></div>
+						<div class="swiper-slide"><img src="img/index.jpg" class="slide0" /></div>
+						<div class="swiper-slide"><img src="img/index.jpg" class="slide1" /></div>
+						<div class="swiper-slide"><img src="img/index.jpg" class="slide2" /></div>
 					</div>
 					<div class="swiper-pagination"></div>
 				</div>
 				<!--分类-->
 				<div class="nav-box">
-					<!--<div class="nav" @click="opennew('rob')">
+					<div class="nav" @click="opennew('rob')">
 						<img src="img/nav01.png" class="nav-img" />
 						<div class="nav-text">限时抢购</div>
 					</div>
-					<div class="nav" @click="opennew('profit')">
-						<img src="img/nav02.png" class="nav-img" />
-						<div class="nav-text">抢收益金</div>
-					</div>-->
-					<div class="nav" @click="opennew('list')">
-						<img src="img/nav03.png" class="nav-img" />
-						<div class="nav-text">建材装饰</div>
-					</div>
-					<div class="nav" @click="opennew('list')">
-						<img src="img/nav04.png" class="nav-img" />
-						<div class="nav-text">娱乐玩具</div>
-					</div>
-					<div class="nav" @click="opennew('list')">
-						<img src="img/nav03.png" class="nav-img" />
-						<div class="nav-text">建材装饰</div>
-					</div>
-					<div class="nav" @click="opennew('list')">
-						<img src="img/nav04.png" class="nav-img" />
-						<div class="nav-text">娱乐玩具</div>
-					</div>
-					<div class="nav" @click="opennew('list')">
-						<img src="img/nav05.png" class="nav-img" />
-						<div class="nav-text">数码产品</div>
-					</div>
-					<div class="nav" @click="opennew('list')">
-						<img src="img/nav06.png" class="nav-img" />
-						<div class="nav-text">休闲零食</div>
-					</div>
-					<div class="nav" @click="opennew('list')">
-						<img src="img/nav07.png" class="nav-img" />
-						<div class="nav-text">箱包手袋</div>
-					</div>
-					<div class="nav" @click="opennew('list')">
-						<img src="img/nav08.png" class="nav-img" />
-						<div class="nav-text">自行车</div>
-					</div>
-					<div class="nav" @click="opennew('list')">
-						<img src="img/nav09.png" class="nav-img" />
-						<div class="nav-text">天文产品</div>
-					</div>
-					<div class="nav" @click="opennew('list')">
-						<img src="img/nav10.png" class="nav-img" />
-						<div class="nav-text">更多分类</div>
+					<div class="nav" @click="opennav(val.goodsid)" v-for="(val,index) in navdata" v-if="index<10&&index>0">
+						<img :src="val.icon" class="nav-img" />
+						<div class="nav-text">{{val.goodsname}}</div>
 					</div>
 				</div>
 				<!--广告图-->
-				<div class="adve-box">
-					<img src="img/index.jpg" class="advaer" @click="opennew('profit')"/>
-					<div class="adve-text">
-						<img src="img/logo.png"/>
-						<div class="red">热门</div>
-						<div class="text">xxxxxxxxxxxxxxxxxxx</div>
-					</div>
-				</div>
-				<!--我的广告-->
-				<div class="index-top">
-					<div class="hr"></div>
-					<div class="text">广告区</div>
-					<div class="hr"></div>
-				</div>
-				<div class="adver-index">
-					<div class="adveri-left">
-						<div class="aimg-box">
-							<img src="img/index.jpg"/>
-							<div class="text">xxxxxxxxx</div>
-						</div>
-						<div class="aimg-box">
-							<img src="img/index.jpg"/>
-							<div class="text">xxxxxxxxxxxxx</div>
-						</div>
-					</div>
-					<div class="adveri-left"> 
-						<div class="aimg-box">
-							<img src="img/index.jpg"/>
-							<div class="text">xxxxxxxxx</div>
-						</div>
-					</div>
-				</div>
+				<img src="img/index.jpg" class="advaer" @click="opennew('profit')" />
 				<!--为您推荐-->
 				<div class="index-top">
 					<div class="hr"></div>
 					<div class="text">为你推荐</div>
 					<div class="hr"></div>
 				</div>
+				<!--分类标题-->
+				<div class="nav-top" @click="opennew('list')">
+					<div class="text">首页推荐</div>
+					<div class="more">
+						<span>更多</span>
+						<img src="img/Arrow_right.png" class="arrright" />
+					</div>
+				</div>
 				<!--商品-->
 				<div class="shop-box">
-					<div class="shop-tab" @click="opennew('shop')">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
-						</div>
-					</div>
-					<div class="shop-tab" @click="opennew('shop')">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
-						</div>
-					</div>
-					<div class="shop-tab" @click="opennew('shop')">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
-						</div>
-					</div>
-					<div class="shop-tab" @click="opennew('shop')">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
-						</div>
-					</div>
-					<div class="shop-tab" @click="opennew('shop')">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
-						</div>
-					</div>
-					<div class="shop-tab" @click="opennew('shop')">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
-						</div>
-					</div>
-					<div class="shop-tab" @click="opennew('shop')">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
-						</div>
-					</div>
-					
-					<div class="shop-tab" @click="opennew('shop')">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
-						</div>
-					</div>
 				</div>
 			</div>
 			<div class="bottom">
@@ -310,9 +86,9 @@
 					</div>
 				</div>
 				<div class="bottom-box" @click="opennew('nearby')">
-					<img src="img/collectno.png"/>
+					<img src="img/bottom02.png" />
 					<div class="bottom-text">
-						我的收藏
+						筛选店铺
 					</div>
 				</div>
 				<div class="bottom-box" @click="opennew('nav')">
@@ -321,10 +97,10 @@
 						分类
 					</div>
 				</div>
-				<div class="bottom-box"  @click="opennew('shopcart')">
-					<img src="img/bottom04.png" />
+				<div class="bottom-box" @click="opennew('join-shop')">
+					<img src="img/join.png" />
 					<div class="bottom-text">
-						购物车
+						商家入驻
 					</div>
 				</div>
 				<div class="bottom-box" @click="opennew('usercenter')">
@@ -339,19 +115,74 @@
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/swiper-3.4.2.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		new Vue({
 			el: '.wrapper',
 			data: {
-				headboo: false
+				headboo: false,
+				navdata: ''
 			},
 			mounted: function() {
-				var mySwiper = new Swiper('.swiper-container', {
-					autoplay: 5000, //可选选项，自动滑动
-					pagination: '.swiper-pagination',
-				})
+				var that = this
+				function plusReady() {
+					plus.runtime.getProperty(plus.runtime.appid, function(inf) {
+						$.ajax({
+							type: "post",
+							url: url + "shopsmain/?service=AppSvn.getInfor",
+							dataType: 'json',
+							success: function(res) {
+								if(res.data.app_svn_number != inf.version) {
+									plus.nativeUI.showWaiting("下载更新资源包,请勿关闭页面！");
+									plus.downloader.createDownload(res.data.app_url, {
+										filename: "_doc/update/"
+									}, function(d, status) {
+										if(status == 200) {
+											plus.runtime.install(d.filename, {}, function() {
+												plus.nativeUI.closeWaiting();
+												plus.nativeUI.alert("应用资源更新完成！点击重启！", function() {
+													plus.runtime.restart();
+												});
+											}, function(e) {
+												plus.nativeUI.closeWaiting();
+												plus.nativeUI.alert("安装wgt文件失败[" + e.code + "]：" + e.message);
+											});
+										} else {
+											plus.nativeUI.alert("下载wgt失败！");
+										}
+									}).start();
+								} else {
+									var mySwiper = new Swiper('.swiper-container', {
+										autoplay: 5000, //可选选项，自动滑动
+										pagination: '.swiper-pagination',
+									})
+									that.myajax()
+								}
+							},
+							error: function(err) {
+								alert(JSON.stringify(err))
+							}
+						});
+					});
+					plus.geolocation.getCurrentPosition(function(p) {
+						localStorage.setItem('lng', p.coords.longitude)
+						localStorage.setItem('lat', p.coords.latitude)
+					}, function(e) {
+						alert('Geolocation error: ' + e.message);
+					});
+				}
+				if(window.plus) {
+					plusReady();
+				} else {
+					document.addEventListener("plusready", plusReady, false);
+				}
+
 			},
 			methods: {
+				opennav: function(id) {
+					localStorage.setItem('goodsid02', id)
+					this.opennew('nav02')
+				},
 				myscroll: function() {
 					if($('.swiper-container').offset().top < -152) {
 						this.headboo = true
@@ -362,14 +193,143 @@
 				opennew: function(target, id) {
 					mui.openWindow({
 						url: './' + target + '.html',
-						id: target
+						id: target,
+						createNew: true
 					})
 				},
-				inputsubmit:function(){
+				inputsubmit: function() {
 					this.opennew('search')
+				},
+				myajax: function(res) {
+					var that = this
+					$.ajax({
+						type: "post",
+						url: url + "shopsmain/?service=Goodstype.getTypeOne",
+						async: true,
+						dataType: 'json',
+						success: function(res) {
+							that.navdata = res.data
+						}
+					});
 				}
 			}
 		})
+
+		$(function() {
+			conveying(1);
+			// 首页推荐上的图
+			$.ajax({
+				type: "POST",
+				url: url + 'shopsmain/?service=Advertising.getAdverToId',
+				datadype: "json",
+				data: {
+					adposid: 3
+				},
+				success: function(data) {
+					$('.advaer').attr("src", data.data[0].fileurl);
+				},
+				error: function() {
+
+				}
+			});
+
+			// 轮播图
+			$.ajax({
+				type: "POST",
+				url: url + 'shopsmain/?service=Advertising.getAdverToId',
+				datadype: "json",
+				data: {
+					adposid: 2
+				},
+				success: function(data) {
+					$('.slide0').attr("src", data.data[0].fileurl);
+					$('.slide1').attr("src", data.data[1].fileurl);
+					$('.slide2').attr("src", data.data[2].fileurl);
+				},
+				error: function() {
+
+				}
+			});
+
+		});
+
+		// 获取滚动条到底部的距离
+		$(".main").scroll(function() {
+			// 文档内容的实际高度
+			var wHight = document.getElementById("all").scrollHeight;
+			// 窗口可视区域高度
+			var kHight = document.getElementById("all").clientWidth;
+			// 滚动条距离上面的高度
+			var hight = $(this).scrollTop();
+			// 滚动条距离浏览器底部的高度 = 文档（页面）内容实际高度 - 滚动条距离浏览器顶部的高度 - 窗口可视范围的高度；
+			var bottom = wHight - kHight - hight + 522;
+			// 获取数据有误差 +522
+			// console.log(bottom);
+			if(bottom < 60) {
+				var i = 2;
+				conveying(i);
+				i++;
+			}
+		});
+
+		// 获取首页推荐
+		function conveying(num) {
+			$.ajax({
+				type: "POST",
+				url: url + 'shopsmain/?service=Grouppurchase.getall',
+				datatype: 'json',
+				data: {
+					page: num,
+					limit: 6
+				},
+				success: function(data) {
+					var date = data.data;
+					$.each(date, function(idx, obj) {
+						$('.shop-box').append(`
+							<div class="shop-tab" @click="opennew('shop')">
+								<div class="shopimg-box goods-id" goods-id="${obj.goodsid}">
+									<img src="${obj.pricon}" class="shop-img"/>
+								</div>
+								<div class="title">${obj.goodsname}</div>
+								<div class="label-box">
+									<div class="label grey">广告</div>
+									<div class="label blue">标签</div>
+									<div class="label yellow">标签</div>
+								</div>
+								<div class="price">
+									<div class="money">￥${obj.goodsprices}</div>
+									<div class="join">
+										团购
+									</div>
+								</div>
+								<div class="num">
+									已售${obj.bulknumber}件
+								</div>
+							</div>
+						`);
+					});
+
+					// 存储商品id
+					$('.goods-id').click(function() {
+						var goodsid = $(this).attr('goods-id');
+						// console.log(goodsid);     
+						var goods = window.localStorage;
+						goods["goodsid"] = goodsid;
+						page('shop');
+					});
+				},
+				error: function() {
+
+				},
+			});
+		}
+
+		function page(target, id) {
+			mui.openWindow({
+				url: './' + target + '.html',
+				id: target
+			})
+		}
 	</script>
 
 </html>

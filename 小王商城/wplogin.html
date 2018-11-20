@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<title></title>
+	</head>
+
+	<body>
+		<div class="wrapper plogin">
+			<!--头部-->
+			<div class="header">
+				<div class="aside mui-action-back">
+					<img src="img/Shape.png" class="back" />
+				</div>
+				<div class="head-main">
+					绑定手机号
+				</div>
+				<div class="aside">
+
+				</div>
+			</div>
+			<!--中间主体-->
+			<div class="main big-main">
+				<div class="main-inner">
+					<div class="titile"> 绑定手机号</div>
+					<div class="subtitle">首次登陆的微信，需要先绑定手机号！ </div>
+					<div class="input-box">
+						<input type="number" placeholder="请输入手机号" v-model="phone" />
+						<div class="addcode" @click="addcode">{{num}}</div>
+					</div>
+					<div class="input-box">
+						<input type="number" placeholder="请输入短信验证码" v-model="pwd" />
+					</div>
+					<div class="input-box">
+						<input type="number" placeholder="请输入短信验证码" v-model="mypwd" />
+					</div>
+					<div class="login-type">
+						<a href="mlogin.html">密码账户登录</a>
+					</div>
+					<div class="login" @click="pay">登录</div>
+					<div class="login-type" style="display: flex;align-items: center;">
+						<input type="checkbox" v-model="boo" />
+						<div @click="opennew('Agreement','')">同意 <strong>《拼股注册协议》</strong></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var myvue = new Vue({
+				el: '.wrapper',
+				data: {
+					num: '获取验证码',
+					phone: '',
+					code: '',
+					boo: false,
+					pwd: '',
+					mypwd：''
+				},
+				methods: {
+					pay: function() {
+						var that = this
+						if(this.boo) {
+							if(this.code == this.pwd) {
+								if(that.mypwd==''){
+									alert('密码不能为空')
+									return false;
+								}
+								$.ajax({
+									type: "post",
+									url: url + "shopsmain/?service=Users.wxLand",
+									async: true,
+									data: {
+										openid : localStorage.getItem('openid'),
+										loginName :that.phone,
+										pass :that.mypwd,
+										username :localStorage.getItem('username')
+									},
+									dataType: 'json',
+									success: function(res) {
+										console.log(JSON.stringify(res))
+										if(res.data.code==2){
+											alert('改手机号已被占用啦，换个手机号试试吧！')
+										}else if(res.data.code==1){
+											var userinfo = res.data.infor;
+											var storage = window.localStorage;
+											storage["userid"] = userinfo.userid;
+											storage["userphoto"] = userinfo.userphoto;
+											storage["loginname"] = userinfo.loginname;
+											storage["token"] = that.token;
+											that.opennew('index')
+										}
+									}
+								});
+							} else {
+								alert('手机号或验证码不正确')
+							}
+						} else {
+							alert('请同意注册协议')
+						}
+
+					},
+					addcode: function() {
+						var set
+						that = this;
+						if(that.phone == '') {
+							alert('手机号不能为空')
+							return false;
+						}
+						if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(that.phone))) {
+							return false;
+						}
+						if(this.num == '获取验证码') {
+							$.ajax({
+								type: "post",
+								url: url + "shopsmain/?service=Send.RegisteredVerification",
+								async: true,
+								data: {
+									phoneNumber: that.phone
+								},
+								dataType: 'json',
+								success: function(res) {
+									console.log(res)
+									if(res.data.code == 1) {
+										that.code = res.data.huoqu
+										that.num = 60
+										that.token = res.data.token
+										set = setInterval(function() {
+											if(that.num != 1) {
+												that.num--
+											} else {
+												clearInterval(set)
+												that.num = '获取验证码'
+											}
+										}, 1000)
+									} else {
+										alert('发送验证码失败！')
+									}
+
+								}
+							});
+
+						}
+					},
+					opennew: function(target, id) {
+						mui.openWindow({
+							url: './' + target + '.html',
+							id: target
+						})
+					}
+				},
+				mounted: function() {
+
+				}
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -8,91 +9,78 @@
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 		<title></title>
 	</head>
+
 	<body>
 		<div class="wrapper new">
 			<!--头部-->
 			<div class="header">
 				<div class="aside  mui-action-back">
-					<img src="img/Shape.png" class="back"/>
+					<img src="img/Shape.png" class="back" />
 				</div>
 				<div class="head-main">
 					消息
 				</div>
 				<div class="aside" @click="opennew('shopcart')">
-					<img src="img/bottom04.png" style="width: .4rem;"/>
+					<img src="img/bottom04.png" style="width: .4rem;" />
 				</div>
 			</div>
 			<!--中间主体-->
 			<div class="main big-main">
-				<div class="nav-tab" @click="opennew('new-order')">
-					<div class="img-box type01" >
-						<img src="img/hanger-1@3x.png"/>
+				<div class="nav-tab" @click="opennew('new-gonggao')" v-for="val in navdata">
+					<div class="img-box type02">
+						<img src="img/Share@3x.png" />
 					</div>
 					<div class="new-main" style="height: .8rem;">
 						<div class="new-title">
-							<div class="title">订单状态</div>
-							<div class="time">15:30</div>
+							<div class="title">{{val.title}} </div>
+							<div class="time">{{val.createtime}}</div>
 						</div>
-						<div class="text">您的洗涤订单1358665状态已改变</div>
-					</div>
-				</div>
-				<div class="nav-tab" @click="opennew('new-gonggao')">
-					<div class="img-box type02" >
-						<img src="img/Share@3x.png"/>
-					</div>
-					<div class="new-main" style="height: .8rem;">
-						<div class="new-title">
-							<div class="title">公告 </div>
-							<div class="time">15:30</div>
-						</div>
-						<div class="text">您的洗涤订单1358665状态已改变</div>
-					</div>
-				</div>
-				<div class="nav-tab" @click="opennew('chat')">
-					<div class="img-box" >
-						<img src="img/index.jpg" class="avatar"/>
-					</div>
-					<div class="new-main" style="height: .8rem;">
-						<div class="new-title">
-							<div class="title">XXXXXX  </div>
-							<div class="time">15:30</div>
-						</div>
-						<div class="text">XXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
-					</div>
-				</div>
-				<div class="nav-tab" @click="opennew('chat')">
-					<div class="img-box" >
-						<img src="img/index.jpg" class="avatar"/>
-					</div>
-					<div class="new-main" style="height: .8rem;">
-						<div class="new-title">
-							<div class="title">XXXXXX </div>
-							<div class="time">15:30</div>
-						</div>
-						<div class="text">XXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
+						<div class="text">{{val.body}}</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			var myvue=new Vue({
-				el:'.wrapper',
-				data:{
-					
+			var myvue = new Vue({
+				el: '.wrapper',
+				data: {
+					navdata:''
 				},
-				methods:{
-					opennew:function(target){
+				methods: {
+					opennew: function(target) {
 						mui.openWindow({
-							url:'./'+target+'.html',
-							id:target
+							url: './' + target + '.html',
+							id: target
 						})
+					},
+					myajax: function(res) {
+//						获取信息列表
+						var that = this
+						$.ajax({
+							type: "post",
+							url: url + "shopsmain/?service=Messages.getMessageList",
+							async: true,
+							data:{
+								userid:localStorage.getItem('userid'),
+								page:1,
+								limit:1
+							},
+							dataType: 'json',
+							success: function(res) {
+								console.log(res)
+								that.navdata = res.data
+							}
+						});
 					}
 				},
-				mounted:function(){
-					
+				mounted: function() {
+					this.myajax()
 				}
 			})
 		</script>
 	</body>
+
 </html>

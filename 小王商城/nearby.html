@@ -1,125 +1,50 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title></title>
 		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
-		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 	</head>
+
 	<body>
-		<div class="wrapper index nearby">
+		<div class="wrapper index nearby" id="all">
 			<div class="header header02">
-				<div class="aside"></div>
-				<div class="head-main" action="search.html">
-					我的收藏
+				<div class="head-main">
+					<img src="img/search-grey.png" />
+					<input type="search" placeholder="请输入您要搜索的内容" class="search" v-model="searchtext"/>
 				</div>
-				<div class="aside" @click="opennew('newcenter')">
-					<img src="img/Mail.png" class="news" />
+				<div class="aside" @click="myajax()">
+					搜索
 				</div>
 			</div>
 			<div class="main">
-				<div class="nearby-top">
-					<span :class="index==0?'active':''" @click="indexchange(0)">店铺</span>
-					<span :class="index==1?'active':''" @click="indexchange(1)">商品</span>
-				</div>
-				<div class="near-main" v-if="index==0">
-					<div class="near-tab">
-						<img src="img/index.jpg" class="avatar"/>
+				<div class="near-main" id="store">
+					<div class="near-tab" v-for="val in mydata">
+						<img :src="val.shopicon" class="avatar" />
 						<div class="near-text">
-							<div class="near-title">天成洗护店</div>
-							<div class="near-sub">经营类型：洗护类</div>
+							<div class="near-title">{{val.shopname}}</div>
+							<div class="near-sub">经营类型：{{val.catname}}</div>
 						</div>
 						<div class="adress-box">
-							<div class="into" @click="opennew('store')">进入店铺</div>
-							<div class="near-sub">距离：1200km</div>
-						</div>
-					</div>
-					<div class="near-tab">
-						<img src="img/index.jpg" class="avatar"/>
-						<div class="near-text">
-							<div class="near-title">天成洗护店</div>
-							<div class="near-sub">经营类型：洗护类</div>
-						</div>
-						<div class="adress-box">
-							<div class="into" @click="opennew('store')">进入店铺</div>
-							<div class="near-sub">距离：1200km</div>
-						</div>
-					</div>
-				</div>
-				<div class="near-main shop-box" v-if="index==1">
-					<div class="shop-tab" @click="opennew('shop')">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
-						</div>
-					</div>
-					<div class="shop-tab" @click="opennew('shop')">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
-						</div>
-					</div>
-					<div class="shop-tab" @click="opennew('shop')">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
+							<div class="into" @click="opennew('store',val.storeinfoid)">进入店铺</div>
+							<div class="near-sub">距离：{{val.distance_km}}km</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="bottom">
 				<div class="bottom-box" @click="opennew('index')">
-					<img src="img/HomeCopy.png"/>
+					<img src="img/HomeCopy.png" />
 					<div class="bottom-text">
 						首页
 					</div>
 				</div>
 				<div class="bottom-box">
-					<img src="img/collect.png"/>
+					<img src="img/bottom02-active.png" />
 					<div class="bottom-text active">
 						筛选店铺
 					</div>
@@ -130,10 +55,10 @@
 						分类
 					</div>
 				</div>
-				<div class="bottom-box" @click="opennew('shopcart')">
-					<img src="img/bottom04.png" />
+				<div class="bottom-box" @click="opennew('join-shop')">
+					<img src="img/join.png" />
 					<div class="bottom-text">
-						购物车
+						商家入驻
 					</div>
 				</div>
 				<div class="bottom-box" @click="opennew('usercenter')">
@@ -146,26 +71,49 @@
 		</div>
 	</body>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		new Vue({
-			el:'.wrapper',
-			data:{
-				index:0
+			el: '.wrapper',
+			data: {
+				mydata:'',
+				searchtext:''
 			},
-			methods:{
+			mounted: function() {
+				this.myajax()
+			},
+			methods: {
 				opennew: function(target, id) {
+					localStorage.setItem('storeinfoid',id)
 					mui.openWindow({
 						url: './' + target + '.html',
 						id: target
 					})
 				},
-				indexchange:function(index){
-					this.index=index
+				myajax: function() {
+					var that = this
+					$.ajax({
+						type: "POST",
+						url: url + 'shopsmain/?service=Storeinfo.getStoreCloseToFar',
+						datatype: 'json',
+						data: {
+							x: localStorage.getItem('lat'),
+							y: localStorage.getItem('lng'),
+							page: 1,
+							limit: 20,
+							searchName:that.searchtext
+						},
+						success: function(data) {
+							that.mydata=data.data
+						},
+						error: function() {
+							alert('接收失败');
+						},
+					});
 				}
-			},
-			mounted:function(){
-				
 			}
 		})
 	</script>
+
 </html>

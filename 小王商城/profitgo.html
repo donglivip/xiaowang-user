@@ -26,20 +26,20 @@
 			<div class="main big-main">
 				<div class="profit-top">
 					<div class="subtitile">提现金额</div>
-					<input type="price" placeholder="请输入提现金额" value="￥50"/>
-					<div class="subtitile">可提现额￥66</div>
+					<input type="price" placeholder="请输入提现金额" class="money" v-model="money"/>
+					<div class="subtitile">可提现额￥{{navdata.userinfor.yongjin}}</div>
 					<div class="profit-type">
 						<div>提现到</div>
 						<div>支付宝</div>
 					</div>
 				</div>
 				<p>提现扣除手续费0.6%</p>
-				<div class="withdraw" @click="pay">确认提现</div>
+				<div class="withdraw" @click="gopay">确认提现</div>
 			</div>
 			<div class="alert" v-show="alertboo" @click="alertshow">
 				<div class="alert-inner">
-					<img src="img/yes.png"/>
-					<div class="text">提交成功</div>
+					<!-- <img src="img/yes.png"/> -->
+					<div class="text">{{alerttext}}</div>
 					<div class="button">
 						确定
 					</div>
@@ -47,22 +47,70 @@
 			</div>
 		</div>
 		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			var myvue=new Vue({
 				el:'.wrapper',
 				data:{
-					alertboo:false
+					alertboo:false,
+					navdata:'',
+					money:'',
+					alerttext:''
 				},
 				methods:{
-					alertshow:function(){
+					gopay:function(){
+						var that=this
+						if(that.money>0&&that.money<that.navdata.userinfor.yongjin){
+							$.ajax({
+								type : "POST",
+								url : url + 'shopsmain/?service=Cashdraws.add',
+								datatype : "json",
+								data : {
+									userid : localStorage.getItem('userid'),
+									money : that.money,
+									acctype : 0
+								},
+								success : function (data){
+									console.log(data)
+									var date = data.data;
+									if (date) {
+										this.alertshow('提现成功')
+									}
+								}
+							});
+						}else{
+							this.alertshow('请输入正确的提现金额')
+						}
+					},
+					alertshow:function(text){
+						this.alerttext=text
 						this.alertboo=!this.alertboo
 					},
 					pay:function(){
 						this.alertshow()
+					},
+					myajax: function() {
+//						获取用户信息
+						var that = this
+						$.ajax({
+							type: "post",
+							url: url + "shopsmain/?service=Users.getUserInfor",
+							async: true,
+							data:{
+								userid:localStorage.getItem('userid')
+							},
+							dataType: 'json',
+							success: function(res) {
+								console.log(res)
+								that.navdata = res.data
+							}
+						});
 					}
+					
 				},
 				mounted:function(){
-					
+					this.myajax()
 				}
 			})
 		</script>

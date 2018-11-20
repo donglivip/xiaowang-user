@@ -7,6 +7,14 @@
 		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
 		<link rel="stylesheet" type="text/css" href="css/main.css"/>
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<style>
+			.adress-del{
+				padding: 6px;
+				border-radius: 2rem;
+			    border: 1px solid #A2A2A2;
+			    margin-left: 1.2rem;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="wrapper adress">
@@ -23,60 +31,12 @@
 				</div>
 			</div>
 			<div class="main">
-				<div class="adress-box">
-					<div class="adress01">
-						<div class="label">收货人:</div>
-						<div class="text">
-							<span>XXXX</span>
-							<span>1786545568</span>
-						</div>
-					</div>
-					<div class="adress01">
-						<div class="label">收货地址:</div>
-						<div class="text">
-							XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxxXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
-						</div>
-					</div>
-					<div class="adress-setting">
-						<div class="adress-left">
-							<img src="img/cart.png"/>
-							<span>设为默认收货地址</span>
-						</div>
-						<div class="adress-left">
-							<span class="setting">删除</span>
-							<span class="setting" @click="opennew('editadress')">编辑</span>
-						</div>
-					</div>
-				</div>
-				<div class="adress-box">
-					<div class="adress01">
-						<div class="label">收货人:</div>
-						<div class="text">
-							<span>XXXX</span>
-							<span>1786545568</span>
-						</div>
-					</div>
-					<div class="adress01">
-						<div class="label">收货地址:</div>
-						<div class="text">
-							XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxxXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
-						</div>
-					</div>
-					<div class="adress-setting">
-						<div class="adress-left">
-							<img src="img/cart.png"/>
-							<span>设为默认收货地址</span>
-						</div>
-						<div class="adress-left">
-							<span class="setting">删除</span>
-							<span class="setting" @click="opennew('editadress')">编辑</span>
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 	</body>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		new Vue({
 			el:'.wrapper',
@@ -95,5 +55,105 @@
 				
 			}
 		})
+
+		// 购物车
+		$(function(){
+			(function(){
+				$.ajax({
+					type :  'POST',
+					url : url + 'shopsmain/?service=Harvestaddress.getAddress',
+					datatype : 'json',
+					 data : {
+			            	userid: localStorage.getItem('userid'),
+			            	page: 1,
+			            	limit: 15
+			            },
+			            success : function(data){
+			            	console.log(data)
+			            	var date = data.data;
+			            	$.each(date,function(idx,obj){
+				            	$('.main').append(`
+									<div class="adress-box">
+										<div class="adress01">
+											<div class="label">收货人:</div>
+											<div class="text">
+												<span>${obj.username}</span>
+												<span>${obj.userphone}</span>
+											</div>
+										</div>
+										<div class="adress01">
+											<div class="label">收货地址:</div>
+											<div class="text" address-id="${obj.addressid}">
+												${obj.address}
+											</div>
+										</div>
+										<div class="adress-setting">
+											<div class="adress-left">
+												<img src="img/cart.png" style="display:${obj.ismoren==1?'none':'show'}"/>
+												<img src="img/cartyes.png" style="display:${obj.ismoren==1?'show':'none'}"/>
+												<span ad-id="${obj.addressid}" onclick="him(this)">设为默认收货地址</span>
+											</div>
+											<div class="adress-del">
+												<span class="del-btn" ad-id="${obj.addressid}" onclick="del(this)">删除</span>
+											</div>
+											<div class="adress-left">
+												<span class="setting" @click="opennew('editadress')">编辑</span>
+											</div>
+										</div>
+									</div>
+				            		`);
+								
+				            })
+			            },
+			            error : function(){
+			            	alert('接收错误');
+			            },
+				});
+			})();
+		});
+		function del (obj){
+			var id = obj.getAttribute('ad-id');
+			$.ajax({
+				type : "POST",
+				url : url + 'shopsmain/?service=Harvestaddress.removeAddress',
+				datatype : "json",
+				data : {
+					addressid : id
+				},
+				success : function (data){
+					if (data.data.code == 1) {
+						// 刷新页面
+						window.location.reload();
+					}
+				},
+				error : function (){
+					alert('删除失败');
+				},
+			});
+		}
+
+		function him (obj){
+			var id = obj.getAttribute('ad-id');
+			// console.log(id);
+			$.ajax({
+				type : "POST",
+				url : url + 'shopsmain/?service=Harvestaddress.setMoren',
+				datatype : "json",
+				data : {
+					userid : localStorage.getItem('userid'),
+					addressid : id
+				},
+				success : function (data){
+					console.log(data)
+					if (data.data.code == 1) {
+						// 刷新页面
+						window.location.reload();
+					}
+				},
+				error : function (){
+					alert('设置失败');
+				},
+			});
+		}
 	</script>
 </html>

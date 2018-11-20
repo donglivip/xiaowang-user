@@ -17,24 +17,22 @@
 				<div class="aside mui-action-back">
 					<img src="img/Shape.png" class="back" />
 				</div>
-				<form class="head-main" action="search.html">
-					<img src="img/search-grey.png" />
-					<input type="search" placeholder="请输入您要搜索的内容"/>
-				</form>
-				<div class="aside">
+				<div class="head-main" style="background: #FFFFFF;font-size: .35rem;">
+					{{mydata.shopname}}
+				</div>
+				<div class="aside" @click="opennew('share')">
 					<img src="img/ahare02.png" class="share" />
-					<img src="img/mycart02.png" class="share" style="margin-left: .2rem;width: .45rem;" @click="opennew('join-partner')"/>
 				</div>
 			</div>
-			<div class="main">
+			<div class="main big-main">
 				<!--顶部店铺信息-->
 				<div class="store-top">
-					<img src="img/index.jpg" class="avatar" />
+					<img :src="mydata.shopicon" class="avatar" />
 					<div class="top-main">
-						<div class="name">天成建材店</div>
-						<div class="subtitle">经营类型：建材类</div>
+						<div class="name">{{mydata.shopname}}</div>
+						<div class="subtitle">经营类型：{{mydata.catname}}</div>
 					</div>
-					<img src="img/collect-active.png" class="collect" />
+					<img src="img/collect-active.png" class="collect" @click="collect(mydata.storeinfoid)"/>
 				</div>
 				<!--中间店铺分类-->
 				<div class="nav-box">
@@ -44,189 +42,57 @@
 				</div>
 				<!--商品-->
 				<div class="shop-box">
-					<div class="shop-tab">
+					<!--推荐列表-->
+					<div class="shop-tab" v-for='val in shopdata01' v-if="navindex==0" @click="openshop(val.goodsid)">
 						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
+							<img :src="val.pricon" class="shop-img" />
 						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
+						<div class="title">{{val.goodsname}}</div>
 						<div class="price">
-							<div class="money">￥266</div>
+							<div class="money">￥{{val.goodsprices}}</div>
 							<div class="join">
 								团购
 							</div>
 						</div>
 						<div class="num">
-							已售12668件
+							
 						</div>
 					</div>
-					<div class="shop-tab">
+					<!--商品列表-->
+					<div class="shop-tab" v-for='val in shopdata' v-if="navindex==1" @click="openshop(val.goodsid)">
 						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
+							<img :src="val.pricon" class="shop-img" />
 						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
+						<div class="title">{{val.goodsname}}</div>
 						<div class="price">
-							<div class="money">￥266</div>
+							<div class="money">￥{{val.goodsprices}}</div>
 							<div class="join">
 								团购
 							</div>
 						</div>
 						<div class="num">
-							已售12668件
+							
 						</div>
 					</div>
-					<div class="shop-tab">
+					<!--新品列表-->
+					<div class="shop-tab" v-for='val in shopdata02' v-if="navindex==2" @click="openshop(val.goodsid)">
 						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
+							<img :src="val.pricon" class="shop-img" />
 						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
+						<div class="title">{{val.goodsname}}</div>
 						<div class="price">
-							<div class="money">￥266</div>
+							<div class="money">￥{{val.goodsprices}}</div>
 							<div class="join">
 								团购
 							</div>
 						</div>
 						<div class="num">
-							已售12668件
-						</div>
-					</div>
-					<div class="shop-tab">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
-						</div>
-					</div>
-					<div class="shop-tab">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
-						</div>
-					</div>
-					<div class="shop-tab">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
-						</div>
-					</div>
-					<div class="shop-tab">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
-						</div>
-					</div>
-					<div class="shop-tab">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
-						</div>
-					</div>
-					<div class="shop-tab">
-						<div class="shopimg-box">
-							<img src="img/index.jpg" class="shop-img" />
-						</div>
-						<div class="title">XXXXXXXX</div>
-						<div class="label-box">
-							<div class="label grey">广告</div>
-							<div class="label blue">标签</div>
-							<div class="label yellow">标签</div>
-						</div>
-						<div class="price">
-							<div class="money">￥266</div>
-							<div class="join">
-								团购
-							</div>
-						</div>
-						<div class="num">
-							已售12668件
+							
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="bottom">
+			<!--<div class="bottom">
 				<div class="bottom-tab">
 					<div class="text">全部商品</div>
 				</div>
@@ -246,7 +112,7 @@
 									三级分类
 								</div>
 							</div>
-							<img src="img/down02.png"/>
+							<img src="img/down02.png" />
 						</div>
 					</transition>
 				</div>
@@ -254,36 +120,139 @@
 					<img src="img/qq.png" />
 					<span>客服 </span>
 				</div>
-			</div>
+			</div>-->
 		</div>
 	</body>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		new Vue({
 			el: '.wrapper',
 			data: {
 				navindex: 0,
-				ejectboo:false
+				ejectboo: false,
+				mydata:'',
+				shopdata:'',
+				shopdata01:[],
+				shopdata02:[]
 			},
 			methods: {
+				collect:function(id){
+					if(localStorage.getItem('userid') == null || localStorage.getItem('userid') == 'null') {
+						window.location.href = 'mlogin.html'
+					}
+					var that=this
+					$.ajax({
+						type: "post",
+						url: url + "/shopsmain/?service=Favorites.add",
+						async: true,
+						data: {
+							userid:localStorage.getItem('userid'),
+							favoritesid:id,
+							types:'store'
+						},
+						success: function(res) {
+							console.log(localStorage.getItem('userid'))
+							if(res.data==true){
+								plus.nativeUI.toast('收藏成功')
+							}
+						}
+					});
+				},
+				openshop:function(id){
+					localStorage.setItem('goodsid',id)
+					this.opennew('shop')
+				},
 				navchange: function(index) {
 					this.navindex = index
 				},
-				ejectchange:function(){
-					this.ejectboo=!this.ejectboo
+				ejectchange: function() {
+					this.ejectboo = !this.ejectboo
 				},
-				inputsubmit:function(){
+				inputsubmit: function() {
 					this.opennew('search')
 				},
-				opennew: function(target, id) {
+				opennew: function(target) {
 					mui.openWindow({
 						url: './' + target + '.html',
 						id: target
 					})
+				},
+				myajax: function() {
+					var that = this
+//					获取店铺基本信息
+					$.ajax({
+						type: 'POST',
+						url: url + 'shopsmain/?service=Storeinfo.getStoreInfor',
+						datatype: 'json',
+						data: {
+							storeinfoid:localStorage.getItem('storeinfoid')
+						},
+						success: function(data) {
+							console.log(data)
+							that.mydata = data.data;
+						},
+						error: function() {
+							
+						},
+					});
+//					获取店铺下商品列表
+					$.ajax({
+						type: 'POST',
+						url: url + 'shopsmain/?service=Productinfo.getGoodsByStore',
+						datatype: 'json',
+						data: {
+							storeid:localStorage.getItem('storeinfoid'),
+							limit:15,
+							page:1
+						},
+						success: function(data) {
+							console.log(data)
+							that.shopdata = data.data;
+						},
+						error: function() {
+							
+						},
+					});
+//					获取店铺下推荐列表
+					$.ajax({
+						type: 'POST',
+						url: url + 'shopsmain/?service=Productinfo.getGoodsByIsrecommended',
+						datatype: 'json',
+						data: {
+							storeid:localStorage.getItem('storeinfoid'),
+							limit:15,
+							page:1
+						},
+						success: function(data) {
+							console.log(data)
+							that.shopdata01 = data.data;
+						},
+						error: function() {
+							al
+						},
+					});
+//					获取店铺下新品列表
+					$.ajax({
+						type: 'POST',
+						url: url + 'shopsmain/?service=Productinfo.getGoodsByStore',
+						datatype: 'json',
+						data: {
+							storeid:localStorage.getItem('storeinfoid'),
+						},
+						success: function(data) {
+							console.log(data)
+							that.shopdata02 = data.data;
+						},
+						error: function() {
+							
+						},
+					});
 				}
 			},
 			mounted: function() {
-
+				this.myajax()
 			}
 		})
 	</script>

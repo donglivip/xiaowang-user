@@ -272,6 +272,11 @@ input{border: 0;background: none;}
 .list .alert-inner{background: #FFFFFF;width: 100%;padding: .24rem 0;display: flex;flex-wrap: wrap;}
 .list .alert-inner span{border-radius: 2rem;border: 1px solid #A2A2A2;color: #A2A2A2;height: .48rem;line-height: .48rem;font-size: .22rem;padding: 0 .12rem;margin: .12rem;}
 .list .alert-inner .myactive{background: #DF3122;color: #FFFFFF;border: 0;box-sizing: border-box;}
+.list .shop-tab02{width: 1.75rem;border-bottom: 1px solid #F5F5F5;border-right: 1px solid #F5F5F5;display: flex;flex-direction: column;align-items: center;justify-content: center;background: #FFFFFF;height: 2.7rem;box-sizing: border-box;display: inline-flex;}
+.list .shop-tab02:nth-of-type(4n-1){border-right: 0;}
+.list .shop-tab02 img{width: 1.6rem;height: 1.6rem;}
+.list .shop-tab02 .mytitle{font-size: .28rem;width: 1.6rem;overflow: hidden;margin: .16rem 0 .04rem 0;}
+.list .shop-tab02 .tab{background: #FFD9D9;color: #FF8080;border-radius: .04rem;height: .34rem;line-height: .34rem;padding: 0 .1rem;}
 /*个人中心*/
 .usercenter{background: #F4F4F4;}
 .usercenter .header{background: none;border: 0;color: #FFFFFF;z-index: 99;}

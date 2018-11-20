@@ -16,47 +16,14 @@
 				<div class="head-main">我的足迹</div>
 				<div class="aside"></div>
 			</div>
-			<div class="main">
-				<div class="main-inner">
-					<div class="cart-box" @click="opennew('store')">
-						<div class="cart-top">
-							<img src="img/index.jpg" class="shopavatar"/>
-							<div class="shop-name">XXXXX店</div>
-						</div>
-						<div class="cart-tab">
-							<img src="img/index.jpg" class="shop-img"/>
-							<div class="shop-main">
-								<div class="shop-title">
-									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
-								</div>
-								<div class="shop-money">
-									<div class="shop-price">￥266</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="cart-box" @click="opennew('store')">
-						<div class="cart-top">
-							<img src="img/index.jpg" class="shopavatar"/>
-							<div class="shop-name">XXXXX店</div>
-						</div>
-						<div class="cart-tab">
-							<img src="img/index.jpg" class="shop-img"/>
-							<div class="shop-main">
-								<div class="shop-title">
-									XXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx
-								</div>
-								<div class="shop-money">
-									<div class="shop-price">￥266</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+			<div class="main big-main">
+			
 			</div>
 		</div>
 	</body>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		new Vue({
 			el:'.wrapper',
@@ -74,6 +41,55 @@
 			mounted:function(){
 				
 			}
+		})
+
+		$(function(){
+			conveying();
+		});
+
+		// 获取足迹
+		function conveying(){
+			$.ajax({
+				type : "POST",
+				url : url + 'shopsmain/?service=FootGoods.getFoot',
+				datatype : 'json',
+				data : {
+					userid : 60
+				},
+				success : function(data){
+					console.log(data)
+					var date = data.data;
+					// console.log(date);
+					$.each(date,function(idx,obj){
+						$('.main').append(`
+							<div class="cart-box" data-id='${obj.goodsid}'>
+								<div class="cart-tab">
+									<img src="${obj.pricon}" class="shop-img"/>
+									<div class="shop-main">
+										<div class="shop-title">
+											${obj.goodsname}
+										</div>
+										<div class="shop-money">
+											<div class="shop-price">￥266</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						`);
+					})
+
+				},
+				error : function(){
+					alert('接收失败');
+				}
+			});
+		}
+		$('.main').on('click','.cart-box',function(){
+			localStorage.setItem('goodsid',$(this).attr('data-id'))
+			mui.openWindow({
+						url: './shop.html',
+						id: 'shop'
+					})
 		})
 	</script>
 </html>

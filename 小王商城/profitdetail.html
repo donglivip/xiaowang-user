@@ -25,7 +25,7 @@
 			<!--中间主体-->
 			<div class="main big-main">
 				<div class="order-main">
-					<div class="order-box">
+					<div class="order-box" v-for="val in mydata">
 						<div class="order-right">
 							<div class="order-title">
 								<div class="order-h1">
@@ -39,43 +39,18 @@
 							</div>
 						</div>
 					</div>
-					<div class="order-box">
-						<div class="order-right">
-							<div class="order-title">
-								<div class="order-h1">
-									充值
-								</div>
-								<div class="order-state">+1277</div>
-							</div>
-							<div class="order-bottom">
-								<div class="order-price">余额:￥30.00</div>
-								<div class="order-time">2018-07-18</div>
-							</div>
-						</div>
-					</div>
-					<div class="order-box">
-						<div class="order-right">
-							<div class="order-title">
-								<div class="order-h1">
-									洗涤消费
-								</div>
-								<div class="order-state">-1277</div>
-							</div>
-							<div class="order-bottom">
-								<div class="order-price">余额:￥30.00</div>
-								<div class="order-time">2018-07-18</div>
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
 		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			var myvue=new Vue({
 				el:'.wrapper',
 				data:{
 					navboo:false,
+					mydata:''
 				},
 				methods:{
 					opennew:function(type){
@@ -84,10 +59,26 @@
 						}else{
 							
 						}
+					},
+					myajax:function(){
+						var that=this
+						$.ajax({
+							type:"post",
+							url:url + "shopsmain/?service=Cashdraws.lists",
+							async:true,
+							dataType:'json',
+							data:{
+								userid:localStorage.getItem('userid')
+							},
+							success:function(res){
+								console.log(res)
+								that.mydata=res.data
+							}
+						});
 					}
 				},
 				mounted:function(){
-					
+					this.myajax()
 				}
 			})
 		</script>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -8,167 +9,134 @@
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 		<title></title>
 	</head>
+	<script>
+		function change(picId, fileId) {
+			$('form').ajaxSubmit({
+				type: 'post',
+				url: url + 'shopsmain/?service=Users.setHead',
+				dataType:'json',
+				success: function(res) {
+					console.log(res)
+					localStorage.setItem('userphoto',res.serverurl)
+				},
+				error: function(res) {
+					console.log(res)
+				}
+			})
+			var pic = document.getElementById(picId);
+			var file = document.getElementById(fileId);
+			if(window.FileReader) { //chrome,firefox7+,opera,IE10,IE9，IE9也可以用滤镜来实现
+				oFReader = new FileReader();
+				oFReader.readAsDataURL(file.files[0]);
+				oFReader.onload = function(oFREvent) {
+					pic.src = oFREvent.target.result;
+				};
+
+			} else if(document.all) { //IE8-
+				file.select();
+				var reallocalpath = document.selection.createRange().text //IE下获取实际的本地文件路径
+				if(window.ie6) pic.src = reallocalpath; //IE6浏览器设置img的src为本地路径可以直接显示图片
+				else { //非IE6版本的IE由于安全问题直接设置img的src无法显示本地图片，但是可以通过滤镜来实现，IE10浏览器不支持滤镜，需要用FileReader来实现，所以注意判断FileReader先
+					pic.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='image',src=\"" + reallocalpath + "\")";
+					pic.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; //设置img的src为base64编码的透明图片，要不会显示红xx
+				}
+			} else if(file.files) { //firefox6-
+				if(file.files.item(0)) {
+					url = file.files.item(0).getAsDataURL();
+					pic.src = url;
+				}
+			}
+		}
+	</script>
+
 	<body>
 		<div class="wrapper help setting">
 			<!--头部-->
 			<div class="header">
 				<div class="aside mui-action-back">
-					<img src="img/Shape.png" class="back"/>
+					<img src="img/Shape.png" class="back" />
 				</div>
 				<div class="head-main">
 					设置
 				</div>
 				<div class="aside" href="javascript:void(0)">
-					
+
 				</div>
 			</div>
 			<!--中间主体-->
 			<div class="main big-main">
-				<div class="help-item avatar" @click="imgclick">
+				<form class="help-item avatar" enctype="multipart/form-data" action="" method="post" id="myform">
 					<div>头像</div>
-					<img src="img/index.jpg"/>
-				</div>
+					<input type="file" style="display: none;" id="file" name="file" onchange="change('img01','file')" />
+					<input type="hidden" :value="userid" name="userid" />
+					<img :src="avatar" id="img01" @click="imgclick" />
+				</form>
 				<div class="help-item" @click="opennew('namechange')">
 					<div>昵称</div>
-					<div>雨雪霏霏</div>
+					<div>{{navdata.userinfor.username}}</div>
 				</div>
 				<div class="help-item" @click="opennew('wlogin')">
-					<div>登录密码</div>
-					<img src="img/arrright.png"/>
+					<div>修改密码</div>
+					<img src="img/arrright.png" />
 				</div>
-				<!--<a class="help-item" href="pchange.html">
-					<div>支付密码</div>
-					<img src="img/arrright.png"/>
-				</a>-->
+				<div class="help-item" @click="backlogin">
+					<div>退出登录</div>
+					<img src="img/arrright.png" />
+				</div>
 			</div>
 		</div>
 		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
+		<script src="http://malsup.github.io/jquery.form.js"></script>
 		<script type="text/javascript">
-			var myvue=new Vue({
-				el:'.wrapper',
-				data:{
-					avatar:'img/avatar.jpg',
-					files:[]
+			var myvue = new Vue({
+				el: '.wrapper',
+				data: {
+					avatar: localStorage.getItem('userphoto'),
+					files: [],
+					name: localStorage.getItem('loginname'),
+					navdata: '',
+					userid: localStorage.getItem('userid')
 				},
-				methods:{
-					opennew:function(target){
+				methods: {
+					imgclick: function() {
+						$('#file').click()
+					},
+					myajax: function() {
+						//						获取用户信息
+						var that = this
+						$.ajax({
+							type: "post",
+							url: url + "shopsmain/?service=Users.getUserInfor",
+							async: true,
+							data: {
+								userid: localStorage.getItem('userid')
+							},
+							dataType: 'json',
+							success: function(res) {
+								console.log(res)
+								that.navdata = res.data
+							}
+						});
+					},
+					backlogin: function() {
+						localStorage.clear()
+						this.opennew('mlogin')
+					},
+					opennew: function(target) {
 						mui.openWindow({
-							url:'./'+target+'.html',
-							id:target
+							url: './' + target + '.html',
+							id: target
 						})
-					},
-					imgclick: function(imid, inid) {
-						var that = this
-						var btnArray = [{
-							title: "照相机"
-						}, {
-							title: "相册"
-						}]; //选择按钮  1 2 3
-						plus.nativeUI.actionSheet({
-								title: "请选择",
-								cancel: "取消", // 0
-								buttons: btnArray
-							},
-							function(e) {
-								var index = e.index; // 
-								switch(index) {
-									case 1:
-										//写自己的逻辑
-										that.camera();
-										break;
-									case 2:
-										that.album();
-										break;
-								}
-							});
-					},
-					camera: function() {
-						var that = this
-						var cmr = plus.camera.getCamera();
-						cmr.captureImage(function(p) {
-							//成功
-							plus.io.resolveLocalFileSystemURL(p, function(entry) {
-								var img_name = entry.name; //获得图片名称
-								var img_path = entry.toLocalURL(); //获得图片路径
-								that.avatar=img_path
-								that.upload_img(img_path);
-							}, function(e) {
-								alert("读取拍照文件错误：" + e.message);
-							});
-
-						}, function(e) {
-							alert("失败：" + e.message);
-						}, {
-							filename: '_doc/camera/',
-							index: 1
-						});
-					},
-					album: function() {
-						var that = this
-						plus.gallery.pick(function(path) {
-							that.upload_img(path);
-							that.avatar=path
-						}, function(e) {
-							alert("取消选择图片");
-						}, {
-							filter: "image"
-						});
-					},
-					upload_img: function(p) {
-						var that = this
-						var n = p.substr(p.lastIndexOf('/') + 1);
-						that.files.push({
-							name: "uploadkey",
-							path: p
-						});
-						//开始上传
-//						that.start_upload();
-					},
-					start_upload: function() {
-						var that = this
-						if(that.files.length <= 0) {
-							plus.nativeUI.alert("没有添加上传文件！");
-							return;
-						}
-						//原生的转圈等待框
-						var wt = plus.nativeUI.showWaiting();
-						var task = plus.uploader.createUpload(that.server, {
-								method: "POST"
-							},
-							function(t, status) { //上传完成
-								if(status == 200) {
-									//资源
-									var responseText = t.responseText;
-									//转换成json
-									var json = eval('(' + responseText + ')');
-									//上传文件的信息
-									var files = json.data;
-									$("#" + that.inputid + "").val(files)
-									alert($("#" + that.inputid + "").val())
-									wt.close();
-								} else {
-									alert("上传失败：" + status);
-									//关闭原生的转圈等待框
-									wt.close();
-								}
-							});
-						task.addData("uid", that.getUid());
-						for(var i = 0; i < that.files.length; i++) {
-							var f = that.files[i];
-							task.addFile(f.path, {
-								key: f.name
-							});
-						}
-						task.start();
-					},
-					getUid: function() {
-						return Math.floor(Math.random() * 100000000 + 10000000).toString();
 					}
 				},
-				mounted:function(){
-					
+				mounted: function() {
+					this.myajax()
+					$('#myform').attr('action', url + 'shopsmain/?service=Users.setHead')
 				}
 			})
 		</script>
 	</body>
+
 </html>

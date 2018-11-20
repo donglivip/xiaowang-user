@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
-		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 	</head>
+
 	<body>
 		<div class="wrapper myprofit">
 			<!--头部-->
 			<div class="header">
 				<div class="aside  mui-action-back">
-					<img src="img/Shape.png" class="back"/>
+					<img src="img/Shape.png" class="back" />
 				</div>
 				<div class="head-main">
 					我的豆
@@ -25,13 +27,13 @@
 			<div class="main">
 				<div class="profir-my">
 					<div class="mytitiel">当前拥有</div>
-					<div class="mytext">40</div>
+					<div class="mytext">{{navdata.userinfor.doudou}}</div>
 				</div>
 				<div class="profit-top">
 					购买豆
 				</div>
 				<div class="profit-main">
-					<img src="img/douzi.png" class="douzi"/>
+					<img src="img/douzi.png" class="douzi" />
 					<div class="profit-wrapper">
 						<div class="title">
 							<strong>50</strong>颗豆自动转化1颗金豆，次日可获得收益金
@@ -46,35 +48,95 @@
 				<div class="profit-box">
 					<div class="title">购买数量</div>
 					<div class="subtitle">
-						<img src="img/removered.png"/>
-						<input type="number" value="1" readonly="readonly"/>
-						<img src="img/removeadd.png"/>
+						<img src="img/removered.png" @click="changenum(0)" />
+						<input type="number" :value="num" readonly="readonly" />
+						<img src="img/removeadd.png" @click="changenum(1)" />
 					</div>
 				</div>
-				<div class="pay">
+				<div class="pay" @click="pay">
 					确认购买
 				</div>
 			</div>
 		</div>
 	</body>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		new Vue({
-			el:'.wrapper',
-			data:{
-				
+			el: '.wrapper',
+			data: {
+				navdata: '',
+				num: 1,
+				channel: ''
 			},
-			mounted:function(){
-				
+			mounted: function() {
+				var that = this
+				$.ajax({
+					type: "post",
+					url: url + "shopsmain/?service=Users.getUserInfor",
+					async: true,
+					data: {
+						userid: localStorage.getItem('userid')
+					},
+					dataType: 'json',
+					success: function(res) {
+						that.navdata = res.data
+					}
+				});
+				var that = this
+				// 1. 获取支付通道
+				function plusReady() {
+					// 获取支付通道
+					plus.payment.getChannels(function(channels) {
+						that.channel = channels;
+					}, function(e) {
+						alert("获取支付通道失败：" + e.message);
+					});
+				}
+				if(window.plus) {
+					plusReady();
+				} else {
+					document.addEventListener('plusready', plusReady, false);
+				}
 			},
-			methods:{
+			methods: {
 				opennew: function(target, id) {
 					mui.openWindow({
 						url: './' + target + '.html',
 						id: target
 					})
+				},
+				changenum: function(type) {
+					if(type == 0 && this.num > 1) {
+						this.num--
+					} else {
+						this.num++
+					}
+				},
+				pay: function() {
+					var that = this
+					$.ajax({
+						type: "post",
+						url: url + "shopsmain/?service=Pay.buy_DouDou",
+						async: true,
+						data: {
+							userid: localStorage.getItem('userid'),
+							doudou: that.num
+						},
+						success: function(res) {
+							plus.payment.request(that.channel[0], res, function(result) {
+								plus.nativeUI.alert("支付成功！", function() {
+
+								});
+							}, function(error) {});
+						},error:function(err){
+							alert('未知错误')
+						}
+					});
 				}
 			}
 		})
 	</script>
+
 </html>

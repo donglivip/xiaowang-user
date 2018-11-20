@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<style type="text/css">
+		.nav-tab {
+			width: 100%;
+			background: #FFFFFF;
+			border-bottom: 1px solid #F5F5F5;
+		}
+		
+		.shoptext {
+			display: inline-block;
+			height: .5rem;
+			line-height: .5rem;
+			padding: 0 .2rem;
+		}
+		
+		.nav-tab .active {
+			color: red;
+			border: 1px solid red;
+		}
+		
+		.mymain {
+			height: calc(100% - 1.3rem);
+			overflow-y: scroll;
+		}
+		
+		.listnav {
+			border-top: 1px solid #F5F5F5;
+			border-bottom: 1px solid #F5F5F5;
+		}
+	</style>
+
+	<body>
+		<div class="wrapper nearby index">
+			<div class="header header02">
+				<div class="aside mui-action-back">
+					<img src="img/Shape.png" class="back" />
+				</div>
+				<div class="head-main" style="background: none;border-bottom: 1px solid #F5F5F5;">
+					商品列表
+				</div>
+				<div class="aside"></div>
+			</div>
+			<div class="main big-main list">
+				<div class="nav-tab">
+					<div class="shoptext" v-for="(val,index) in twodata" @click="mychange(val.goodsid,index)" :class="index==myindex?'active':''">{{val.goodsname}}</div>
+				</div>
+				<div class="listnav">
+					<div class="nav0tab" :class="navindex==1?'active':''" @click="navchange(1)">
+						销量
+					</div>
+					<div class="nav0tab" :class="navindex==2?'active':''" @click="navchange(2)">
+						价格
+					</div>
+				</div>
+				<div class="mymain" @scroll="myscroll">
+					<div class="main-inner">
+						<div class="shop-box">
+							<div class="shop-tab" @click="opennew(val.goodsid)" v-for="val in mydata">
+								<div class="shopimg-box">
+									<img :src="val.pricon" class="shop-img" />
+								</div>
+								<div class="title">{{val.goodsname}}</div>
+								<div class="label-box">
+									<!--<div class="label grey">广告</div>
+									<div class="label blue">标签</div>
+									<div class="label yellow">标签</div>-->
+								</div>
+								<div class="price">
+									<div class="money">￥{{val.goodsprices}}</div>
+									<div class="join">
+										团购
+									</div>
+								</div>
+								<div class="num">
+									已售{{val.bynumber}}件
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		new Vue({
+			el: '.wrapper',
+			data: {
+				adressdata: [],
+				myindex: 0,
+				twodata: [],
+				mydata: [],
+				pages: 0,
+				pageNum: 0,
+				navindex: 1,
+				id: ''
+			},
+			methods: {
+				opennew: function(id) {
+					localStorage.setItem('goodsid',id)
+					mui.openWindow({
+						url: './shop.html',
+						id: 'shop'
+					})
+				},
+				navchange: function(index) {
+					this.navindex = index
+					this.mydata = []
+					this.pageNum = 0
+					this.change('', '')
+				},
+				myscroll: function() {
+					var that = this
+					if(Math.abs($('.main-inner').offset().top) + $('.mymain').height() + 200 >= $('.main-inner').height()) {
+						if(that.pages > that.pageNum) {
+							function plusReady() {
+								// 弹出系统等待对话框
+								var w = plus.nativeUI.showWaiting("等待中...");
+							}
+							if(window.plus) {
+								plusReady();
+							} else {
+								document.addEventListener("plusready", plusReady, false);
+							}
+							that.change('', '')
+						}
+
+					}
+				},
+				mychange: function(id, index) {
+					this.mydata = []
+					this.pageNum = 0
+					this.change(id, index)
+				},
+				change: function(id, index) {
+					var that = this
+					if(id != '') {
+						this.id = id
+						this.myindex = index
+					}
+					var type = 0
+					if(that.navindex == 1) {
+						type = 'sales_desc'
+					} else {
+						type = 'goodsprices_asc'
+					}
+					that.pageNum++
+						$.ajax({
+							type: "post",
+							url: url + "shopsmain/?service=Productinfo.searchGoods",
+							async: true,
+							data: {
+								type: type,
+								limit: 15,
+								page: that.pageNum,
+								infor: JSON.stringify({
+									type: that.id
+								})
+							},
+							dataType: 'json',
+							success: function(res) {
+								for(var i = 0; i < res.data.length; i++) {
+									that.mydata.push(res.data[i])
+								}
+								console.log(that.mydata)
+							}
+						});
+				},
+				myajax: function() {
+					var that = this
+					$.ajax({
+						type: "post",
+						url: url + "shopsmain/?service=Goodstype.getChilden",
+						async: true,
+						data: {
+							goodsid: localStorage.getItem('goodsid01'),
+							page: 1,
+							limit: 50
+						},
+						dataType: 'json',
+						success: function(res) {
+							console.log(res)
+							that.twodata = res.data
+							that.change(res.data[0].goodsid, 0)
+						}
+					});
+				}
+			},
+			mounted: function() {
+				this.myajax()
+			}
+		})
+	</script>
+
+</html>

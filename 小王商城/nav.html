@@ -10,83 +10,31 @@
 	</head>
 	<body>
 		<div class="wrapper nearby index">
-			<div class="header header02">
-				<form class="head-main" action="search.html">
-					<img src="img/search-grey.png"/>
-					<input type="search" placeholder="请输入您要搜索的内容"/>
-				</form>
-				<div class="aside" @click="opennew('newcenter')">
-					<img src="img/Mail.png" class="news" />
+			<div class="header" style="background: #FFFFFF;">
+				<div class="aside">
+					
 				</div>
+				<div class="head-main" style="margin: 0;font-size: .35rem;">
+					分类
+				</div>
+				<div class="aside"></div>
 			</div>
 			<div class="main adresschange mynav">
 				<div class="left">
-					<div class="left-tab" @click="change(index)" v-for="(val,index) in adressdata" :class="index==myindex?'active':''">
+					<div class="left-tab" @click="change(index,val.goodsid)" v-for="(val,index) in adressdata" :class="index==myindex?'active':''">
 						<span>
-							{{val.text}}
+							{{val.goodsname}}
 						</span>
 					</div>
 				</div>
 				<div class="right">
-					<div class="adver-box">
-						<img src="img/index.jpg"/>
-					</div>
 					<div class="nav-top">
-						推荐专场
+						{{adressdata[myindex].goodsname}}
 					</div>
 					<div class="nav-box02">
-						<div class="nav-tab">
-							<img src="img/index.jpg" class="shopimg"/>
-							<div class="shoptext">XXXXXX</div>
-						</div>
-						<div class="nav-tab">
-							<img src="img/index.jpg" class="shopimg"/>
-							<div class="shoptext">XXXXXX</div>
-						</div>
-						<div class="nav-tab">
-							<img src="img/index.jpg" class="shopimg"/>
-							<div class="shoptext">XXXXXX</div>
-						</div>
-					</div>
-					<div class="nav-top">
-						推荐专场
-					</div>
-					<div class="nav-box02">
-						<div class="nav-tab">
-							<img src="img/index.jpg" class="shopimg"/>
-							<div class="shoptext">XXXXXX</div>
-						</div>
-						<div class="nav-tab">
-							<img src="img/index.jpg" class="shopimg"/>
-							<div class="shoptext">XXXXXX</div>
-						</div>
-						<div class="nav-tab">
-							<img src="img/index.jpg" class="shopimg"/>
-							<div class="shoptext">XXXXXX</div>
-						</div>
-						<div class="nav-tab">
-							<img src="img/index.jpg" class="shopimg"/>
-							<div class="shoptext">XXXXXX</div>
-						</div>
-						<div class="nav-tab">
-							<img src="img/index.jpg" class="shopimg"/>
-							<div class="shoptext">XXXXXX</div>
-						</div>
-						<div class="nav-tab">
-							<img src="img/index.jpg" class="shopimg"/>
-							<div class="shoptext">XXXXXX</div>
-						</div>
-						<div class="nav-tab">
-							<img src="img/index.jpg" class="shopimg"/>
-							<div class="shoptext">XXXXXX</div>
-						</div>
-						<div class="nav-tab">
-							<img src="img/index.jpg" class="shopimg"/>
-							<div class="shoptext">XXXXXX</div>
-						</div>
-						<div class="nav-tab">
-							<img src="img/index.jpg" class="shopimg"/>
-							<div class="shoptext">XXXXXX</div>
+						<div class="nav-tab" v-for="val in twodata" @click="openshop(val.goodsid)">
+							<img :src="val.icon" class="shopimg"/>
+							<div class="shoptext">{{val.goodsname}}</div>
 						</div>
 					</div>
 				</div>
@@ -99,9 +47,9 @@
 					</div>
 				</div>
 				<div class="bottom-box" @click="opennew('nearby')">
-					<img src="img/collectno.png"/>
+					<img src="img/bottom02.png" />
 					<div class="bottom-text">
-						我的收藏
+						筛选店铺
 					</div>
 				</div>
 				<div class="bottom-box">
@@ -110,10 +58,10 @@
 						分类
 					</div>
 				</div>
-				<div class="bottom-box"  @click="opennew('shopcart')">
-					<img src="img/bottom04.png" />
+				<div class="bottom-box" @click="opennew('join-shop')">
+					<img src="img/join.png" />
 					<div class="bottom-text">
-						购物车
+						商家入驻
 					</div>
 				</div>
 				<div class="bottom-box" @click="opennew('usercenter')">
@@ -126,31 +74,24 @@
 		</div>
 	</body>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		new Vue({
 			el:'.wrapper',
 			data:{
-				adressdata:[{
-					id:01,
-					text:'推荐分类'
-				},{
-					id:01,
-					text:'那分类'
-				},{
-					id:01,
-					text:'那分类'
-				},{
-					id:01,
-					text:'这分类'
-				},{
-					id:01,
-					text:'分类'
-				}],
-				myindex:0
+				adressdata:[],
+				myindex:0,
+				twodata:[],
+				threedata:[]
 			},
 			methods:{
 				inputsubmit:function(){
 					this.opennew('search')
+				},
+				openshop:function(id){
+					localStorage.setItem('goodsid02',id)
+					this.opennew('nav02')
 				},
 				opennew: function(target, id) {
 					mui.openWindow({
@@ -160,10 +101,44 @@
 				},
 				change:function(index){
 					this.myindex=index
+					this.havetow(this.adressdata[index].goodsid)
+				},
+				myajax:function(){
+					var that=this
+//					获取左侧一级分类 
+					$.ajax({
+						type:"post",
+						url:url + "shopsmain/?service=Goodstype.getTypeOne",
+						async:true,
+						dataType:'json',
+						success:function(res){
+							that.adressdata=res.data
+							that.havetow(res.data[0].goodsid)
+						}
+					});
+
+				},
+				havetow:function(id){
+					var that=this
+					$.ajax({
+						type:"post",
+						url:url + "shopsmain/?service=Goodstype.getChilden",
+						async:true,
+						data:{
+							goodsid:id,
+							page:1,
+							limit:50
+						},
+						dataType:'json',
+						success:function(res){
+							console.log(res)
+							that.twodata=res.data
+						}
+					});
 				}
 			},
 			mounted:function(){
-				
+				this.myajax()
 			}
 		})
 	</script>

@@ -6,7 +6,6 @@
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
-		<link rel="stylesheet" type="text/css" href="css/swiper-3.4.2.min.css"/>
 		<link rel="stylesheet" type="text/css" href="css/main.css" />
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 	</head>
@@ -17,136 +16,121 @@
 				<div class="aside mui-action-back">
 					<img src="img/Shape.png" class="back" />
 				</div>
-				<div class="head-main">
-					<img src="img/search-grey.png" />
-					<input type="text" placeholder="请输入您要搜索的内容" />
+				<div class="head-main" style="background: #FFFFFF;">
+					商品列表
 				</div>
 				<div class="aside" style="color: #333333;">
-					搜索
+					
 				</div>
 			</div>
-			<div class="main big-main">
+			<div class="main big-main" @scroll="myscroll">
 				<div class="listnav">
-					<div class="nav0tab" :class="navindex==0?'active':''" @click="navchange(0)">
-						全部行业
-					</div>
 					<div class="nav0tab" :class="navindex==1?'active':''" @click="navchange(1)">
-						选择地区
+						销量
 					</div>
 					<div class="nav0tab" :class="navindex==2?'active':''" @click="navchange(2)">
-						选择市场
-					</div>
-					<div class="nav0tab" :class="navindex==3?'active':''" @click="navchange(3)">
-						全部分类
+						价格
 					</div>
 				</div>
-				<transition name='donghua'>
-					<div class="alert" v-if="alertboo" @click="alertshow">
-						<div class="alert-inner">
-							<span class="myactive">全部行业</span>
-							<span >灯饰照明</span>
-							<span>五金电料</span>
-							<span>水管地暖</span>
-							<span>灯饰照明</span>
-							<span>五金电料</span>
-							<span class="">水管地暖</span>
-							<span class="">灯饰照明</span>
-							<span class="">五金电料</span>
-							<span class="">水管地暖</span>
-							<span class="">灯饰照明</span>
-							<span class="">五金电料</span>
-							<span class="">水管地暖</span>
+				<div class="main-inner">
+					<div class="shop-box">
+						<div class="shop-tab" @click="opennew(val.goodsid)" v-for="val in mydata">
+							<div class="shopimg-box">
+								<img :src="val.pricon" class="shop-img" />
+							</div>
+							<div class="title">{{val.goodsname}}</div>
+							<div class="label-box">
+								<!--<div class="label grey">广告</div>
+								<div class="label blue">标签</div>
+								<div class="label yellow">标签</div>-->
+							</div>
+							<div class="price">
+								<div class="money">￥{{val.goodsprices}}</div>
+								<div class="join">
+									团购
+								</div>
+							</div>
+							<div class="num">
+								已售{{val.bynumber}}件
+							</div>
 						</div>
-					</div>
-				</transition>
-				
-				<div class="shop-box" @click="opennew('shop')">
-					<!--轮播图-->
-					<div class="swiper-container">
-						<div class="swiper-wrapper">
-							<div class="swiper-slide"><img src="img/index.jpg" /></div>
-							<div class="swiper-slide"><img src="img/index.jpg" /></div>
-							<div class="swiper-slide"><img src="img/index.jpg" /></div>
-						</div>
-						<div class="swiper-pagination"></div>
-					</div>
-					<div class="shop-tab">
-						<img src="img/index.jpg" class="shop-img" />
-						<div class="title">XXXXXXXX</div>
-					</div>
-					<div class="shop-tab">
-						<img src="img/index.jpg" class="shop-img" />
-						<div class="title">XXXXXXXX</div>
-					</div>
-					<div class="shop-tab">
-						<img src="img/index.jpg" class="shop-img" />
-						<div class="title">XXXXXXXX</div>
-					</div>
-					<div class="shop-tab">
-						<img src="img/index.jpg" class="shop-img" />
-						<div class="title">XXXXXXXX</div>
-					</div>
-					<div class="shop-tab">
-						<img src="img/index.jpg" class="shop-img" />
-						<div class="title">XXXXXXXX</div>
-					</div>
-					<div class="shop-tab">
-						<img src="img/index.jpg" class="shop-img" />
-						<div class="title">XXXXXXXX</div>
-					</div>
-					<div class="shop-tab">
-						<img src="img/index.jpg" class="shop-img" />
-						<div class="title">XXXXXXXX</div>
-					</div>
-					<div class="shop-tab">
-						<img src="img/index.jpg" class="shop-img" />
-						<div class="title">XXXXXXXX</div>
-					</div>
-					<div class="shop-tab">
-						<img src="img/index.jpg" class="shop-img" />
-						<div class="title">XXXXXXXX</div>
-					</div>
-					<div class="shop-tab">
-						<img src="img/index.jpg" class="shop-img" />
-						<div class="title">XXXXXXXX</div>
-					</div>
-					<div class="shop-tab">
-						<img src="img/index.jpg" class="shop-img" />
-						<div class="title">XXXXXXXX</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</body>
-	<script src="js/swiper-3.4.2.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		new Vue({
 			el: '.wrapper',
 			data: {
-				navindex: 0,
-				alertboo:false
+				navindex: 1,
+				mydata: [],
+				pages:0,
+				pageNum:0
 			},
 			methods: {
+				myscroll: function() {
+					var that = this
+					if(Math.abs($('.main-inner').offset().top) + $('.main').height() + 200 >= $('.main-inner').height()) {
+						if(that.pages > that.pageNum) {
+							function plusReady() {
+								// 弹出系统等待对话框
+								var w = plus.nativeUI.showWaiting("等待中...");
+							}
+							if(window.plus) {
+								plusReady();
+							} else {
+								document.addEventListener("plusready", plusReady, false);
+							}
+							that.myajax()
+						}
+
+					}
+				},
 				navchange: function(index) {
 					this.navindex = index
-					this.alertshow()
 				},
-				opennew: function(target, id) {
+				opennew: function(id) {
+					localStorage.setItem('goodsid',id)
 					mui.openWindow({
-						url: './' + target + '.html',
-						id: target
+						url: './shop.html',
+						id: 'shop'
 					})
 				},
-				alertshow:function(){
-					this.alertboo=!this.alertboo
+				myajax: function() {
+					var that = this,
+						type = 0
+					if(that.navindex == 1) {
+						type = 'sales_desc'
+					} else {
+						type = 'goodsprices_asc'
+					}
+					that.pageNum++
+					$.ajax({
+						type: "post",
+						url: url + "shopsmain/?service=Productinfo.searchGoods",
+						async: true,
+						data: {
+							type:type,
+							limit:15,
+							page:that.pageNum,
+							infor:JSON.stringify({type:localStorage.getItem('goodsid')})
+						},
+						dataType: 'json',
+						success: function(res) {
+							for(var i = 0; i < res.data.length; i++) {
+									that.mydata.push(res.data[i])
+							}
+							console.log(that.mydata)
+						}
+					});
 				}
 			},
 			mounted: function() {
-				var mySwiper = new Swiper('.swiper-container', {
-					autoplay: 5000, //可选选项，自动滑动
-					pagination: '.swiper-pagination',
-				})
+				this.myajax()
 			}
 		})
 	</script>

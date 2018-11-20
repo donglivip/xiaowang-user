@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -8,100 +9,131 @@
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 		<title></title>
 	</head>
+
 	<body>
 		<div class="wrapper usercenter">
 			<!--头部-->
 			<div class="header">
-				<div class="aside" style="position: relative;left: .24rem;" @click="opennew('join-shop')">
+				<div class="aside" style="position: relative;left: .24rem;" @click="opennew('shopjoin')">
 					商家入驻
 				</div>
 				<div class="head-main">
 					个人中心
 				</div>
 				<div class="aside" @click="opennew('newcenter')">
-					<img src="img/news.png" class="back"/>
+					<img src="img/news.png" class="back" />
 				</div>
 			</div>
 			<!--中间主体-->
 			<div class="main">
 				<div class="center-top">
-					<img src="img/index.jpg" class="avatar" @click="imgclick"/>
+					<img :src="avatar" class="avatar" @click="opennew('setting')" />
 					<div class="name-box">
-						<div class="name">雨雪霏霏</div>
+						<div class="name">{{navdata.userinfor.username==''?'未设置昵称':navdata.userinfor.username}}</div>
 						<div class="state-box">
-							<div class="phone">xxxxxxxxxxxxxxxxx</div>
+							<div class="phone">
+								{{name}}
+							</div>
+							<div class="state">拼股会员</div>
 						</div>
 					</div>
 				</div>
+				<div class="nav02">
+					<div class="nav-tab" @click="opennew('integral')">
+						<div class="text">
+							￥{{navdata.userinfor.yongjin}}<br /> 总收益金
+						</div>
+					</div>
+					<!--<div class="nav-tab" @click="opennew('integral')">
+						<div class="text">
+							￥266<br /> 今日收益
+						</div>
+					</div>-->
+					<div class="nav-tab" @click="opennew('myprofit')">
+						<div class="text">
+							{{navdata.userinfor.doudou}}<br /> 豆
+						</div>
+					</div>
+					<div class="nav-tab" @click="opennew('mygold')">
+						<div class="text">
+							{{navdata.userinfor.jindou}}<br /> 金豆
+						</div>
+					</div>
+				</div>
+				<div class="user-tab" @click="opennew('order')">
+					<div class="tab-text" style="text-indent: .24rem;">我的订单</div>
+					<div class="tab-text" style="text-align: right;padding-right: .24rem;color: #999999;font-size: .2rem;">查看全部</div>
+					<img src="img/arrright.png" class="arr" />
+				</div>
 				<div class="nav-tab02">
 					<div class="nav" @click="opennew('order')">
-						<div class="num">0</div>
-						<div class="num">我的订单</div>
-					</div>
-					<div class="nav" @click="opennew('order')">
-						<div class="num">0</div>
+						<div class="num"><img src="img/order01.png" /></div>
 						<div class="num">待付款</div>
 					</div>
 					<div class="nav" @click="opennew('order')">
-						<div class="num">0</div>
+						<div class="num"><img src="img/order02.png" /></div>
 						<div class="num">待收货</div>
 					</div>
-					<div class="nav" @click="opennew('order')">
-						<div class="num">0</div>
-						<div class="num">待评价 </div>
+					<div class="nav" @click="opennew('shopcart')">
+						<div class="num"><img src="img/bottom04.png" /></div>
+						<div class="num">购物车 </div>
 					</div>
 					<div class="nav" @click="opennew('return')">
-						<div class="num">0</div>
+						<div class="num"><img src="img/order0.png" /></div>
 						<div class="num">退换/售后</div>
 					</div>
 				</div>
 				<div class="nav-tab02">
-					<div class="nav" @click="opennew('cart')">
-						<div class="num">0</div>
-						<div class="num">我的卡包</div>
-					</div>
 					<div class="nav" @click="opennew('discount')">
-						<div class="num">0</div>
+						<div class="num"><img src="img/count.png" /></div>
 						<div class="num">优惠券</div>
 					</div>
-					<div class="nav"  @click="opennew('profitgo')">
-						<div class="num">0</div>
-						<div class="num">我的收益</div>
+					<div class="nav" @click="opennew('collect')">
+						<div class="num"><img src="img/collect01.png" /></div>
+						<div class="num">我的收藏</div>
 					</div>
 					<div class="nav" @click="opennew('foot')">
-						<div class="num">0</div>
+						<div class="num"><img src="img/foot.png" /></div>
 						<div class="num">我的足迹 </div>
 					</div>
 					<div class="nav" @click="opennew('adress')">
-						<div class="num">0</div>
+						<div class="num"><img src="img/adresss.png" /></div>
 						<div class="num">收货地址</div>
 					</div>
 				</div>
+				<div class="user-tab" @click="opennew('share')">
+					<img src="img/user01.png" class="logo" />
+					<div class="tab-text">邀请好友赚取收益金</div>
+				</div>
+				<div class="user-tab" @click="opennew('rname')">
+					<img src="img/user02.png" class="logo" />
+					<div class="tab-text">认证中心</div>
+				</div>
 				<div class="user-tab" @click="opennew('setting')">
-					<img src="img/user03.png" class="logo"/>
+					<img src="img/user03.png" class="logo" />
 					<div class="tab-text">设置</div>
 				</div>
 				<div class="user-tab" @click="opennew('question')">
-					<img src="img/user04.png" class="logo"/>
+					<img src="img/user04.png" class="logo" />
 					<div class="tab-text">帮助</div>
 				</div>
-				<a class="user-tab" @click="opennew('share')" href="tel:15252163775">
-					<img src="img/user05.png" class="logo"/>
+				<a class="user-tab" @click="opennew('share')" href="tel:4006010751">
+					<img src="img/user05.png" class="logo" />
 					<div class="tab-text">客服</div>
-					<div class="tab-text" style="text-align: right;padding-right: .24rem;color: #999999;font-size: .2rem;">041-458-4568</div>
+					<div class="tab-text" style="text-align: right;padding-right: .24rem;color: #999999;font-size: .2rem;">4006010751</div>
 				</a>
 			</div>
 			<div class="bottom">
 				<div class="bottom-box" @click="opennew('index')">
-					<img src="img/HomeCopy.png"/>
+					<img src="img/HomeCopy.png" />
 					<div class="bottom-text">
 						首页
 					</div>
 				</div>
 				<div class="bottom-box" @click="opennew('nearby')">
-					<img src="img/collectno.png"/>
+					<img src="img/bottom02.png" />
 					<div class="bottom-text">
-						我的收藏
+						筛选店铺
 					</div>
 				</div>
 				<div class="bottom-box" @click="opennew('nav')">
@@ -110,14 +142,14 @@
 						分类
 					</div>
 				</div>
-				<div class="bottom-box" @click="opennew('shopcart')">
-					<img src="img/bottom04.png" />
+				<div class="bottom-box" @click="opennew('join-shop')">
+					<img src="img/join.png" />
 					<div class="bottom-text">
-						购物车
+						商家入驻
 					</div>
 				</div>
 				<div class="bottom-box">
-					<img src="img/bottom05-active.png"/>
+					<img src="img/bottom05-active.png" />
 					<div class="bottom-text active">
 						个人中心
 					</div>
@@ -125,130 +157,53 @@
 			</div>
 		</div>
 		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			var myvue=new Vue({
-				el:'.wrapper',
-				data:{
-					avatar:'img/avatar.jpg',
-					files:[]
+			var myvue = new Vue({
+				el: '.wrapper',
+				data: {
+					avatar: localStorage.getItem('userphoto'),
+					files: [],
+					name: localStorage.getItem('loginname'),
+					navdata:''
 				},
-				methods:{
-					opennew:function(target){
+				methods: {
+					opennew: function(target) {
 						mui.openWindow({
-							url:'./'+target+'.html',
-							id:target
+							url: './' + target + '.html',
+							id: target
 						})
 					},
-					imgclick: function(imid, inid) {
+					myajax: function() {
+//						获取用户信息
 						var that = this
-						var btnArray = [{
-							title: "照相机"
-						}, {
-							title: "相册"
-						}]; //选择按钮  1 2 3
-						plus.nativeUI.actionSheet({
-								title: "请选择",
-								cancel: "取消", // 0
-								buttons: btnArray
+						$.ajax({
+							type: "post",
+							url: url + "shopsmain/?service=Users.getUserInfor",
+							async: true,
+							data:{
+								userid:localStorage.getItem('userid')
 							},
-							function(e) {
-								var index = e.index; // 
-								switch(index) {
-									case 1:
-										//写自己的逻辑
-										that.camera();
-										break;
-									case 2:
-										that.album();
-										break;
-								}
-							});
-					},
-					camera: function() {
-						var that = this
-						var cmr = plus.camera.getCamera();
-						cmr.captureImage(function(p) {
-							//成功
-							plus.io.resolveLocalFileSystemURL(p, function(entry) {
-								var img_name = entry.name; //获得图片名称
-								var img_path = entry.toLocalURL(); //获得图片路径
-								that.avatar=img_path
-								that.upload_img(img_path);
-							}, function(e) {
-								alert("读取拍照文件错误：" + e.message);
-							});
-
-						}, function(e) {
-							alert("失败：" + e.message);
-						}, {
-							filename: '_doc/camera/',
-							index: 1
+							dataType: 'json',
+							success: function(res) {
+								console.log(localStorage.getItem('userid'))
+								console.log(JSON.stringify(res))
+								that.navdata = res.data
+							}
 						});
-					},
-					album: function() {
-						var that = this
-						plus.gallery.pick(function(path) {
-							that.upload_img(path);
-							that.avatar=path
-						}, function(e) {
-							alert("取消选择图片");
-						}, {
-							filter: "image"
-						});
-					},
-					upload_img: function(p) {
-						var that = this
-						var n = p.substr(p.lastIndexOf('/') + 1);
-						that.files.push({
-							name: "uploadkey",
-							path: p
-						});
-						//开始上传
-//						that.start_upload();
-					},
-					start_upload: function() {
-						var that = this
-						if(that.files.length <= 0) {
-							plus.nativeUI.alert("没有添加上传文件！");
-							return;
-						}
-						//原生的转圈等待框
-						var wt = plus.nativeUI.showWaiting();
-						var task = plus.uploader.createUpload(that.server, {
-								method: "POST"
-							},
-							function(t, status) { //上传完成
-								if(status == 200) {
-									//资源
-									var responseText = t.responseText;
-									//转换成json
-									var json = eval('(' + responseText + ')');
-									//上传文件的信息
-									var files = json.data;
-									wt.close();
-								} else {
-									alert("上传失败：" + status);
-									//关闭原生的转圈等待框
-									wt.close();
-								}
-							});
-						task.addData("uid", that.getUid());
-						for(var i = 0; i < that.files.length; i++) {
-							var f = that.files[i];
-							task.addFile(f.path, {
-								key: f.name
-							});
-						}
-						task.start();
-					},
-					getUid: function() {
-						return Math.floor(Math.random() * 100000000 + 10000000).toString();
 					}
 				},
-				mounted:function(){
+				mounted: function() {
+					if(localStorage.getItem('userid') == null || localStorage.getItem('userid') == 'null') {
+						window.location.href = 'mlogin.html'
+					}else{
+						this.myajax()
+					}
 					
 				}
 			})
 		</script>
 	</body>
+
 </html>
