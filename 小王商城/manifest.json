@@ -139,7 +139,8 @@
 					"nearby.html",
 					"usercenter.html",
 					"mygold.html",
-					"myprofit.html"
+					"myprofit.html",
+					"nav.html"
 				],
 				"priority": 0
 			},
@@ -176,14 +177,16 @@
 			"join-shop.html": {
 				"resources": [],
 				"refer": [
-					"usercenter.html"
+					"usercenter.html",
+					"index.html"
 				],
 				"priority": 0
 			},
 			"nav.html": {
 				"resources": [],
 				"refer": [
-					"join-shop.html"
+					"join-shop.html",
+					"nav02.html"
 				],
 				"priority": 0
 			},

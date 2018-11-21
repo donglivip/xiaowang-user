@@ -286,7 +286,7 @@
 					var date = data.data;
 					$.each(date, function(idx, obj) {
 						$('.shop-box').append(`
-							<div class="shop-tab" @click="opennew('shop')">
+							<div class="shop-tab" @click="opennew('shop')" style='height:auto'>
 								<div class="shopimg-box goods-id" goods-id="${obj.goodsid}">
 									<img src="${obj.pricon}" class="shop-img"/>
 								</div>

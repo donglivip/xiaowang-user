@@ -12,7 +12,8 @@
 			"profit.html",
 			"shop.html",
 			"mygold.html",
-			"myprofit.html"
+			"myprofit.html",
+			"nav.html"
 		],
 		"resources": []
 	},
@@ -102,7 +103,8 @@
 	"nav.html": {
 		"refer": [
 			"nearby.html",
-			"join-shop.html"
+			"join-shop.html",
+			"nav02.html"
 		]
 	},
 	"integral.html": {
@@ -131,7 +133,8 @@
 	},
 	"join-shop.html": {
 		"refer": [
-			"usercenter.html"
+			"usercenter.html",
+			"index.html"
 		]
 	},
 	"mlogin.html": {
