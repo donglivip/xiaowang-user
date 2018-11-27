@@ -14,8 +14,8 @@
 		<div class="wrapper usercenter">
 			<!--头部-->
 			<div class="header">
-				<div class="aside" style="position: relative;left: .24rem;" @click="opennew('shopjoin')">
-					商家入驻
+				<div class="aside" >
+					
 				</div>
 				<div class="head-main">
 					个人中心
@@ -34,21 +34,21 @@
 							<div class="phone">
 								{{name}}
 							</div>
-							<div class="state">拼股会员</div>
+							<!--<div class="state">拼股会员</div>-->
 						</div>
 					</div>
 				</div>
-				<div class="nav02">
+				<!--<div class="nav02">
 					<div class="nav-tab" @click="opennew('integral')">
 						<div class="text">
 							￥{{navdata.userinfor.yongjin}}<br /> 总收益金
 						</div>
 					</div>
-					<!--<div class="nav-tab" @click="opennew('integral')">
+					<div class="nav-tab" @click="opennew('integral')">
 						<div class="text">
 							￥266<br /> 今日收益
 						</div>
-					</div>-->
+					</div>
 					<div class="nav-tab" @click="opennew('myprofit')">
 						<div class="text">
 							{{navdata.userinfor.doudou}}<br /> 豆
@@ -59,7 +59,7 @@
 							{{navdata.userinfor.jindou}}<br /> 金豆
 						</div>
 					</div>
-				</div>
+				</div>-->
 				<div class="user-tab" @click="opennew('order')">
 					<div class="tab-text" style="text-indent: .24rem;">我的订单</div>
 					<div class="tab-text" style="text-align: right;padding-right: .24rem;color: #999999;font-size: .2rem;">查看全部</div>
@@ -173,7 +173,8 @@
 					navdata: '',
 					ordernum: 0,
 					ordernum02: 0,
-					ordernum03:0
+					ordernum03:0,
+					ordernum04:0
 				},
 				methods: {
 					opennew: function(target) {

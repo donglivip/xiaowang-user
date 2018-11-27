@@ -140,7 +140,9 @@
 					"usercenter.html",
 					"mygold.html",
 					"myprofit.html",
-					"nav.html"
+					"nav.html",
+					"join-shop.html",
+					"list.html"
 				],
 				"priority": 0
 			},
@@ -155,7 +157,8 @@
 				"resources": [],
 				"refer": [
 					"nav.html",
-					"store.html"
+					"store.html",
+					"join-shop.html"
 				],
 				"priority": 0
 			},
@@ -170,7 +173,9 @@
 					"integral.html",
 					"myprofit.html",
 					"return.html",
-					"shopcart.html"
+					"shopcart.html",
+					"collect.html",
+					"index.html"
 				],
 				"priority": 0
 			},
@@ -186,7 +191,8 @@
 				"resources": [],
 				"refer": [
 					"join-shop.html",
-					"nav02.html"
+					"nav02.html",
+					"nearby.html"
 				],
 				"priority": 0
 			},
@@ -208,7 +214,16 @@
 				"resources": [],
 				"refer": [
 					"allrating.html",
-					"shopcart.html"
+					"shopcart.html",
+					"chat.html",
+					"share.html"
+				],
+				"priority": 0
+			},
+			"store.html": {
+				"resources": [],
+				"refer": [
+					"shop.html"
 				],
 				"priority": 0
 			}
@@ -256,7 +271,6 @@
 				"img/arrright.png",
 				"img/search-grey.png",
 				"img/collectno.png",
-				"list.html",
 				"img/cart.png",
 				"logo/Artboard 2(1).png",
 				"logo/Artboard 3(1).png",
@@ -282,7 +296,6 @@
 				"img/erweima.png",
 				"rob.html",
 				"rating.html",
-				"collect.html",
 				"img/logo.png",
 				"logo/Group 15.png",
 				"img/join.png",
@@ -322,7 +335,6 @@
 				"img/number (1).png",
 				"img/douzi.png",
 				"img/back-white.png",
-				"chat.html",
 				"agreement.html",
 				"img/removered.png",
 				"css/layout.min.css",

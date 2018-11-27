@@ -32,7 +32,7 @@
 						<div class="name">{{mydata.shopname}}</div>
 						<div class="subtitle">经营类型：{{mydata.catname}}</div>
 					</div>
-					<img src="img/collect-active.png" class="collect" @click="collect(mydata.storeinfoid)"/>
+					<img src="img/collect-active.png" class="collect" @click="collect(mydata.storeinfoid)" />
 				</div>
 				<!--中间店铺分类-->
 				<div class="nav-box">
@@ -54,8 +54,8 @@
 								团购
 							</div>
 						</div>
-						<div class="num">
-							
+						<div class="num" style='display:flex;justify-content: space-between'>
+							<span>已售{{val.bulknumber}}件</span>
 						</div>
 					</div>
 					<!--商品列表-->
@@ -70,9 +70,6 @@
 								团购
 							</div>
 						</div>
-						<div class="num">
-							
-						</div>
 					</div>
 					<!--新品列表-->
 					<div class="shop-tab" v-for='val in shopdata02' v-if="navindex==2" @click="openshop(val.goodsid)">
@@ -85,9 +82,6 @@
 							<div class="join">
 								团购
 							</div>
-						</div>
-						<div class="num">
-							
 						</div>
 					</div>
 				</div>
@@ -132,36 +126,36 @@
 			data: {
 				navindex: 0,
 				ejectboo: false,
-				mydata:'',
-				shopdata:'',
-				shopdata01:[],
-				shopdata02:[]
+				mydata: '',
+				shopdata: '',
+				shopdata01: [],
+				shopdata02: []
 			},
 			methods: {
-				collect:function(id){
+				collect: function(id) {
 					if(localStorage.getItem('userid') == null || localStorage.getItem('userid') == 'null') {
 						window.location.href = 'mlogin.html'
 					}
-					var that=this
+					var that = this
 					$.ajax({
 						type: "post",
 						url: url + "/shopsmain/?service=Favorites.add",
 						async: true,
 						data: {
-							userid:localStorage.getItem('userid'),
-							favoritesid:id,
-							types:'store'
+							userid: localStorage.getItem('userid'),
+							favoritesid: id,
+							types: 'store'
 						},
 						success: function(res) {
 							console.log(localStorage.getItem('userid'))
-							if(res.data==true){
+							if(res.data == true) {
 								plus.nativeUI.toast('收藏成功')
 							}
 						}
 					});
 				},
-				openshop:function(id){
-					localStorage.setItem('goodsid',id)
+				openshop: function(id) {
+					localStorage.setItem('goodsid', id)
 					this.opennew('shop')
 				},
 				navchange: function(index) {
@@ -181,49 +175,49 @@
 				},
 				myajax: function() {
 					var that = this
-//					获取店铺基本信息
+					//					获取店铺基本信息
 					$.ajax({
 						type: 'POST',
 						url: url + 'shopsmain/?service=Storeinfo.getStoreInfor',
 						datatype: 'json',
 						data: {
-							storeinfoid:localStorage.getItem('storeinfoid')
+							storeinfoid: localStorage.getItem('storeinfoid')
 						},
 						success: function(data) {
 							console.log(data)
 							that.mydata = data.data;
 						},
 						error: function() {
-							
+
 						},
 					});
-//					获取店铺下商品列表
+					//					获取店铺下商品列表
 					$.ajax({
 						type: 'POST',
 						url: url + 'shopsmain/?service=Productinfo.getGoodsByStore',
 						datatype: 'json',
 						data: {
-							storeid:localStorage.getItem('storeinfoid'),
-							limit:15,
-							page:1
+							storeid: localStorage.getItem('storeinfoid'),
+							limit: 15,
+							page: 1
 						},
 						success: function(data) {
 							console.log(data)
 							that.shopdata = data.data;
 						},
 						error: function() {
-							
+
 						},
 					});
-//					获取店铺下推荐列表
+					//					获取店铺下推荐列表
 					$.ajax({
 						type: 'POST',
 						url: url + 'shopsmain/?service=Productinfo.getGoodsByIsrecommended',
 						datatype: 'json',
 						data: {
-							storeid:localStorage.getItem('storeinfoid'),
-							limit:15,
-							page:1
+							storeid: localStorage.getItem('storeinfoid'),
+							limit: 15,
+							page: 1
 						},
 						success: function(data) {
 							console.log(data)
@@ -233,20 +227,20 @@
 							al
 						},
 					});
-//					获取店铺下新品列表
+					//					获取店铺下新品列表
 					$.ajax({
 						type: 'POST',
 						url: url + 'shopsmain/?service=Productinfo.getGoodsByStore',
 						datatype: 'json',
 						data: {
-							storeid:localStorage.getItem('storeinfoid'),
+							storeid: localStorage.getItem('storeinfoid'),
 						},
 						success: function(data) {
 							console.log(data)
 							that.shopdata02 = data.data;
 						},
 						error: function() {
-							
+
 						},
 					});
 				}

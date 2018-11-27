@@ -13,7 +13,8 @@
 			"shop.html",
 			"mygold.html",
 			"myprofit.html",
-			"nav.html"
+			"nav.html",
+			"join-shop.html"
 		],
 		"resources": []
 	},
@@ -33,7 +34,8 @@
 			"newcenter.html",
 			"usercenter.html",
 			"nav.html",
-			"index.html"
+			"index.html",
+			"join-shop.html"
 		],
 		"resources": []
 	},
@@ -60,7 +62,8 @@
 			"newcenter.html",
 			"mygold.html",
 			"mlogin.html",
-			"return.html"
+			"return.html",
+			"collect.html"
 		],
 		"resources": []
 	},
@@ -92,12 +95,15 @@
 		"refer": [
 			"store.html",
 			"allrating.html",
-			"shopcart.html"
+			"shopcart.html",
+			"chat.html",
+			"share.html"
 		]
 	},
 	"store.html": {
 		"refer": [
-			"search.html"
+			"search.html",
+			"shop.html"
 		]
 	},
 	"nav.html": {

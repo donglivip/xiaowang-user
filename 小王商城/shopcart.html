@@ -109,6 +109,31 @@
 				},
 				gopay: function() {
 					var that = this
+					var	boo=false
+					$.ajax({
+						type: 'POST',
+						url: url + 'shopsmain/?service=Harvestaddress.getAddress',
+						datatype: 'json',
+						async: false,
+						data: {
+							userid: localStorage.getItem('userid'),
+							page: 1,
+							limit: 15
+						},
+						success: function(data) {
+							for (var i = 0; i < data.data.length; i++) {
+								if(data.data[i].ismoren=="1"){
+									boo=true
+									
+								}
+							}
+						}
+					});
+					if(boo==false){
+						plus.nativeUI.toast('您还没有设置默认收货地址呢！')
+						that.opennew('adress')
+						return false;
+					}
 					var alllist = []
 					var cartdata = {},
 						list = [],

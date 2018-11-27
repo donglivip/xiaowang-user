@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -9,6 +10,7 @@
 		<link rel="stylesheet" type="text/css" href="css/main.css" />
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 	</head>
+
 	<body>
 		<div class="wrapper index" id="all">
 			<div class="header" v-if="headboo==false">
@@ -21,6 +23,7 @@
 					<input type="search" placeholder="请输入您要搜索的内容" />
 				</form>
 				<div class="aside" @click="opennew('newcenter')">
+					<div class="redcir"></div>
 					<img src="img/news.png" class="news" />
 				</div>
 			</div>
@@ -34,6 +37,7 @@
 					<input type="text" placeholder="请输入您要搜索的内容" @blur="inputsubmit" />
 				</div>
 				<div class="aside" @click="opennew('newcenter')">
+					<div class="redcir"></div>
 					<img src="img/Mail.png" class="news" />
 				</div>
 			</div>
@@ -49,17 +53,13 @@
 				</div>
 				<!--分类-->
 				<div class="nav-box">
-					<div class="nav" @click="opennew('rob')">
-						<img src="img/nav01.png" class="nav-img" />
-						<div class="nav-text">限时抢购</div>
-					</div>
-					<div class="nav" @click="opennav(val.goodsid)" v-for="(val,index) in navdata" v-if="index<10&&index>0">
+					<div class="nav" @click="opennav(val.goodsid)" v-for="(val,index) in navdata" v-if="index<11&&index>0">
 						<img :src="val.icon" class="nav-img" />
 						<div class="nav-text">{{val.goodsname}}</div>
 					</div>
 				</div>
 				<!--广告图-->
-				<img src="img/index.jpg" class="advaer" @click="opennew('myprofit')" />
+				<!--<img src="img/index.jpg" class="advaer" @click="opennew('myprofit')" />-->
 				<!--为您推荐-->
 				<div class="index-top">
 					<div class="hr"></div>
@@ -125,6 +125,7 @@
 			},
 			mounted: function() {
 				var that = this
+
 				function plusReady() {
 					plus.runtime.getProperty(plus.runtime.appid, function(inf) {
 						$.ajax({
@@ -201,11 +202,28 @@
 					this.opennew('search')
 				},
 				myajax: function(res) {
+					//					获取一级分类
 					var that = this
 					$.ajax({
 						type: "post",
 						url: url + "shopsmain/?service=Goodstype.getTypeOne",
 						async: true,
+						dataType: 'json',
+						success: function(res) {
+							console.log(JSON.stringify(res))
+							that.navdata = res.data
+						}
+					});
+					//					获取消息
+					$.ajax({
+						type: "post",
+						url: url + "shopsmain/?service=Messages.getMessageList",
+						async: true,
+						data: {
+							userid: localStorage.getItem('userid'),
+							page: 1,
+							limit: 20
+						},
 						dataType: 'json',
 						success: function(res) {
 							that.navdata = res.data
@@ -214,25 +232,8 @@
 				}
 			}
 		})
-
 		$(function() {
 			conveying(1);
-			// 首页推荐上的图
-			$.ajax({
-				type: "POST",
-				url: url + 'shopsmain/?service=Advertising.getAdverToId',
-				datadype: "json",
-				data: {
-					adposid: 3
-				},
-				success: function(data) {
-					$('.advaer').attr("src", data.data[0].fileurl);
-				},
-				error: function() {
-
-				}
-			});
-
 			// 轮播图
 			$.ajax({
 				type: "POST",
@@ -283,6 +284,7 @@
 					limit: 6
 				},
 				success: function(data) {
+					console.log(data.data)
 					var date = data.data;
 					$.each(date, function(idx, obj) {
 						$('.shop-box').append(`
@@ -295,20 +297,20 @@
 								<div class="price">
 									<div class="money">￥${obj.goodsprices}</div>
 									<div class="join">
-										团购
+										抢购
 									</div>
 								</div>
-								<div class="num">
-									已售${obj.bulknumber}件
+								<div class="num" style='display:flex;justify-content: space-between'>
+									<span>已售${obj.bulknumber}件</span>
 								</div>
 							</div>
 						`);
 					});
-//													<div class="label-box">
-//									<div class="label grey">广告</div>
-//									<div class="label blue">标签</div>
-//									<div class="label yellow">标签</div>
-//								</div>
+					//													<div class="label-box">
+					//									<div class="label grey">广告</div>
+					//									<div class="label blue">标签</div>
+					//									<div class="label yellow">标签</div>
+					//								</div>
 					// 存储商品id
 					$('.goods-id').click(function() {
 						var goodsid = $(this).attr('goods-id');

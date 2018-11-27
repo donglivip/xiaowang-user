@@ -35,12 +35,10 @@
 				<input type="text" placeholder="收货人姓名" class="name"/>
 				<input type="number" placeholder="手机号码" class="phone"/>
 				<div class="input-group">
-					 <div style="text-align:center">
-				        <input type="text" readonly placeholder="Click me to pick an address" id="myAddrs" name="addr" data-key="4-84-1298" value="山西省 太原市 万柏林区"/>
-				    </div>
+				    <input type="text" readonly placeholder="单机选择地址" id="myAddrs" name="addr" data-key="4-84-1298" value="山西省 太原市 万柏林区"/>
 					<img src="img/arrright.png"/>
 				</div>
-				<input type="number" placeholder="详细地址" class="detailed"/>
+				<input type="text" placeholder="详细地址" class="detailed"/>
 			</div>
 			<div class="bottom">
 				<span class="add">确认添加</span>
@@ -230,21 +228,23 @@
 			var name = $('.name').val();
             var phone = $('.phone').val();
 			var detailed = $('.detailed').val();
-			// alert(name.phone);
+			if(name==''||phone==''||detailed==''){
+				plus.nativeUI.toast('信息填写不完整！')
+				return false;
+			}
 			 $.ajax({
                     type : 'POST',
                     url : url + 'shopsmain/?service=Harvestaddress.addAddress',
                     datatype : 'json',
                     data : {
-                    	userid : 66,
+                    	userid : localStorage.getItem('userid'),
                     	username : name,
-                    	// userarea : ,
-                    	address : detailed,
+                    	address : $('#myAddrs').val() + detailed,
                     	userphone : phone
                     },
-                    success : function(){
-                    	alert('成功');
-                    	page('index');
+                    success : function(res){
+                    	plus.nativeUI.toast('成功');
+                    	mui.back()
                     },
                     error : function(){
                     	alert('错误');

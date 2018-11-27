@@ -43,7 +43,7 @@
 				</div>
 				<div class="profit-box">
 					<div class="title">豆单价</div>
-					<div class="subtitle">￥1</div>
+					<div class="subtitle">￥50</div>
 				</div>
 				<div class="profit-box">
 					<div class="title">购买数量</div>
@@ -122,7 +122,7 @@
 						async: true,
 						data: {
 							userid: localStorage.getItem('userid'),
-							doudou: that.num
+							doudou: that.num*50
 						},
 						success: function(res) {
 							plus.payment.request(that.channel[0], res, function(result) {

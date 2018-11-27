@@ -12,7 +12,6 @@
 		<style>
 			.imgs img {
 				width: 100%;
-				height: 6rem;
 			}
 		</style>
 	</head>
@@ -47,16 +46,6 @@
 				</div>
 
 				<!--商品价格-->
-				<div class="price-box">
-					<div class="price-left">
-						<div class="price">￥{{mydata.goodsprices}}</div>
-						<div class="old-price">原价￥{{mydata.pcostprice}}</div>
-					</div>
-					<div class="price-right">
-						<span>距离结束还剩</span>
-						<span>24：00：00</span>
-					</div>
-				</div>
 				<div class="title-box">
 					<div class="title">
 						{{mydata.goodsname}}
@@ -64,6 +53,16 @@
 					<div class="collect" @click="collect(mydata.goods_one_id)">
 						<img src="img/collect-active.png" />
 					</div>
+				</div>
+				<div class="price-box">
+					<div class="price-left">
+						<div class="price">￥{{mydata.goodsprices}}</div>
+						<div class="old-price">原价￥{{mydata.pcostprice}}</div>
+					</div>
+					<!--<div class="price-right">
+						<span>距离结束还剩</span>
+						<span>24：00：00</span>
+					</div>-->
 				</div>
 				<div class="num-box">
 					<div class="num">
@@ -154,7 +153,7 @@
 				</div>
 				<div class="bottom04" @click="cartshow03">
 					<div class="price01">￥{{mydata.goodsprices}}</div>
-					<div class="text01">发起团购</div>
+					<div class="text01">会员价格</div>
 				</div>
 			</div>
 			<!--优惠卷弹出框-->
@@ -254,19 +253,14 @@
 								<div class="text01">单独购买</div>
 							</div>
 							<!--@click.stop="addSSPurchase()"-->
-							<div class="bottom04" @click.stop="gopay">
+							<!--<div class="bottom04" @click.stop="gopay">
 								<div class="price01">￥{{mydata.goodsprices}}</div>
 								<div class="text01">发起团购</div>
-							</div>
+							</div>-->
 						</div>
 					</div>
 				</div>
 			</transition>
-			<!--购买记录-->
-			<div class="record">
-				<img src="img/index.jpg" class="avatar" />
-				<div class="recordtext">XXXX正在发起团购</div>
-			</div>
 		</div>
 	</body>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
@@ -289,29 +283,56 @@
 				huidata: []
 			},
 			methods: {
-				collect:function(id){
+				collect: function(id) {
 					if(localStorage.getItem('userid') == null || localStorage.getItem('userid') == 'null') {
 						window.location.href = 'mlogin.html'
 					}
-					var that=this
+					var that = this
 					$.ajax({
 						type: "post",
 						url: url + "/shopsmain/?service=Favorites.add",
 						async: true,
 						data: {
-							userid:localStorage.getItem('userid'),
-							favoritesid:id,
-							types:'goods'
+							userid: localStorage.getItem('userid'),
+							favoritesid: id,
+							types: 'goods'
 						},
 						success: function(res) {
 							console.log(res)
-							if(res.data==true){
+							if(res.data == true) {
 								plus.nativeUI.toast('收藏成功')
 							}
 						}
 					});
 				},
 				gopay: function() {
+					var that = this
+					var	boo=false
+					$.ajax({
+						type: 'POST',
+						url: url + 'shopsmain/?service=Harvestaddress.getAddress',
+						datatype: 'json',
+						async: false,
+						data: {
+							userid: localStorage.getItem('userid'),
+							page: 1,
+							limit: 15
+						},
+						success: function(data) {
+							for (var i = 0; i < data.data.length; i++) {
+								if(data.data[i].ismoren=="1"){
+									boo=true
+									
+								}
+							}
+						}
+					});
+					console.log(boo==false)
+					if(boo==false){
+						plus.nativeUI.toast('您还没有设置默认收货地址呢！')
+						that.opennew('adress')
+						return false;
+					}
 					var cartdata = {}
 					cartdata.shopid = this.mydata.storeid
 					cartdata.shopname = this.mydata.storeinfor.shopname
@@ -322,7 +343,6 @@
 					listdata.num = this.cartnum
 					list.push(listdata)
 					cartdata.data = list
-					var that = this
 					//					获取运费
 					var ajaxjson = {
 						userid: localStorage.getItem('userid'),
@@ -364,7 +384,6 @@
 					$.ajax({
 						type: "post",
 						url: url + 'shopsmain/?service=Order.createOrder',
-						async: false,
 						dataType: 'json',
 						data: ajaxjs,
 						success: function(res) {
@@ -380,14 +399,14 @@
 										success: function(data) {
 											plus.payment.request(that.channel[0], data, function(result) {
 												plus.nativeUI.alert("支付成功！", function() {
-		
+
 												});
 											}, function(error) {
 												alert('支付失败')
 											});
 										}
 									});
-								}else{
+								} else {
 									$.ajax({
 										type: "post",
 										url: url + 'shopsmain/?service=Pay.Wx_GoodsPay',
@@ -398,16 +417,19 @@
 										success: function(data) {
 											plus.payment.request(that.channel[1], data, function(result) {
 												plus.nativeUI.alert("支付成功！", function() {
-		
+
 												});
-											}, function(error) {alert('支付失败')});
+											}, function(error) {
+												alert('支付失败')
+											});
 										}
 									});
 								}
-							}, {"title":"支付方式",
-									"buttons":["支付宝","微信"]
-								});
-							
+							}, {
+								"title": "支付方式",
+								"buttons": ["支付宝", "微信"]
+							});
+
 						},
 						error: function(err) {
 							alert(JSON.stringify(err))
