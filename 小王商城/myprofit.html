@@ -36,14 +36,14 @@
 					<img src="img/douzi.png" class="douzi" />
 					<div class="profit-wrapper">
 						<div class="title">
-							<strong>50</strong>颗豆自动转化1颗金豆，次日可获得收益金
+							<strong>{{douguize.dou_to_jindou}}</strong>颗豆自动转化1颗金豆，次日可获得收益金
 						</div>
-						<div class="text">每人限购500颗豆</div>
+						<div class="text">每人限购{{douguize.hight_by_doudou}}颗豆</div>
 					</div>
 				</div>
 				<div class="profit-box">
 					<div class="title">豆单价</div>
-					<div class="subtitle">￥50</div>
+					<div class="subtitle">￥{{douguize.dou_danjia}}</div>
 				</div>
 				<div class="profit-box">
 					<div class="title">购买数量</div>
@@ -67,8 +67,9 @@
 			el: '.wrapper',
 			data: {
 				navdata: '',
-				num: 1,
-				channel: ''
+				num: 50,
+				channel: '',
+				douguize:''
 			},
 			mounted: function() {
 				var that = this
@@ -82,6 +83,16 @@
 					dataType: 'json',
 					success: function(res) {
 						that.navdata = res.data
+					}
+				});
+				$.ajax({
+					type: "post",
+					url: url + "shopsmain/?service=Rules.Get",
+					async: true,
+					dataType: 'json',
+					success: function(res) {
+						that.douguize=res.data
+						console.log(JSON.stringify(res))
 					}
 				});
 				var that = this
@@ -108,10 +119,12 @@
 					})
 				},
 				changenum: function(type) {
-					if(type == 0 && this.num > 1) {
-						this.num--
+					if(type == 0 ) {
+						if(this.num > 50){
+							this.num-=50
+						}
 					} else {
-						this.num++
+						this.num+=50
 					}
 				},
 				pay: function() {
@@ -122,14 +135,19 @@
 						async: true,
 						data: {
 							userid: localStorage.getItem('userid'),
-							doudou: that.num*50
+							doudou: that.num
 						},
 						success: function(res) {
-							plus.payment.request(that.channel[0], res, function(result) {
-								plus.nativeUI.alert("支付成功！", function() {
-
-								});
-							}, function(error) {});
+							if(res=='no'){
+								alert('每人最多购买400个！')
+							}else{
+								plus.payment.request(that.channel[0], res, function(result) {
+									plus.nativeUI.alert("支付成功！", function() {
+	
+									});
+								}, function(error) {});
+							}
+							
 						},error:function(err){
 							alert('未知错误')
 						}

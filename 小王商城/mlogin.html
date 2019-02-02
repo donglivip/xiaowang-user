@@ -42,7 +42,7 @@
 					<div class="login logins">登录</div>
 					<div class="login-type">
 						<input type="checkbox" id="boo" />
-						<div onclick="page('agreement','')">登陆即视为同意 <strong>《注册协议》</strong></div>
+						<div onclick="page('agreement','')">登陆即视为同意 <strong>《拼股注册协议》</strong></div>
 					</div>
 
 					<div class="three">
@@ -58,6 +58,16 @@
 		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
+			$(document).ready(function() {
+						if(window.history && window.history.pushState) {
+							$(window).on('popstate', function() {
+								window.history.pushState('forward', null, '#');
+								window.history.forward(1);
+							});
+						}
+						window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
+						window.history.forward(1);
+					});
 			//			15895225776 密码:123
 			$(function() {
 				$('.logins').click(function() {
@@ -72,7 +82,6 @@
 					alert('请同意注册协议')
 					return false
 				}
-				// console.log(url);
 				$.ajax({
 					type: 'GET',
 					url: url + 'shopsmain/?service=Users.land',
@@ -82,19 +91,17 @@
 						password: pass
 					},
 					success: function(data) {
-						console.log(data)
 						var date = data.data;
 						if(date.code != 1) {
-							// console.log('sdfd');
 							alert('账号或者密码不正确');
 						}
 						var userinfo = date.userinfor;
 						var storage = window.localStorage;
 						storage["userid"] = userinfo.userid;
+						storage["username"] = userinfo.username;
 						storage["userphoto"] = userinfo.userphoto;
 						storage["loginname"] = userinfo.loginname;
 						storage["token"] = userinfo.token;
-						// console.log(storage);
 						page('index');
 					},
 					error: function() {
@@ -104,6 +111,14 @@
 			}
 
 			function page(target, id) {
+				$.ajax({
+					type: 'GET',
+					url: url + 'shopsmain/?service=Chat.createToken',
+					dataType: 'json',
+					success: function(data){
+						localStorage.setItem('token',data.data)
+					}
+				});
 				mui.openWindow({
 					url: './' + target + '.html',
 					id: target

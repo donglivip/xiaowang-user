@@ -31,7 +31,7 @@
 						</div>
 						<div class="adress-box">
 							<div class="into" @click="opennew('store',val.storeinfoid)">进入店铺</div>
-							<div class="near-sub">距离：{{val.distance_km}}km</div>
+							<!--<div class="near-sub">距离：{{val.distance_km}}km</div>-->
 						</div>
 					</div>
 				</div>
@@ -98,18 +98,16 @@
 						url: url + 'shopsmain/?service=Storeinfo.getStoreCloseToFar',
 						datatype: 'json',
 						data: {
-							x: localStorage.getItem('lat'),
-							y: localStorage.getItem('lng'),
 							page: 1,
 							limit: 20,
 							searchName:that.searchtext
 						},
 						success: function(data) {
-							that.mydata=data.data
+							that.mydata=data.data;
 						},
 						error: function() {
 							alert('接收失败');
-						},
+						}
 					});
 				}
 			}

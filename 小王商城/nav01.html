@@ -45,7 +45,7 @@
 				<div class="aside mui-action-back">
 					<img src="img/Shape.png" class="back" />
 				</div>
-				<div class="head-main" style="background: none;border-bottom: 1px solid #F5F5F5;">
+				<div class="head-main" style="background: none;">
 					商品列表
 				</div>
 				<div class="aside"></div>
@@ -78,7 +78,7 @@
 								<div class="price">
 									<div class="money">￥{{val.goodsprices}}</div>
 									<div class="join">
-										团购
+										抢购
 									</div>
 								</div>
 								<div class="num">
@@ -191,7 +191,6 @@
 						},
 						dataType: 'json',
 						success: function(res) {
-							console.log(res)
 							that.twodata = res.data
 							that.change(res.data[0].goodsid, 0)
 						}

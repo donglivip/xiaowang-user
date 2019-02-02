@@ -6,6 +6,9 @@
 		<link rel="stylesheet" type="text/css" href="css/main.css" />
 		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 		<title></title>
 	</head>
 	<body>
@@ -27,7 +30,7 @@
 				<div class="profit-top">
 					<div class="subtitile">提现金额</div>
 					<input type="price" placeholder="请输入提现金额" class="money" v-model="money"/>
-					<div class="subtitile">可提现额￥{{navdata.userinfor.yongjin}}</div>
+					<div class="subtitile">可提现额￥{{navdata}}</div>
 					<div class="profit-type">
 						<div>提现到</div>
 						<div>支付宝</div>
@@ -46,9 +49,7 @@
 				</div>
 			</div>
 		</div>
-		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
+		
 		<script type="text/javascript">
 			var myvue=new Vue({
 				el:'.wrapper',
@@ -60,28 +61,39 @@
 				},
 				methods:{
 					gopay:function(){
-						var that=this
-						if(that.money>0&&that.money<that.navdata.userinfor.yongjin){
-							$.ajax({
-								type : "POST",
-								url : url + 'shopsmain/?service=Cashdraws.add',
-								datatype : "json",
-								data : {
-									userid : localStorage.getItem('userid'),
-									money : that.money,
-									acctype : 0
-								},
-								success : function (data){
-									console.log(data)
-									var date = data.data;
-									if (date) {
-										this.alertshow('提现成功')
+						var that=this;
+						if(this.money!=''){
+							if(that.money>0&&that.money<that.navdata){
+								$.ajax({
+									type : "POST",
+									url : url + 'shopsmain/?service=Cashdraws.add',
+									datatype : "json",
+									data : {
+										userid : localStorage.getItem('userid'),
+										money : that.money,
+										acctype : 0
+									},
+									success : function (data){
+										var date = data.data;
+										if (date) {
+//											plus.nativeUI.toast('提现成功');
+											alert('提现成功');
+											that.myajax;
+											that.money='';
+											console.log(data)
+										}else{
+//											plus.nativeUI.toast('清先绑定支付宝');
+											alert('清先绑定支付宝');
+										}
 									}
-								}
-							});
+								});
+							}else{
+								plus.nativeUI.toast('余额不足')
+							}
 						}else{
-							this.alertshow('请输入正确的提现金额')
+							alert("请输入金额！")
 						}
+						
 					},
 					alertshow:function(text){
 						this.alerttext=text
@@ -102,8 +114,8 @@
 							},
 							dataType: 'json',
 							success: function(res) {
-								console.log(res)
-								that.navdata = res.data
+								that.navdata = res.data.userinfor.yongjin;
+								console.log(res.data)
 							}
 						});
 					}

@@ -16,7 +16,7 @@
 					<img src="img/Shape.png" class="back"/>
 				</div>
 				<div class="head-main">
-					收益金明细	
+					豆豆明细	
 				</div>
 				<div class="aside">
 					
@@ -25,58 +25,16 @@
 			<!--中间主体-->
 			<div class="main big-main">
 				<div class="order-main">
-					<div class="order-box">
+					<div class="order-box" v-for="val in mydata">
 						<div class="order-right">
 							<div class="order-title">
 								<div class="order-h1">
-									转化金豆
+									豆豆个数
 								</div>
-								<div class="order-state">-50</div>
+								<div class="order-state">{{val.mcount}}</div>
 							</div>
 							<div class="order-bottom">
-								<div class="order-price">2018-07-18</div>
-								<div class="order-time"></div>
-							</div>
-						</div>
-					</div><div class="order-box">
-						<div class="order-right">
-							<div class="order-title">
-								<div class="order-h1">
-									转化金豆
-								</div>
-								<div class="order-state">-50</div>
-							</div>
-							<div class="order-bottom">
-								<div class="order-price">2018-07-18</div>
-								<div class="order-time"></div>
-							</div>
-						</div>
-					</div>
-					<div class="order-box">
-						<div class="order-right">
-							<div class="order-title">
-								<div class="order-h1">
-									转化金豆
-								</div>
-								<div class="order-state">-50</div>
-							</div>
-							<div class="order-bottom">
-								<div class="order-price">2018-07-18</div>
-								<div class="order-time"></div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="order-box">
-						<div class="order-right">
-							<div class="order-title">
-								<div class="order-h1">
-									转化金豆
-								</div>
-								<div class="order-state">-50</div>
-							</div>
-							<div class="order-bottom">
-								<div class="order-price">2018-07-18</div>
+								<div class="order-price">{{val.createtime}}</div>
 								<div class="order-time"></div>
 							</div>
 						</div>
@@ -85,11 +43,14 @@
 			</div>
 		</div>
 		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			var myvue=new Vue({
 				el:'.wrapper',
 				data:{
 					navboo:false,
+					mydata:''
 				},
 				methods:{
 					opennew:function(type){
@@ -98,10 +59,29 @@
 						}else{
 							
 						}
+					},
+					myajax:function(){
+						var that=this
+						$.ajax({
+							type: "post",
+							url: url + "shopsmain/?service=MillLog.showList",
+							async: true,
+							data: {
+								userid: localStorage.getItem('userid'),
+								page: 1,
+								limit: 20,
+								date:2018-11
+							},
+							dataType: 'json',
+							success: function(res) {
+								console.log(res)
+								that.mydata=res.data
+							}
+						});
 					}
 				},
 				mounted:function(){
-					
+					this.myajax()
 				}
 			})
 		</script>

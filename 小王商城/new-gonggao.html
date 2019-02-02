@@ -24,14 +24,14 @@
 			</div>
 			<!--中间主体-->
 			<div class="main big-main">
-				<block v-for='val in navdata'>
-					<div class="nav-title">{{val.createtime}}</div>
+				<block>
+					<div class="nav-title">{{navdata.createtime}}</div>
 					<div class="nav-tab">
 						<div class="new-main">
 							<div class="new-title">
-								{{val.title}} 
+								{{navdata.title}} 
 							</div>
-							<div class="text">{{val.body}}</div>
+							<div class="text">{{navdata.body}}</div>
 						</div>
 					</div>
 				</block>
@@ -52,17 +52,27 @@
 						var that = this
 						$.ajax({
 							type: "post",
-							url: url + "shopsmain/?service=Messages.getMessageList",
+							url: url + "shopsmain/?service=Messages.getMessageInfor",
 							async: true,
 							data:{
-								userid:localStorage.getItem('userid'),
-								page:1,
-								limit:1
+								id:localStorage.getItem('id')
 							},
 							dataType: 'json',
 							success: function(res) {
 								console.log(res)
 								that.navdata = res.data
+							}
+						});
+						$.ajax({
+							type: "post",
+							url: url + "shopsmain/?service=Messages.setIsRead",
+							async: true,
+							data:{
+								id:localStorage.getItem('id')
+							},
+							dataType: 'json',
+							success: function(res) {
+								
 							}
 						});
 					}

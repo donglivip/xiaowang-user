@@ -1,24 +1,26 @@
 ﻿<!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
 		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 	</head>
+
 	<body>
 		<div class="wrapper adresschange">
 			<div class="header">
-				<div class="aside mui-action-back">
-					<img src="img/Shape.png" class="back"/>
+				<div class="aside">
+					<!--<img src="img/Shape.png" class="back"/>-->
 				</div>
 				<div class="head-main">
 					地区选择
 				</div>
 				<div class="aside">
-					
+
 				</div>
 			</div>
 			<div class="main big-main">
@@ -35,7 +37,7 @@
 					</div>
 				</div>
 				<div class="right">
-					<div class="rihgt-tab" v-for="(val,index) in adressdata[myindex].sub[subindex].sub">
+					<div class="rihgt-tab" v-for="(val,index) in adressdata[myindex].sub[subindex].sub" @click="changeadress(val.id,val.name)">
 						{{val.name}}
 					</div>
 				</div>
@@ -47,33 +49,52 @@
 	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		new Vue({
-			el:'.wrapper',
-			data:{
-				adressdata:[],
-				myindex:0,
-				subindex:0
+			el: '.wrapper',
+			data: {
+				adressdata: [],
+				myindex: 0,
+				subindex: 0
 			},
-			mounted:function(){
+			mounted: function() {
+				$(document).ready(function() {
+					if(window.history && window.history.pushState) {
+						$(window).on('popstate', function() {
+							window.history.pushState('forward', null, '#');
+							window.history.forward(1);
+						});
+					}
+					window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
+					window.history.forward(1);
+				});
 				this.myajax()
 			},
-			methods:{
-				changesub:function(index){
-					this.subindex=index
+			methods: {
+				changeadress: function(id, name) {
+					localStorage.setItem('adressid', id)
+					localStorage.setItem('adressname', name)
+					mui.openWindow({
+						url: './index.html',
+						id: 'index',
+						createNew: true
+					})
 				},
-				change:function(index){
-					this.myindex=index
+				changesub: function(index) {
+					this.subindex = index
 				},
-				myajax:function(){
-					var that=this
+				change: function(index) {
+					this.myindex = index
+				},
+				myajax: function() {
+					var that = this
 					$.ajax({
-						type : "POST",
-						url : url + 'shopsmain/?service=Region.selectCrity',
-						datatype : 'json',
-						success : function (res){
-							that.adressdata=res.data
+						type: "POST",
+						url: url + 'shopsmain/?service=Region.selectCrity',
+						datatype: 'json',
+						success: function(res) {
+							that.adressdata = res.data
 							console.log(res)
 						},
-						error :function (){
+						error: function() {
 							alert('接收失败');
 						},
 					});
@@ -81,4 +102,5 @@
 			}
 		})
 	</script>
+
 </html>

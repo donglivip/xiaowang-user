@@ -26,8 +26,9 @@
 			</div>
 			<!--中间主体-->
 			<div class="main big-main">
-				<div class="nav-tab" @click="opennew('new-gonggao')" v-for="val in navdata">
+				<div class="nav-tab" @click="opennew('new-gonggao',val.id)" v-for="val in navdata">
 					<div class="img-box type02">
+						<div class="redcir"></div>
 						<img src="img/Share@3x.png" />
 					</div>
 					<div class="new-main" style="height: .8rem;">
@@ -50,7 +51,8 @@
 					navdata:''
 				},
 				methods: {
-					opennew: function(target) {
+					opennew: function(target,id) {
+						localStorage.setItem('id',id)
 						mui.openWindow({
 							url: './' + target + '.html',
 							id: target

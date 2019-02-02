@@ -25,6 +25,7 @@
 	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
+		var userid=localStorage.getItem('userid');
 		new Vue({
 			el:'.wrapper',
 			data:{
@@ -54,7 +55,7 @@
 				url : url + 'shopsmain/?service=FootGoods.getFoot',
 				datatype : 'json',
 				data : {
-					userid : 60
+					userid : userid
 				},
 				success : function(data){
 					console.log(data)
@@ -70,7 +71,7 @@
 											${obj.goodsname}
 										</div>
 										<div class="shop-money">
-											<div class="shop-price">￥266</div>
+											<div class="shop-price">￥${obj.goodsprices}</div>
 										</div>
 									</div>
 								</div>

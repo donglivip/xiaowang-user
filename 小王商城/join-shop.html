@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
@@ -9,14 +8,11 @@
 		<link rel="stylesheet" type="text/css" href="css/main.css" />
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 	</head>
-
 	<body>
 		<div class="wrapper joinshop">
 			<!--头部-->
 			<div class="header">
-				<div class="aside">
-					
-				</div>
+				<div class="aside"></div>
 				<div class="head-main">
 					商家入驻
 				</div>
@@ -27,6 +23,7 @@
 				<input type="number" placeholder="手机号" v-model="userphone" />
 				<input type="text" placeholder="密码" v-model="pwd" />
 				<input type="text" placeholder="身份证号码" v-model="usernum" />
+				<div @click="opennew('agreement')" style="height: .5rem;display: flex;justify-content: flex-end;padding-right: .2rem;">登陆即视为同意 <strong>《拼股注册协议》</strong></div>
 				<div class="bottom" @click="myajax">
 					<span>注册</span>
 				</div>
@@ -79,10 +76,11 @@
 			},
 			methods: {
 				opennew: function(target) {
-					mui.openWindow({
-						url: './' + target + '.html',
-						id: target
-					})
+//					mui.openWindow({
+//						url: './' + target + '.html',
+//						id: target
+//					});
+					window.location.href=target+'.html';
 				},
 				myajax: function() {
 					var that = this
@@ -102,20 +100,26 @@
 						dataType: 'json',
 						success: function(res) {
 							if(res.data.code == 1) {
-								plus.nativeUI.toast('欢迎您加入拼股商城')
-								mui.openWindow({
-									url: './usercenter.html',
-									id: 'usercenter'
-								})
+								plus.nativeUI.toast('欢迎您加入拼股商城');
 							} else {
-								alert('操作失败')
+								alert(res.msg)
 							}
 						}
 					});
 				}
 			},
 			mounted: function() {
-
+					var that=this
+					function plusReady() {
+						if(localStorage.getItem('userid') == null || localStorage.getItem('userid') == 'null') {
+							that.opennew('mlogin')
+						}
+					}
+					if(window.plus) {
+						plusReady();
+					} else {
+						document.addEventListener("plusready", plusReady, false);
+					}
 			}
 		})
 	</script>

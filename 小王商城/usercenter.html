@@ -14,8 +14,8 @@
 		<div class="wrapper usercenter">
 			<!--头部-->
 			<div class="header">
-				<div class="aside" >
-					
+				<div class="aside" style="position: relative;left: .24rem;white-space: nowrap;" @click="opennew('partner')">
+					合伙人入驻
 				</div>
 				<div class="head-main">
 					个人中心
@@ -25,7 +25,7 @@
 				</div>
 			</div>
 			<!--中间主体-->
-			<div class="main">
+			<div class="main" v-if="navdata!=''">
 				<div class="center-top">
 					<img :src="avatar" class="avatar" @click="opennew('setting')" />
 					<div class="name-box">
@@ -34,7 +34,7 @@
 							<div class="phone">
 								{{name}}
 							</div>
-							<!--<div class="state">拼股会员</div>-->
+							<div class="state">拼股会员</div>
 						</div>
 					</div>
 				</div>
@@ -88,10 +88,10 @@
 					</div>
 				</div>
 				<div class="nav-tab02">
-					<div class="nav" @click="opennew('discount')">
+					<!--<div class="nav" @click="opennew('discount')">
 						<div class="num"><img src="img/count.png" /></div>
 						<div class="num">优惠券</div>
-					</div>
+					</div>-->
 					<div class="nav" @click="opennew('collect')">
 						<div class="num"><img src="img/collect01.png" /></div>
 						<div class="num">我的收藏</div>
@@ -105,10 +105,10 @@
 						<div class="num">收货地址</div>
 					</div>
 				</div>
-				<div class="user-tab" @click="opennew('share')">
+				<!--<div class="user-tab" @click="opennew('share')">
 					<img src="img/user01.png" class="logo" />
 					<div class="tab-text">邀请好友赚取收益金</div>
-				</div>
+				</div>-->
 				<div class="user-tab" @click="opennew('rname')">
 					<img src="img/user02.png" class="logo" />
 					<div class="tab-text">认证中心</div>
@@ -173,15 +173,16 @@
 					navdata: '',
 					ordernum: 0,
 					ordernum02: 0,
-					ordernum03:0,
-					ordernum04:0
+					ordernum03: 0,
+					ordernum04: 0
 				},
 				methods: {
 					opennew: function(target) {
-						mui.openWindow({
-							url: './' + target + '.html',
-							id: target
-						})
+//						mui.openWindow({
+//							url: './' + target + '.html',
+//							id: target
+//						})
+						window.location.href=target+".html"
 					},
 					myajax: function() {
 						//						获取用户信息
@@ -195,6 +196,7 @@
 							},
 							dataType: 'json',
 							success: function(res) {
+								console.log(JSON.stringify(localStorage.getItem('userid')))
 								that.navdata = res.data
 							}
 						});
@@ -228,7 +230,7 @@
 								that.ordernum02 = res.data.length
 							}
 						});
-//						获取购物车
+						//						获取购物车
 						$.ajax({
 							type: 'POST',
 							url: url + 'shopsmain/?service=Cart.getCartList',
@@ -242,7 +244,7 @@
 								that.ordernum03 = data.data.length
 							}
 						});
-//						退货
+						//						退货
 						$.ajax({
 							type: "post",
 							url: url + "shopsmain/?service=Order.getUserOrder",
@@ -261,12 +263,20 @@
 					}
 				},
 				mounted: function() {
-					if(localStorage.getItem('userid') == null || localStorage.getItem('userid') == 'null') {
-						window.location.href = 'mlogin.html'
-					} else {
-						this.myajax()
+					var that=this
+					that.myajax()
+					function plusReady() {
+						if(localStorage.getItem('userid') == null || localStorage.getItem('userid') == 'null') {
+							that.opennew('mlogin')
+						} else {
+							that.myajax()
+						}
 					}
-
+					if(window.plus) {
+						plusReady();
+					} else {
+						document.addEventListener("plusready", plusReady, false);
+					}
 				}
 			})
 		</script>

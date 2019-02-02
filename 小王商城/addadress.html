@@ -1,30 +1,31 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
-		<link rel="stylesheet" type="text/css" href="css/main.css"/>
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
-		 <link href="css/layout.min.css" rel="stylesheet" />
-	    <link href="css/scs.min.css" rel="stylesheet" />
-	    <style>
-	    #myAddrs {
-	        width: 128%;
-	        font-size: 16px;
-	        border-radius: 4px;
-	        color: gray;
-	        float: right;
-	    }
-	    </style>
+		<link rel="stylesheet" type="text/css" href="css/jquery.weui.css" />
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<style>
+			#myAddrs {
+				width: 128%;
+				font-size: 16px;
+				border-radius: 4px;
+				color: gray;
+				float: right;
+			}
+		</style>
 	</head>
+
 	<body>
 		<div class="wrapper joinshop joinpartner">
 			<!--头部-->
 			<div class="header">
 				<div class="aside mui-action-back">
-					<img src="img/Shape.png" class="back"/>
+					<img src="img/Shape.png" class="back" />
 				</div>
 				<div class="head-main">
 					新增收货地址
@@ -32,232 +33,76 @@
 				<div class="aside"></div>
 			</div>
 			<div class="main">
-				<input type="text" placeholder="收货人姓名" class="name"/>
-				<input type="number" placeholder="手机号码" class="phone"/>
+				<input type="text" placeholder="收货人姓名" class="name" />
+				<input type="number" placeholder="手机号码" class="phone" />
 				<div class="input-group">
-				    <input type="text" readonly placeholder="单机选择地址" id="myAddrs" name="addr" data-key="4-84-1298" value="山西省 太原市 万柏林区"/>
-					<img src="img/arrright.png"/>
+					<input type="text" readonly id='city-picker' placeholder='请选择省市区县'  />
+					<img src="img/arrright.png" />
 				</div>
-				<input type="text" placeholder="详细地址" class="detailed"/>
+				<input type="text" placeholder="详细地址" class="detailed" />
 			</div>
 			<div class="bottom">
 				<span class="add">确认添加</span>
 			</div>
 		</div>
 	</body>
+	
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jquery.min.js"></script>
-    <script src="js/jquery.scs.min.js"></script>
-    <script src="js/config.js"></script>
-
-    <script>
-    $(function() {
-        var addr_arr = new Array();
-        var ar = new Array();
-        (function(){
-                $.ajax({
-                    type : 'POST',
-                    url : url + 'shopsmain/?service=Region.selectCrity',
-                    datatype : 'json',
-                    success : function(data){
-                        var date = data.data;
-                        // 一级城市号码
-                        var i = 1;
-                        // 二级城市号码
-                        var j = 500;
-                        // 三级城市号码
-                        var l = 1000;
-                        $.each(date,function(idx,obj){
-                            var arr = new Array();
-                            arr[0] = i;
-                            arr[1] = obj.name;
-                            ar.push(arr);
-                            var three = new Array();
-                            // 二级城市遍历
-                            for (var m = 0; m < obj.sub.length; m++) {
-                                var city = new Array();
-                                var er = new Array();
-                                city[0] = j;
-                                city[1] = obj.sub[m].name;
-                                er.push(city);
-                                addr_arr[i] = er;
-                                // 三级城市遍历
-                                for (var n = 0; n < obj.sub[m].sub.length; n++) {
-                                    var area = new Array();
-                                    area[0] = l;
-                                    area[1] = obj.sub[m].sub[n].name;
-                                    area[2] = obj.sub[m].sub[n].id;
-                                    three.push(area);
-                                    addr_arr[j] = three;
-                                }
-                                j++;
-                            }
-                            i++;
-                        });
-                        addr_arr[0] = ar;
-                    },
-                    error : function (){
-                        alert('接收失败');
-                    },
-
-                });
-            })();
-
-
-        /**
-         * 通过数组id获取地址列表数组
-         *
-         * @param {Number} id
-         * @return {Array} 
-         */ 
-        function getAddrsArrayById(id) {
-            var results = [];
-            if (addr_arr[id] != undefined)
-                addr_arr[id].forEach(function(subArr) {
-                    results.push({
-                        key: subArr[0],
-                        val: subArr[1]
-                    });
-                });
-            else {
-                return;
-            }
-            return results;
-        }
-        /**
-         * 通过开始的key获取开始时应该选中开始数组中哪个元素
-         *
-         * @param {Array} StartArr
-         * @param {Number|String} key
-         * @return {Number} 
-         */         
-        function getStartIndexByKeyFromStartArr(startArr, key) {
-            var result = 0;
-            if (startArr != undefined)
-                startArr.forEach(function(obj, index) {
-                    if (obj.key == key) {
-                        result = index;
-                        return false;
-                    }
-                });
-            return result;
-        }
-
-        //bind the click event for 'input' element
-        $("#myAddrs").click(function() {
-            var PROVINCES = [],
-                startCities = [],
-                startDists = [];
-            //Province data，shall never change.
-            addr_arr[0].forEach(function(prov) {
-                PROVINCES.push({
-                    key: prov[0],
-                    val: prov[1]
-                });
-            });
-            //init other data.
-            var $input = $(this),
-                dataKey = $input.attr("data-key"),
-                provKey = 1, //default province 北京
-                cityKey = 36, //default city 北京
-                distKey = 37, //default district 北京东城区
-                distStartIndex = 0, //default 0
-                cityStartIndex = 0, //default 0
-                provStartIndex = 0; //default 0
-
-            if (dataKey != "" && dataKey != undefined) {
-                var sArr = dataKey.split("-");
-                if (sArr.length == 3) {
-                    provKey = sArr[0];
-                    cityKey = sArr[1];
-                    distKey = sArr[2];
-
-                } else if (sArr.length == 2) { //such as 台湾，香港 and the like.
-                    provKey = sArr[0];
-                    cityKey = sArr[1];
-                }
-                startCities = getAddrsArrayById(provKey);
-                startDists = getAddrsArrayById(cityKey);
-                provStartIndex = getStartIndexByKeyFromStartArr(PROVINCES, provKey);
-                cityStartIndex = getStartIndexByKeyFromStartArr(startCities, cityKey);
-                distStartIndex = getStartIndexByKeyFromStartArr(startDists, distKey);
-            }
-            var navArr = [{//3 scrollers, and the title and id will be as follows:
-                title: "省",
-                id: "scs_items_prov"
-            }, {
-                title: "市",
-                id: "scs_items_city"
-            }, {
-                title: "区",
-                id: "scs_items_dist"
-            }];
-            SCS.init({
-                navArr: navArr,
-                onOk: function(selectedKey, selectedValue) {
-                    $input.val(selectedValue).attr("data-key", selectedKey);
-                }
-            });
-            var distScroller = new SCS.scrollCascadeSelect({
-                el: "#" + navArr[2].id,
-                dataArr: startDists,
-                startIndex: distStartIndex
-            });
-            var cityScroller = new SCS.scrollCascadeSelect({
-                el: "#" + navArr[1].id,
-                dataArr: startCities,
-                startIndex: cityStartIndex,
-                onChange: function(selectedItem, selectedIndex) {
-                    distScroller.render(getAddrsArrayById(selectedItem.key), 0); //re-render distScroller when cityScroller change
-                }
-            });
-            var provScroller = new SCS.scrollCascadeSelect({
-                el: "#" + navArr[0].id,
-                dataArr: PROVINCES,
-                startIndex: provStartIndex,
-                onChange: function(selectedItem, selectedIndex) { //re-render both cityScroller and distScroller when provScroller change
-                    cityScroller.render(getAddrsArrayById(selectedItem.key), 0);
-                    distScroller.render(getAddrsArrayById(cityScroller.getSelectedItem().key), 0);
-                }
-            });
-        });
-    });
-
-	$(function(){
-		$('.add').click(function(){
-			var name = $('.name').val();
-            var phone = $('.phone').val();
-			var detailed = $('.detailed').val();
-			if(name==''||phone==''||detailed==''){
-				plus.nativeUI.toast('信息填写不完整！')
-				return false;
-			}
-			 $.ajax({
-                    type : 'POST',
-                    url : url + 'shopsmain/?service=Harvestaddress.addAddress',
-                    datatype : 'json',
-                    data : {
-                    	userid : localStorage.getItem('userid'),
-                    	username : name,
-                    	address : $('#myAddrs').val() + detailed,
-                    	userphone : phone
-                    },
-                    success : function(res){
-                    	plus.nativeUI.toast('成功');
-                    	mui.back()
-                    },
-                    error : function(){
-                    	alert('错误');
-                    },
-            });
-		});
-	})
-
-	function page(target, id) {
-		mui.openWindow({
-			url: './' + target + '.html',
-			id: target
+	<script src="js/config.js"></script>
+	<script src="js/jquery.weui.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/city-picker.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/layer.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		$(function() {
+			$("#city-picker").cityPicker({
+		        title: "选择省市区/县",
+		        onChange: function (picker, values, displayValues) {
+		            console.log(displayValues);
+		        }
+		    });
+			$('.add').click(function() {
+				var name = $('.name').val();
+				var phone = $('.phone').val();
+				var detailed = $('.detailed').val();
+				if(name == '' || phone == '' || detailed == '') {
+					plus.nativeUI.toast('信息填写不完整！')
+					return false;
+				};
+				$.ajax({
+					type: 'POST',
+					url: url + 'shopsmain/?service=Harvestaddress.addAddress',
+					datatype: 'json',
+					data: {
+						userid: localStorage.getItem('userid'),
+						username: name,
+						address: $('#city-picker').val() + detailed,
+						userphone: phone
+					},
+					success: function(res) {
+						plus.nativeUI.toast('成功');
+						setInterval(function(){
+//							mui.openWindow({
+//								url: './adress.html' ,
+//								id: 'adress'
+//							})
+							window.location.href='adress.html'
+						},500)
+						
+					},
+					error: function() {
+						alert('错误');
+					},
+				});
+			});
 		})
-	}
-    </script>
+
+		function page(target, id) {
+			mui.openWindow({
+				url: './' + target + '.html',
+				id: target
+			})
+		}
+	</script>
+
 </html>

@@ -3,7 +3,7 @@
     "id": "H5CF5E194",/*应用的标识，创建应用时自动生成，勿手动修改*/
     "name": "小王商城",/*应用名称，程序桌面图标名称*/
     "version": {
-        "name": "6.5",/*应用版本名称*/
+        "name": "6.8.8",/*应用版本名称*/
         "code": ""
     },
     "description": "",/*应用描述信息*/
@@ -158,7 +158,8 @@
 				"refer": [
 					"nav.html",
 					"store.html",
-					"join-shop.html"
+					"join-shop.html",
+					"index.html"
 				],
 				"priority": 0
 			},
@@ -175,7 +176,8 @@
 					"return.html",
 					"shopcart.html",
 					"collect.html",
-					"index.html"
+					"index.html",
+					"newcenter.html"
 				],
 				"priority": 0
 			},
@@ -224,6 +226,21 @@
 				"resources": [],
 				"refer": [
 					"shop.html"
+				],
+				"priority": 0
+			},
+			"nav03.html": {
+				"resources": [],
+				"refer": [
+					"nav01.html"
+				],
+				"priority": 0
+			},
+			"newcenter.html": {
+				"resources": [],
+				"refer": [
+					"shopcart.html",
+					"usercenter.html"
 				],
 				"priority": 0
 			}
@@ -340,7 +357,6 @@
 				"css/layout.min.css",
 				"img/Authorization_success@3x.png",
 				"orderdetail.html",
-				"newcenter.html",
 				"img/nav10.png",
 				"img/user03.png",
 				"img/bottom02-active.png",

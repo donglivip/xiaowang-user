@@ -8,13 +8,14 @@
 			"rob.html",
 			"usercenter.html",
 			"list.html",
+			"shopcart.html",
+			"shop.html",
+			"nav.html",
+			"mlogin.html",
 			"nav02.html",
 			"profit.html",
-			"shop.html",
-			"mygold.html",
-			"myprofit.html",
-			"nav.html",
-			"join-shop.html"
+			"join-shop.html",
+			"myprofit.html"
 		],
 		"resources": []
 	},
@@ -34,8 +35,7 @@
 			"newcenter.html",
 			"usercenter.html",
 			"nav.html",
-			"index.html",
-			"join-shop.html"
+			"index.html"
 		],
 		"resources": []
 	},
@@ -43,7 +43,10 @@
 		"refer": [
 			"store.html",
 			"usercenter.html",
-			"nav.html"
+			"nav.html",
+			"nearby.html",
+			"shop.html",
+			"index.html"
 		],
 		"resources": []
 	},
@@ -61,8 +64,11 @@
 			"myprofit.html",
 			"newcenter.html",
 			"mygold.html",
-			"mlogin.html",
 			"return.html",
+			"adress.html",
+			"shopjoin.html",
+			"mlogin.html",
+			"join-shop.html",
 			"collect.html"
 		],
 		"resources": []
@@ -94,10 +100,9 @@
 	"shop.html": {
 		"refer": [
 			"store.html",
-			"allrating.html",
 			"shopcart.html",
-			"chat.html",
-			"share.html"
+			"adress.html",
+			"chat.html"
 		]
 	},
 	"store.html": {
@@ -109,8 +114,10 @@
 	"nav.html": {
 		"refer": [
 			"nearby.html",
-			"join-shop.html",
-			"nav02.html"
+			"usercenter.html",
+			"nav02.html",
+			"index.html",
+			"join-shop.html"
 		]
 	},
 	"integral.html": {
@@ -129,7 +136,36 @@
 		"refer": [
 			"new-gonggao.html",
 			"chat.html",
-			"new-order.html"
+			"new-order.html",
+			"shopcart.html",
+			"usercenter.html"
+		]
+	},
+	"mlogin.html": {
+		"refer": [
+			"index.html",
+			"wplogin.html",
+			"plogin.html",
+			"agreement.html"
+		]
+	},
+	"order.html": {
+		"refer": [
+			"orderdetail.html"
+		]
+	},
+	"shopjoin.html": {
+		"refer": [
+			"join-shop.html"
+		]
+	},
+	"join-shop.html": {
+		"refer": [
+			"usercenter.html",
+			"index.html",
+			"nav.html",
+			"mlogin.html",
+			"nearby.html"
 		]
 	},
 	"nav02.html": {
@@ -137,15 +173,31 @@
 			"nav01.html"
 		]
 	},
-	"join-shop.html": {
+	"nav01.html": {
 		"refer": [
-			"usercenter.html",
-			"index.html"
+			"shop.html"
 		]
 	},
-	"mlogin.html": {
+	"adress.html": {
 		"refer": [
-			"index.html"
+			"addadress.html"
+		]
+	},
+	"collect.html": {
+		"refer": [
+			"shop.html"
+		]
+	},
+	"plogin.html": {
+		"refer": [
+			"agreement.html",
+			"index.html",
+			"mlogin.html"
+		]
+	},
+	"nav03.html": {
+		"refer": [
+			"nav01.html"
 		]
 	}
 }

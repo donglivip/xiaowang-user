@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<link rel="stylesheet" type="text/css" href="css/bug.css" />
+		<link rel="stylesheet" type="text/css" href="css/swiper-3.4.2.min.css" />
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div class="wrapper">
+			<div class="header header02">
+				<div class="aside mui-action-back">
+					<img src="img/Shape.png" class="back" />
+				</div>
+				<div class="head-main" style="background: none;">
+					分类
+				</div>
+				<div class="aside"></div>
+			</div>
+			<div class="main" style="height: calc(100% - .8rem);">
+				<div class="nav02">
+					<div class="nav-tab" @click="nav01show">
+						<span>{{goodsTypename}}</span>
+						<img src="img/Arrow_up.png" />
+					</div>
+					<div class="nav-tab" @click="nav02show">
+						<span>{{regionId}}</span>
+						<img src="img/Arrow_up.png" />
+					</div>
+					<div class="nav-tab" @click="nav03show">
+						<span>{{marketIdname}}</span>
+						<img src="img/Arrow_up.png" />
+					</div>
+					<div class="nav-tab" @click="nav04show">
+						<span>{{goodsType2name}}</span>
+						<img src="img/Arrow_up.png" />
+					</div>
+				</div>
+				<div class="adver-main">
+					<div class="swiper-container">
+						<div class="swiper-wrapper" id="wrapper">
+							<div class="swiper-slide" v-for='val in navdata02' @click="openshop(val.storeinfoid)" style="height: 3rem;overflow: hidden;">
+								<img :src="val.shopicon" class="slide02" style="height: auto;width: 100%;"/>
+							</div>
+						</div>
+						<div class="swiper-pagination"></div>
+					</div>
+					<div class="adver-box">
+						<div class="adver-tab" v-for='val in navdata' @click="openshop(val.storeinfoid)">
+							<img :src="val.shopicon"/>
+							<div class="text">{{val.n_advertising_market_name}}</div>
+						</div>
+					</div>
+				</div>
+				<!--选择行业-->
+				<div class="botton-nav" v-show="nav01boo" @click="nav01show">
+					<div class="bottom-main">
+						<div class="bottom-tab" @click="changenav01('#','全部行业')" :class="goodsTypeid=='#'?'active02':''">
+							全部行业
+						</div>
+						<div class="bottom-tab" v-for="val in nav01" @click="changenav01(val.goodsid,val.goodsname)" :class="goodsTypeid==val.goodsid?'active02':''">
+							{{val.goodsname}}
+						</div>
+					</div>
+				</div>
+				<!--选择地区-->
+				<div class="botton-nav adresschange" v-show="nav02boo" @click="nav02show">
+					<div class="bottom-main">
+						<div class="left">
+							<div class="left-tab" @click.stop="change(index)" v-for="(val,index) in adressdata" :class="index==myindex?'active':''">
+								<span>
+							{{val.name}}
+						</span>
+							</div>
+						</div>
+						<div class="left">
+							<div class="left-tab" v-for="(val,index) in adressdata[myindex].sub" @click.stop="changesub(index)" :class="index==subindex?'active':''">
+								{{val.name}}
+							</div>
+						</div>
+						<div class="right">
+							<div class="rihgt-tab" v-for="(val,index) in adressdata[myindex].sub[subindex].sub" @click="changeadress(val.id,val.name)">
+								{{val.name}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--全部市场-->
+				<div class="botton-nav" v-show="nav03boo" @click="nav03show">
+					<div class="bottom-main">
+						<div class="bottom-tab" @click="changenav03('#','全部市场')" :class="marketIdid=='#'?'active02':''">
+							全部市场
+						</div>
+						<div class="bottom-tab" v-for="val in nav03" @click="changenav03(val.n_advertising_market_id,val.n_advertising_market_name)" :class="marketIdid==val.n_advertising_market_id?'active02':''">
+							{{val.n_advertising_market_name}}
+						</div>
+					</div>
+				</div>
+				<!--二级行业-->
+				<div class="botton-nav" v-show="nav04boo" @click="nav04show">
+					<div class="bottom-main">
+						<div class="bottom-tab" @click="changenav04('#','全部分类')" :class="goodsType2id=='#'?'active02':''">
+							全部分类
+						</div>
+						<div class="bottom-tab" v-for="val in nav04" @click="changenav04(val.goodsid,val.goodsname)" :class="goodsType2id==val.goodsid?'active02':''">
+							{{val.goodsname}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/swiper-3.4.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		new Vue({
+			el: '.wrapper',
+			data: {
+				goodsTypename: '全部行业',
+				goodsTypeid: '#',
+				goodsType2name: '全部分类',
+				goodsType2id: '#',
+				regionId: localStorage.getItem('adressname'),
+				marketIdname: '全部市场',
+				marketIdid: '#',
+				adressdata: '',
+				myindex: 0,
+				subindex: 0,
+				navdata: [],
+				navdata02: [],
+				nav01: [],
+				nav01boo: false,
+				nav02: [],
+				nav02boo: false,
+				nav03: [],
+				nav03boo: false,
+				nav04: [],
+				nav04boo: false
+			},
+			methods: {
+				openshop: function(id) {
+					localStorage.setItem('storeinfoid', id)
+					mui.openWindow({
+						url: './store.html',
+						id: 'store'
+					})
+				},
+				nav04show: function() {
+					if(this.goodsTypeid != '#') {
+						this.nav04boo = !this.nav04boo
+						this.myajax()
+					} else {
+						plus.nativeUI.toast('请先选择所属行业')
+					}
+
+				},
+				changenav04:function(id, name){
+					this.goodsType2id = id
+					this.goodsType2name = name
+					localStorage.setItem('goodsid01',id)
+					mui.openWindow({
+						url: './nav01.html',
+						id: 'nav01'
+					})
+				},
+				changenav03: function(id, name) {
+					this.marketIdid = id
+					this.marketIdname = name
+					this.myajax()
+				},
+				nav01show: function() {
+					this.nav01boo = !this.nav01boo
+				},
+				opennew: function(target) {
+					mui.openWindow({
+						url: './' + target + '.html',
+						id: target,
+						createNew: true
+					})
+				},
+				changenav01: function(id, name) {
+					this.goodsTypeid = id
+					this.goodsTypename = name
+					this.myajax()
+				},
+				nav02show: function() {
+					this.nav02boo = !this.nav02boo
+				},
+				changeadress: function(id, name) {
+					localStorage.setItem('adressid', id)
+					localStorage.setItem('adressname', name)
+					this.regionId = name
+					this.myajax()
+				},
+				changesub: function(index) {
+					this.subindex = index
+				},
+				change: function(index) {
+					this.myindex = index
+				},
+				nav03show: function() {
+					this.nav03boo = !this.nav03boo
+				},
+				myajax: function() {
+					var that = this
+					//					获取广告列表
+					var ajaxjson = {
+						page: 1,
+						limit: 10,
+						goodsType: that.goodsTypeid,
+						goodsType2: that.goodsType2id,
+						regionId: localStorage.getItem('adressid'),
+						marketId: that.marketIdid
+					}
+					$.ajax({
+						type: "get",
+						url: url + "shopsmain/?service=Advertising.showList",
+						dataType: 'json',
+						data: ajaxjson,
+						success: function(res) {
+							that.navdata = res.data
+						}
+					});
+					//					获取广告轮播图
+					$.ajax({ 
+						type: "get",
+						url: url + "shopsmain/?service=Advertising.showSlide",
+						dataType: 'json',
+						data: ajaxjson,
+						success: function(res) {
+							that.navdata02 = res.data
+						}
+					});
+					//					获取一级分类
+					$.ajax({
+						type: "get",
+						url: url + "shopsmain/?service=Advertising.getType1",
+						dataType: 'json',
+						success: function(res) {
+							that.nav01 = res.data
+						}
+					});
+					//					获取二级分类
+					$.ajax({
+						type: "get",
+						url: url + "shopsmain/?service=Advertising.getType1",
+						dataType: 'json',
+						success: function(res) {
+							that.nav02 = res.data
+						}
+					});
+					//					获取地区
+					$.ajax({
+						type: "POST",
+						url: url + 'shopsmain/?service=Region.selectCrity',
+						datatype: 'json',
+						success: function(res) {
+							that.adressdata = res.data
+						}
+					});
+					//					获取市场
+					$.ajax({
+						type: "get",
+						url: url + "shopsmain/?service=Advertising.getMarketToRegion",
+						dataType: 'json',
+						data: {
+							regionId: localStorage.getItem('adressid')
+						},
+						success: function(res) {
+							that.nav03 = res.data
+						}
+					});
+					//					获取二级分类
+					$.ajax({
+						type: "get",
+						url: url + "shopsmain/?service=Advertising.getType2",
+						dataType: 'json',
+						data: {
+							typeId: that.goodsTypeid
+						},
+						success: function(res) {
+							that.nav04 = res.data
+						}
+					});
+
+				}
+			},
+			mounted: function() {
+				this.myajax()
+			},
+			updated: function() {
+				new Swiper('.swiper-container', {
+					autoplay: 3000, //可选选项，自动滑动
+					pagination: '.swiper-pagination'
+				})
+			}
+		})
+	</script>
+
+</html>

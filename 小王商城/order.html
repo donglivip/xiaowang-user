@@ -10,8 +10,15 @@
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 	<style type="text/css">
-		.haveorder{display: flex;align-items: center;justify-content: center;border-radius: .2rem;padding: 0 .3rem;}
+		.haveorder {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: .2rem;
+			padding: 0 .3rem;
+		}
 	</style>
+
 	<body>
 		<div class="wrapper myorder">
 			<!--头部-->
@@ -40,12 +47,16 @@
 					<div class="nav-tab" :class="myindex=='notPingJia'?'active':''" @click="navchange('notPingJia')">
 						<span>待评价</span>
 					</div>
+					<div class="nav-tab" :class="myindex=='isOver'?'active':''" @click="navchange('isOver')">
+						<span>已完成</span>
+					</div>
 				</div>
 				<div class="order-main">
 					<div class="order-box" v-for="(val,index) in mydata" @click="opendetail(val.oderno)">
-						<div class="order-top">
+						<div class="order-top" style="display: flex;">
 							<img :src="val.storeinfor.shopicon" class="avatar" />
 							<div class="shop-name">{{val.shopname}}</div>
+							<a :href="['tel:'+val.storeinfor.loginname+'']" style="flex: 1;text-align: right;margin-right: .2rem;">联系商家</a>
 						</div>
 						<div class="order-wrapepr" v-for="item in val.goodsList">
 							<img :src="item.pricon" class="shop-img" />
@@ -68,9 +79,16 @@
 							<div class="noorder" @click.stop="settingorder('canel',val.oderno)">取消订单</div>
 							<div class="haveorder" @click.stop="pay(val.ordernum)">立即支付</div>
 						</div>
-						<div class="setting" v-if="myindex=='notShouHuo'">
+						<div class="setting" v-if="myindex=='notFaHuo'">
 							<div class="noorder" style="border: 0;"></div>
-							<div class="haveorder"  @click.stop="settingorder('isOver',val.oderno)">确认收货</div>
+							<div class="haveorder" @click.stop="backorder(val.oderno,val.goodsList)">退款</div>
+						</div>
+						<div class="setting" v-if="myindex=='notPingJia'">
+							<div class="noorder" @click.stop="after(val.oderno,val.goodsList)">退换/售后</div>
+						</div>
+						<div class="setting" v-if="myindex=='notShouHuo'">
+							<div class="noorder" @click.stop="after(val.oderno,val.goodsList)">退换/售后</div>
+							<div class="haveorder" @click.stop="settingorder('isOver',val.oderno)">确认收货</div>
 						</div>
 					</div>
 				</div>
@@ -86,27 +104,45 @@
 			data: {
 				myindex: 'notPay',
 				mydata: [],
-				channel:''
+				channel: ''
 			},
 			methods: {
-				opendetail:function(id){
-					localStorage.setItem('orderno',id)
+				backorder:function(id,list){
+					var mylist = []
+					localStorage.setItem('oderno', id)
+					for(var i = 0; i < list.length; i++) {
+						mylist.push(list[i].goodsid)
+					}
+					localStorage.setItem('mylist', JSON.stringify(mylist))
+					this.opennew('afterScale02')
+				},
+				after: function(id, list) {
+					var mylist = []
+					localStorage.setItem('oderno', id)
+					for(var i = 0; i < list.length; i++) {
+						mylist.push(list[i].goodsid)
+					}
+					localStorage.setItem('mylist', JSON.stringify(mylist))
+					this.opennew('afterScale')
+				},
+				opendetail: function(id) {
+					localStorage.setItem('orderno', id)
 					this.opennew('orderdetail')
 				},
-				rating:function(id,id02){
-					localStorage.setItem('oderno',this.mydata[id].oderno)
-					localStorage.setItem('shopid',id02)
+				rating: function(id, id02) {
+					localStorage.setItem('oderno', this.mydata[id].oderno)
+					localStorage.setItem('shopid', id02)
 					this.opennew('rating')
 				},
-				settingorder:function(type,id){
-					var that=this
+				settingorder: function(type, id) {
+					var that = this
 					$.ajax({
 						type: "post",
 						url: url + 'shopsmain/?service=Order.setOrderState',
 						async: true,
 						data: {
 							oderno: id,
-							type:type
+							type: type
 						},
 						success: function(data) {
 							console.log(data)
@@ -115,18 +151,21 @@
 					});
 				},
 				pay: function(num) {
-					var that=this
+					var that = this
 					$.ajax({
 						type: "post",
 						url: url + 'shopsmain/?service=Pay.GoodsPay',
 						async: true,
 						data: {
-							orderNumber: JSON.stringify([{"ordernumber":num,"orderfrom":0}])
+							orderNumber: JSON.stringify([{
+								"ordernumber": num,
+								"orderfrom": 0
+							}])
 						},
 						success: function(data) {
 							plus.payment.request(that.channel[0], data, function(result) {
 								plus.nativeUI.alert("支付成功！", function() {
-
+									that.myajax()
 								});
 							}, function(error) {});
 						}
@@ -156,7 +195,6 @@
 						},
 						dataType: 'json',
 						success: function(res) {
-							console.log(res)
 							that.mydata = res.data
 						}
 					});
@@ -165,20 +203,20 @@
 			mounted: function(res) {
 				this.myajax()
 				var that = this
-					// 1. 获取支付通道
-					function plusReady() {
-						// 获取支付通道
-						plus.payment.getChannels(function(channels) {
-							that.channel = channels;
-						}, function(e) {
-							alert("获取支付通道失败：" + e.message);
-						});
-					}
-					if(window.plus) {
-						plusReady();
-					} else {
-						document.addEventListener('plusready', plusReady, false);
-					}
+				// 1. 获取支付通道
+				function plusReady() {
+					// 获取支付通道
+					plus.payment.getChannels(function(channels) {
+						that.channel = channels;
+					}, function(e) {
+						alert("获取支付通道失败：" + e.message);
+					});
+				}
+				if(window.plus) {
+					plusReady();
+				} else {
+					document.addEventListener('plusready', plusReady, false);
+				}
 			}
 		})
 	</script>

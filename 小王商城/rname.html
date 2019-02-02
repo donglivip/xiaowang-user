@@ -61,7 +61,8 @@
 					}
 				},
 				mounted:function(){
-					
+					$('#name').val(localStorage.getItem('rname'))
+					$('#zname').val(localStorage.getItem('rphone'))
 				}
 			})
 
@@ -69,26 +70,38 @@
 				var name = $('#name').val();
 				var zname = $('#zname').val();
 				// console.log(name,zname);
-				$.ajax({
-					type : "POST",
-					url : url + 'shopsmain/?service=users.setzhifu',
-					datatype : "json",
-					data : {
-						account : zname,
-						name : name,
-						userid : 60,
-						paytype : "zfb"
-					},
-					success : function (data){
-						var date = data.data;
-						if (date) {
-							alert('绑定成功');
+				if(name!=''&&zname!=''){
+					$.ajax({
+						type : "POST",
+						url : url + 'shopsmain/?service=users.setzhifu',
+						datatype : "json",
+						data : {
+							account : zname,
+							name : name,
+							userid : localStorage.getItem('userid'),
+							paytype : "zfb"
+						},
+						success : function (data){
+							localStorage.setItem('rname',name)
+							localStorage.setItem('rphone',zname)
+							var date = data.data;
+							if (date) {
+								setInterval(function(){
+//									mui.openWindow({
+//										url: './usercenter.html' ,
+//										id: 'usercenter'
+//									})
+									window.location.href='usercenter.html'
+								},500)
+							}
+						},
+						error : function (){
+							alert('接收失败');
 						}
-					},
-					error : function (){
-						alert('接收失败');
-					}
-				});
+					});
+				}else{
+					alert("请输入完整信息！")
+				}
 			}
 
 		</script>

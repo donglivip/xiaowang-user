@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<title></title>
+	</head>
+
+	<body>
+		<div class="wrapper profit backorder">
+			<!--头部-->
+			<div class="header" style="background: #FFFFFF;">
+				<div class="aside mui-action-back">
+					<img src="img/Shape.png" class="back" />
+				</div>
+				<div class="head-main">
+					退换/售后
+				</div>
+				<div class="aside">
+
+				</div>
+			</div>
+			<!--中间主体-->
+			<div class="main big-main">
+				<div class="backorder-box">
+					<div class="backorder-top bbottom">
+						订单编号：{{orderId}}
+					</div>
+					<!--<input type="tel" v-model="tuikuan_kuaidi" placeholder="请输入退换货快递单号" style="height: .3rem;" />-->
+					<textarea v-model="content" placeholder="请输入退换/售后理由！"></textarea>
+				</div>
+				<div class="withdraw" @click="mysubmit">提交</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var myvue = new Vue({
+				el: '.wrapper',
+				data: {
+					orderId: localStorage.getItem('oderno'),
+					files: [],
+					content: '',
+					tuikuan_kuaidi: ''
+				},
+				methods: {
+					mysubmit: function() {
+						var that = this
+						$.ajax({
+							type: "post",
+							url: url + 'shopsmain/?service=TuiHuo.ShenQing',
+							dataType: 'json',
+							data: {
+								goodsId: localStorage.getItem('mylist'),
+								tuikuan_yuanyin: that.content,
+								ordernumber: that.orderId,
+								tuikuan_kuaidi: that.tuikuan_kuaidi
+							},
+							success: function(res) {
+								if(res.data == true) {
+									that.opennew('return')
+									plus.nativeUI.toast('发起成功')
+								} else {
+									plus.nativeUI.toast('发起失败')
+								}
+							}
+						});
+					},
+					opennew: function(target, id) {
+						mui.openWindow({
+							url: './' + target + '.html',
+							id: target
+						})
+					}
+				},
+				mounted: function() {
+
+				}
+			})
+		</script>
+	</body>
+
+</html>

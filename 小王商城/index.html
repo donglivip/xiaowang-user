@@ -8,6 +8,7 @@
 		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
 		<link rel="stylesheet" type="text/css" href="css/swiper-3.4.2.min.css" />
 		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<link rel="stylesheet" type="text/css" href="css/bug.css" />
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 
@@ -15,7 +16,7 @@
 		<div class="wrapper index" id="all">
 			<div class="header" v-if="headboo==false">
 				<div class="aside" @click="opennew('adresschange')">
-					<span>北京</span>
+					<span>{{cityname}}</span>
 					<img src="img/down.png" class="downup" />
 				</div>
 				<form class="head-main" @click="opennew('search')">
@@ -23,13 +24,13 @@
 					<input type="search" placeholder="请输入您要搜索的内容" />
 				</form>
 				<div class="aside" @click="opennew('newcenter')">
-					<div class="redcir"></div>
+					<div class="redcir" v-if="red"></div>
 					<img src="img/news.png" class="news" />
 				</div>
 			</div>
 			<div class="header header02" v-if="headboo==true">
 				<div class="aside" @click="opennew('adresschange')">
-					<span>北京</span>
+					<span>{{cityname}}</span>
 					<img src="img/Arrow_up.png" class="downup" />
 				</div>
 				<div class="head-main">
@@ -37,22 +38,24 @@
 					<input type="text" placeholder="请输入您要搜索的内容" @blur="inputsubmit" />
 				</div>
 				<div class="aside" @click="opennew('newcenter')">
-					<div class="redcir"></div>
+					<div class="redcir" v-if="red"></div>
 					<img src="img/Mail.png" class="news" />
 				</div>
 			</div>
 			<div class="main index-main" @scroll="myscroll">
 				<!--轮播图-->
 				<div class="swiper-container">
-					<div class="swiper-wrapper">
-						<div class="swiper-slide"><img src="img/index.jpg" class="slide0" /></div>
-						<div class="swiper-slide"><img src="img/index.jpg" class="slide1" /></div>
-						<div class="swiper-slide"><img src="img/index.jpg" class="slide2" /></div>
+					<div class="swiper-wrapper" id="wrapper">
+
 					</div>
 					<div class="swiper-pagination"></div>
 				</div>
 				<!--分类-->
 				<div class="nav-box">
+					<!--<div class="nav" @click="opennew('rob')">
+						<img src="img/nav01.png" class="nav-img" />
+						<div class="nav-text">限时抢购</div>
+					</div>-->
 					<div class="nav" @click="opennav(val.goodsid)" v-for="(val,index) in navdata" v-if="index<11&&index>0">
 						<img :src="val.icon" class="nav-img" />
 						<div class="nav-text">{{val.goodsname}}</div>
@@ -60,6 +63,18 @@
 				</div>
 				<!--广告图-->
 				<!--<img src="img/index.jpg" class="advaer" @click="opennew('myprofit')" />-->
+				<!--广告区-->
+				<div class="index-top">
+					<div class="hr"></div>
+					<div class="text">广告区</div>
+					<div class="hr"></div>
+				</div>
+				<div class="adver-box">
+					<div class="adver-tab" v-for="val in navdata02" @click="openshop(val.storeinfoid)">
+						<img :src="val.shopicon"/>
+						<span class="text">{{val.n_advertising_market_name}}</span>
+					</div>
+				</div>
 				<!--为您推荐-->
 				<div class="index-top">
 					<div class="hr"></div>
@@ -121,12 +136,147 @@
 			el: '.wrapper',
 			data: {
 				headboo: false,
-				navdata: ''
+				navdata: '',
+				red: false,
+				cityname: localStorage.getItem('adressname'),
+				navdata02: '',
 			},
 			mounted: function() {
+
+				$(function() {
+					conveying(1);
+					// 首页推荐上的图
+					$.ajax({
+						type: "POST",
+						url: url + 'shopsmain/?service=Advertising.getAdverToId',
+						datadype: "json",
+						data: {
+							adposid: 3
+						},
+						success: function(data) {
+							if(data.data.length == 0) {
+								$('.advaer').hide()
+							} else {
+								$('.advaer').attr("src", data.data[0].fileurl);
+							}
+						},
+						error: function() {
+
+						}
+					});
+					
+					// 轮播图
+					$.ajax({
+						type: "POST",
+						url: url + 'shopsmain/?service=Advertising.getAdverToId',
+						datadype: "json",
+						data: {
+							adposid: 2
+						},
+						success: function(data) {
+							$('#wrapper').append(`
+								<div class="swiper-slide"><img src="${data.data[0].fileurl}" class="slide0" /></div>
+							`)
+						},
+						error: function() {
+
+						}
+					});
+
+				});
+
+				// 获取滚动条到底部的距离
+				$(".main").scroll(function() {
+					// 文档内容的实际高度
+					var wHight = document.documentElement.scrollHeight;
+					// 窗口可视区域高度
+					var kHight = $(document).height();
+					// 滚动条距离上面的高度
+					var hight = $(this).scrollTop();
+					// 滚动条距离浏览器底部的高度 = 文档（页面）内容实际高度 - 滚动条距离浏览器顶部的高度 - 窗口可视范围的高度；
+					var bottom = wHight - kHight - hight + 522;
+					// 获取数据有误差 +522
+					console.log(wHight, kHight, hight);
+					if(bottom < 100) {
+						var i = 2;
+						conveying(i);
+						i++;
+					}
+				});
+
+				// 获取首页推荐
+				function conveying(num) {
+					$.ajax({
+						type: "POST",
+						url: url + 'shopsmain/?service=Grouppurchase.getall',
+						datatype: 'json',
+						data: {
+							page: num,
+							limit: 6
+						},
+						success: function(data) {
+							var date = data.data;
+							$.each(date, function(idx, obj) {
+								$('.shop-box').append(`
+									<div class="shop-tab goods-id" style='height:auto' goods-id="${obj.goodsid}">
+										<div class="shopimg-box">
+											<img src="${obj.pricon}" class="shop-img"/>
+										</div>
+										<div class="title">${obj.goodsname}</div>
+		
+										<div class="price">
+											<div class="money">￥${obj.goodsprices}</div>
+											<div class="join">
+												抢购
+											</div>
+										</div>
+										<div class="num" style='display:flex;justify-content: space-between'>
+											<span>已售${obj.sales}件</span>
+											
+										</div>
+									</div>
+								`);
+							});
+							// 存储商品id
+							$('.goods-id').click(function() {
+								var goodsid = $(this).attr('goods-id');
+								// console.log(goodsid);     
+								var goods = window.localStorage;
+								goods["goodsid"] = goodsid;
+								page('shop', goodsid);
+							});
+						},
+						error: function() {
+
+						},
+					});
+				}
+
+				function page(target, id) {
+					$.ajax({
+						type: "post",
+						url: url + "shopsmain/?service=FootGoods.addFoot",
+						async: true,
+						data: {
+							userid: localStorage.getItem('userid'),
+							goodsid: id
+						}
+					});
+					mui.openWindow({
+						url: './' + target + '.html',
+						id: target
+					})
+				}
 				var that = this
 
 				function plusReady() {
+					if(localStorage.getItem('adressname') == null || localStorage.getItem('adressname') == undefined) {
+						plus.nativeUI.toast('请先选择您所在的地区')
+						mui.openWindow({
+							url: './adresschange.html',
+							id: 'adresschange'
+						})
+					}
 					plus.runtime.getProperty(plus.runtime.appid, function(inf) {
 						$.ajax({
 							type: "post",
@@ -157,7 +307,6 @@
 										autoplay: 5000, //可选选项，自动滑动
 										pagination: '.swiper-pagination',
 									})
-									that.myajax()
 								}
 							},
 							error: function(err) {
@@ -177,12 +326,28 @@
 				} else {
 					document.addEventListener("plusready", plusReady, false);
 				}
-
+				$(document).ready(function() {
+					if(window.history && window.history.pushState) {
+						$(window).on('popstate', function() {
+							window.history.pushState('forward', null, '#');
+							window.history.forward(1);
+						});
+					}
+					window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
+					window.history.forward(1);
+				});
+				that.myajax()
 			},
 			methods: {
+				openshop:function(id){
+					localStorage.setItem('storeinfoid',id)
+					mui.openWindow({
+						url: './store.html',
+						id: 'store'
+					})
+				},
 				opennav: function(id) {
-					localStorage.setItem('goodsid02', id)
-					this.opennew('nav02')
+					this.opennew('nav03')
 				},
 				myscroll: function() {
 					if($('.swiper-container').offset().top < -152) {
@@ -201,16 +366,32 @@
 				inputsubmit: function() {
 					this.opennew('search')
 				},
-				myajax: function(res) {
+				myajax: function() {
+					//										获取广告
+					$.ajax({
+						type: "post",
+						url: url + "shopsmain/?service=Advertising.showList",
+						async: true,
+						data: {
+							goodsType: '#',
+							page: 1,
+							limit: 4,
+							goodsType2: "#",
+							marketId: '#',
+							regionId: localStorage.getItem('adressid'),
+						},
+						dataType: 'json',
+						success: function(res) {
+							that.navdata02 = res.data
+						}
+					});
 					//					获取一级分类
 					var that = this
 					$.ajax({
 						type: "post",
 						url: url + "shopsmain/?service=Goodstype.getTypeOne",
-						async: true,
 						dataType: 'json',
 						success: function(res) {
-							console.log(JSON.stringify(res))
 							that.navdata = res.data
 						}
 					});
@@ -226,112 +407,18 @@
 						},
 						dataType: 'json',
 						success: function(res) {
-							that.navdata = res.data
+							for(var i = 0; i < res.data.length; i++) {
+								console.log(res.data[i].message_isred)
+								if(res.data[i].message_isred == 0) {
+
+									that.red = true
+								}
+							}
 						}
 					});
 				}
 			}
 		})
-		$(function() {
-			conveying(1);
-			// 轮播图
-			$.ajax({
-				type: "POST",
-				url: url + 'shopsmain/?service=Advertising.getAdverToId',
-				datadype: "json",
-				data: {
-					adposid: 2
-				},
-				success: function(data) {
-					$('.slide0').attr("src", data.data[0].fileurl);
-					$('.slide1').attr("src", data.data[1].fileurl);
-					$('.slide2').attr("src", data.data[2].fileurl);
-				},
-				error: function() {
-
-				}
-			});
-
-		});
-
-		// 获取滚动条到底部的距离
-		$(".main").scroll(function() {
-			// 文档内容的实际高度
-			var wHight = document.getElementById("all").scrollHeight;
-			// 窗口可视区域高度
-			var kHight = document.getElementById("all").clientWidth;
-			// 滚动条距离上面的高度
-			var hight = $(this).scrollTop();
-			// 滚动条距离浏览器底部的高度 = 文档（页面）内容实际高度 - 滚动条距离浏览器顶部的高度 - 窗口可视范围的高度；
-			var bottom = wHight - kHight - hight + 522;
-			// 获取数据有误差 +522
-			// console.log(bottom);
-			if(bottom < 60) {
-				var i = 2;
-				conveying(i);
-				i++;
-			}
-		});
-
-		// 获取首页推荐
-		function conveying(num) {
-			$.ajax({
-				type: "POST",
-				url: url + 'shopsmain/?service=Grouppurchase.getall',
-				datatype: 'json',
-				data: {
-					page: num,
-					limit: 6
-				},
-				success: function(data) {
-					console.log(data.data)
-					var date = data.data;
-					$.each(date, function(idx, obj) {
-						$('.shop-box').append(`
-							<div class="shop-tab" @click="opennew('shop')" style='height:auto'>
-								<div class="shopimg-box goods-id" goods-id="${obj.goodsid}">
-									<img src="${obj.pricon}" class="shop-img"/>
-								</div>
-								<div class="title">${obj.goodsname}</div>
-
-								<div class="price">
-									<div class="money">￥${obj.goodsprices}</div>
-									<div class="join">
-										抢购
-									</div>
-								</div>
-								<div class="num" style='display:flex;justify-content: space-between'>
-									<span>已售${obj.bulknumber}件</span>
-								</div>
-							</div>
-						`);
-					});
-					//													<div class="label-box">
-					//									<div class="label grey">广告</div>
-					//									<div class="label blue">标签</div>
-					//									<div class="label yellow">标签</div>
-					//								</div>
-					// 存储商品id
-					$('.goods-id').click(function() {
-						var goodsid = $(this).attr('goods-id');
-						// console.log(goodsid);     
-						var goods = window.localStorage;
-						goods["goodsid"] = goodsid;
-						page('shop');
-					});
-				},
-				error: function() {
-
-				},
-			});
-		}
-
-		function page(target, id) {
-			mui.openWindow({
-				url: './' + target + '.html',
-				id: target
-			})
-		}
 	</script>
 
 </html>

@@ -1,33 +1,35 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
-		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 		<style>
-			.adress-del{
+			.adress-del {
 				padding: 6px;
 				border-radius: 2rem;
-			    border: 1px solid #A2A2A2;
-			    margin-left: 1.2rem;
+				border: 1px solid #A2A2A2;
+				margin-left: 1.2rem;
 			}
 		</style>
 	</head>
+
 	<body>
 		<div class="wrapper adress">
 			<!--头部-->
 			<div class="header">
 				<div class="aside  mui-action-back">
-					<img src="img/Shape.png" class="back"/>
+					<img src="img/Shape.png" class="back" />
 				</div>
 				<div class="head-main">
 					收货地址
 				</div>
 				<div class="aside" @click="opennew('addadress')">
-					<img src="img/addadress.png" style="width: .3rem;"/>
+					<img src="img/addadress.png" style="width: .3rem;" />
 				</div>
 			</div>
 			<div class="main">
@@ -39,40 +41,44 @@
 	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		new Vue({
-			el:'.wrapper',
-			data:{
-				
+			el: '.wrapper',
+			data: {
+
 			},
-			methods:{
-				opennew: function(target, id) {
-					mui.openWindow({
-						url: './' + target + '.html',
-						id: target
-					})
+			methods: {
+				opennew: function(target) {
+					//					mui.openWindow({
+					//						url: './' + target + ,
+					//						id: target
+					//					});
+					window.location.href = target + '.html'
 				}
 			},
-			mounted:function(){
-				
+			mounted() {
+
 			}
 		})
 
 		// 购物车
-		$(function(){
-			(function(){
-				$.ajax({
-					type :  'POST',
-					url : url + 'shopsmain/?service=Harvestaddress.getAddress',
-					datatype : 'json',
-					 data : {
-			            	userid: localStorage.getItem('userid'),
-			            	page: 1,
-			            	limit: 15
-			            },
-			            success : function(data){
-			            	console.log(data)
-			            	var date = data.data;
-			            	$.each(date,function(idx,obj){
-				            	$('.main').append(`
+		$(function() {
+			myajax()
+		});
+
+		function myajax() {
+			$.ajax({
+				type: 'POST',
+				url: url + 'shopsmain/?service=Harvestaddress.getAddress',
+				datatype: 'json',
+				data: {
+					userid: localStorage.getItem('userid'),
+					page: 1,
+					limit: 15
+				},
+				success: function(data) {
+					$('.main').html('')
+					var date = data.data;
+					$.each(date, function(idx, obj) {
+						$('.main').append(`
 									<div class="adress-box">
 										<div class="adress01">
 											<div class="label">收货人:</div>
@@ -96,64 +102,74 @@
 											<div class="adress-del" style='padding:.1rem .2rem;'>
 												<span class="del-btn" ad-id="${obj.addressid}" onclick="del(this)">删除</span>
 											</div>
-											<div class="adress-left">
-												<span class="setting" @click="opennew('editadress')">编辑</span>
-											</div>
+											
 										</div>
 									</div>
 				            		`);
-								
-				            })
-			            },
-			            error : function(){
-			            	alert('接收错误');
-			            },
-				});
-			})();
-		});
-		function del (obj){
+
+					})
+//					<div class="adress-left">
+//												<span class="setting" onclick="opennew('editadress')">编辑</span>
+//											</div>
+				},
+				error: function() {
+					alert('接收错误');
+				},
+			});
+		}
+
+		function del(obj) {
 			var id = obj.getAttribute('ad-id');
 			$.ajax({
-				type : "POST",
-				url : url + 'shopsmain/?service=Harvestaddress.removeAddress',
-				datatype : "json",
-				data : {
-					addressid : id
+				type: "POST",
+				url: url + 'shopsmain/?service=Harvestaddress.removeAddress',
+				datatype: "json",
+				data: {
+					addressid: id
 				},
-				success : function (data){
-					if (data.data.code == 1) {
+				success: function(data) {
+
+					if(data.data.code == 1) {
 						// 刷新页面
-						window.location.reload();
+						plus.nativeUI.toast('删除成功');
+						myajax()
 					}
 				},
-				error : function (){
+				error: function() {
 					alert('删除失败');
 				},
 			});
 		}
 
-		function him (obj){
+		function him(obj) {
 			var id = obj.getAttribute('ad-id');
-			// console.log(id);
+			//			 console.log(id);
 			$.ajax({
-				type : "POST",
-				url : url + 'shopsmain/?service=Harvestaddress.setMoren',
-				datatype : "json",
-				data : {
-					userid : localStorage.getItem('userid'),
-					addressid : id
+				type: "POST",
+				url: url + 'shopsmain/?service=Harvestaddress.setMoren',
+				datatype: "json",
+				data: {
+					userid: localStorage.getItem('userid'),
+					addressid: id
 				},
-				success : function (data){
-					console.log(data)
-					if (data.data.code == 1) {
+				success: function(data) {
+					if(data.data.code == 1) {
 						// 刷新页面
-						window.location.reload();
+						myajax()
 					}
 				},
-				error : function (){
+				error: function() {
 					alert('设置失败');
 				},
 			});
 		}
+
+		function opennew(target, id) {
+			mui.openWindow({
+				url: './' + target + '.html',
+				id: target
+			})
+		}
 	</script>
+
 </html>

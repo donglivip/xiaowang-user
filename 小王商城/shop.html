@@ -46,14 +46,6 @@
 				</div>
 
 				<!--商品价格-->
-				<div class="title-box">
-					<div class="title">
-						{{mydata.goodsname}}
-					</div>
-					<div class="collect" @click="collect(mydata.goods_one_id)">
-						<img src="img/collect-active.png" />
-					</div>
-				</div>
 				<div class="price-box">
 					<div class="price-left">
 						<div class="price">￥{{mydata.goodsprices}}</div>
@@ -64,12 +56,21 @@
 						<span>24：00：00</span>
 					</div>-->
 				</div>
+				<div class="title-box">
+					<div class="title">
+						{{mydata.goodsname}}
+					</div>
+					<div class="collect" @click="collect(mydata.goods_one_id)">
+						<img src="img/collect-active.png" v-if="mydata.isShou==true" />
+						<img src="img/collect.png" v-if="mydata.isShou==false" />
+					</div>
+				</div>
 				<div class="num-box">
 					<div class="num">
 
 					</div>
 					<div class="num">
-						月销{{mydata.goodsno}}件
+						月销{{mydata.sales}}件
 					</div>
 				</div>
 				<div class="ensure-box">
@@ -91,13 +92,13 @@
 					</div>
 				</div>
 				<!--优惠卷-->
-				<div class="discount-box" @click="cartshow">
+				<!--<div class="discount-box" @click="cartshow">
 					<img src="img/ticket@3x.png" />
 					<div class="discount-title">优惠卷</div>
 					<div class="discont-text">
 						<block v-for='val in huidata'>满{{val.dixian}}减{{val.you_money}}</block>
 					</div>
-				</div>
+				</div>-->
 				<!--团购-->
 				<!--<div class="group-box" @click="cartshow02">
 					<div class="group-title">{{joindata.length}}人在团购</div>
@@ -120,7 +121,7 @@
 				<div class="rating-tab" v-for="val in ratingdata.list">
 					<div class="rating-top">
 						<img :src="val.userphoto" class="avatar" />
-						<div class="name">{{val.loginname}}</div>
+						<div class="name">{{val.username}}</div>
 						<div class="star-box">
 							{{val.ping_createtime}}
 						</div>
@@ -148,13 +149,13 @@
 					加入购物车
 				</div>
 				<div class="bottom03" @click="cartshow03">
-					<div class="price01">￥{{mydata.goodsprices}}</div>
+					<div class="price01">￥{{mydata.goodsprices*cartnum}}</div>
 					<div class="text01">单独购买</div>
 				</div>
-				<div class="bottom04" @click="cartshow03">
-					<div class="price01">￥{{mydata.goodsprices}}</div>
-					<div class="text01">会员价格</div>
-				</div>
+				<!--<div class="bottom04" @click="cartshow03">
+					<div class="price01">￥{{mydata.goodsprices*cartnum}}</div>
+					<div class="text01">发起团购</div>
+				</div>-->
 			</div>
 			<!--优惠卷弹出框-->
 			<transition name='donghua'>
@@ -223,13 +224,13 @@
 								</div>
 							</div>
 						</div>
-						<block v-for='item in mydata.newguige'>
+						<block v-for='(item,index02) in mydata.newguige'>
 							<div class="btop">
 								<div class="btitle">{{item.key}}</div>
 								<div class="bmain"></div>
 							</div>
 							<div class="nav-box">
-								<div class="nav-tab" v-for="(val,index) in item.attr" :class="index=myindex?'active':''" @click.stop="changeindex">
+								<div class="nav-tab" v-for="(val,index01) in item.attr" :class="index01==item.index?'active':''" @click.stop="changeindex(index02,index01)">
 									{{val}}
 								</div>
 							</div>
@@ -249,12 +250,12 @@
 								加入购物车
 							</div>
 							<div class="bottom03" @click.stop="gopay">
-								<div class="price01">￥{{mydata.goodsprices}}</div>
+								<div class="price01">￥{{mydata.goodsprices*cartnum}}</div>
 								<div class="text01">单独购买</div>
 							</div>
 							<!--@click.stop="addSSPurchase()"-->
 							<!--<div class="bottom04" @click.stop="gopay">
-								<div class="price01">￥{{mydata.goodsprices}}</div>
+								<div class="price01">￥{{mydata.goodsprices*cartnum}}</div>
 								<div class="text01">发起团购</div>
 							</div>-->
 						</div>
@@ -280,7 +281,9 @@
 				myindex: 0,
 				cartnum: 1,
 				channel: [],
-				huidata: []
+				huidata: [],
+				goodsprices:0,
+				goodsid:''
 			},
 			methods: {
 				collect: function(id) {
@@ -291,23 +294,21 @@
 					$.ajax({
 						type: "post",
 						url: url + "/shopsmain/?service=Favorites.add",
-						async: true,
+						async: false,
 						data: {
 							userid: localStorage.getItem('userid'),
 							favoritesid: id,
 							types: 'goods'
 						},
 						success: function(res) {
+							that.mydata.isShou = !that.mydata.isShou;
 							console.log(res)
-							if(res.data == true) {
-								plus.nativeUI.toast('收藏成功')
-							}
 						}
 					});
 				},
 				gopay: function() {
 					var that = this
-					var	boo=false
+					var boo = false
 					$.ajax({
 						type: 'POST',
 						url: url + 'shopsmain/?service=Harvestaddress.getAddress',
@@ -319,16 +320,14 @@
 							limit: 15
 						},
 						success: function(data) {
-							for (var i = 0; i < data.data.length; i++) {
-								if(data.data[i].ismoren=="1"){
-									boo=true
-									
+							for(var i = 0; i < data.data.length; i++) {
+								if(data.data[i].ismoren == "1") {
+									boo = true
 								}
 							}
 						}
 					});
-					console.log(boo==false)
-					if(boo==false){
+					if(boo == false) {
 						plus.nativeUI.toast('您还没有设置默认收货地址呢！')
 						that.opennew('adress')
 						return false;
@@ -399,7 +398,7 @@
 										success: function(data) {
 											plus.payment.request(that.channel[0], data, function(result) {
 												plus.nativeUI.alert("支付成功！", function() {
-
+													that.opennew('order')
 												});
 											}, function(error) {
 												alert('支付失败')
@@ -417,7 +416,7 @@
 										success: function(data) {
 											plus.payment.request(that.channel[1], data, function(result) {
 												plus.nativeUI.alert("支付成功！", function() {
-
+														that.opennew('order')
 												});
 											}, function(error) {
 												alert('支付失败')
@@ -476,8 +475,12 @@
 					});
 				},
 				changenum: function(type) {
-					if(type == 0 && this.cartnum > 0) {
-						this.cartnum--
+					if(type == 0 ) {
+						if(this.cartnum==0){
+							this.cartnum=0;
+						}else{
+							this.cartnum--
+						}
 					} else {
 						this.cartnum++
 					}
@@ -503,8 +506,33 @@
 						}
 					});
 				},
-				changeindex: function(index) {
-					this.myindex = index
+				changeindex: function(index, index01) {
+					this.mydata.newguige[index].index = index01
+					this.havegoodid()
+				},
+				havegoodid: function() {
+					var that = this,
+						goodsspec = ''
+					for(var i = 0; i < that.mydata.newguige.length; i++) {
+						goodsspec+='"'+that.mydata.newguige[i].key+'":"'+that.mydata.newguige[i].attr[that.mydata.newguige[i].index]+'",'
+					}
+					
+					var cart='{'+goodsspec.substring(0,goodsspec.lastIndexOf(','))+'}'
+					$.ajax({
+						type: "post",
+						url: url + 'shopsmain/?service=Productinfo.getKuanId',
+						async: true,
+						dataType: 'json',
+						data: {
+							goodstype: that.mydata.goodstype,
+							goodsspec: cart
+						},
+						success: function(res) {
+							console.log(res)
+							that.mydata.goods_one_id=res.data.goodsid
+							that.mydata.goodsprices=res.data.goodsprices
+						}
+					});
 				},
 				cartshow: function() {
 					this.cartboo = !this.cartboo
@@ -535,11 +563,17 @@
 						async: true,
 						dataType: 'json',
 						data: {
-							goodsid: localStorage.getItem('goodsid')
+							goodsid: localStorage.getItem('goodsid'),
+							userId: localStorage.getItem('userid')
 						},
 						success: function(res) {
 							res.data.goodsimage = JSON.parse(res.data.goodsimage)
-							that.mydata = res.data
+							for(var i = 0; i < res.data.newguige.length; i++) {
+								res.data.newguige[i].index = 0
+							}
+							that.mydata = res.data;
+							console.log(res)
+							
 							//					获取优惠卷
 							$.ajax({
 								type: "post",
@@ -553,6 +587,7 @@
 									that.huidata = data.data
 								}
 							});
+							that.havegoodid()
 						}
 					});
 					//					获取评论
@@ -564,7 +599,7 @@
 						data: {
 							goodsid: localStorage.getItem('goodsid'),
 							page: 1,
-							limit: 3
+							limit: 1
 						},
 						success: function(res) {
 							that.ratingdata = res.data

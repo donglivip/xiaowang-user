@@ -14,7 +14,7 @@
 		<div class="wrapper shopcart">
 			<div class="header">
 				<div class="aside mui-action-back">
-					<img src="img/Shape.png" class="back"/>
+					<img src="img/Shape.png" class="back" />
 				</div>
 				<div class="head-main">购物车</div>
 				<div class="aside" @click="godelete">删除</div>
@@ -73,8 +73,13 @@
 				changenum: function(type, index, index01, cartid) {
 					var num = this.mydata[index].children[index01].cartnum,
 						that = this
-					if(type == 0 && this.mydata[index].children[index01].cartnum > 0) {
-						num--
+					if(type == 0 ) {
+						if(num==0){
+							num=0;
+						}else{
+							num--
+						}
+						
 					} else {
 						num++
 					}
@@ -91,9 +96,9 @@
 							if(res.data.code == 1) {
 								that.myajax()
 							} else {
+								that.myajax()
 								plus.nativeUI.toast('修改失败')
 							}
-							console.log(res)
 						}
 					});
 				},
@@ -109,7 +114,7 @@
 				},
 				gopay: function() {
 					var that = this
-					var	boo=false
+					var boo = false
 					$.ajax({
 						type: 'POST',
 						url: url + 'shopsmain/?service=Harvestaddress.getAddress',
@@ -121,15 +126,14 @@
 							limit: 15
 						},
 						success: function(data) {
-							for (var i = 0; i < data.data.length; i++) {
-								if(data.data[i].ismoren=="1"){
-									boo=true
-									
+							for(var i = 0; i < data.data.length; i++) {
+								if(data.data[i].ismoren == "1") {
+									boo = true
 								}
 							}
 						}
 					});
-					if(boo==false){
+					if(boo == false) {
 						plus.nativeUI.toast('您还没有设置默认收货地址呢！')
 						that.opennew('adress')
 						return false;
@@ -143,31 +147,38 @@
 						that.mydata[i].check = false
 						cartdata = {}
 						list = []
-						listdata = {}
 						boo = true
 						for(var j = 0; j < that.mydata[i].children.length; j++) {
 							if(that.mydata[i].children[j].check == true) {
+								listdata = {}
 								that.mydata[i].children[j].check = false
 								cartdata.shopid = that.mydata[i].shopid
 								cartdata.shopname = that.mydata[i].shopname
 								listdata.id = that.mydata[i].children[j].goodsid
 								listdata.prices = that.mydata[i].children[j].goodsprices
 								listdata.num = that.mydata[i].children[j].cartnum
+								
 								list.push(listdata)
 							}
 							cartdata.data = list
+							
 							for(var k = 0; k < alllist.length; k++) {
 								if(alllist[k].shopid == that.mydata[i].shopid) {
 									boo = false
 								}
 							}
 							if(boo == true) {
-								alllist.push(cartdata)
+								if(cartdata.data.length!=0){
+									alllist.push(cartdata)
+								}
+								
 							}
 
 						}
 					}
+					console.log(alllist)
 					if(alllist.length == 0) {
+						plus.nativeUI.toast('您还没选择商品呢！')
 						return false;
 					}
 					that.allboo = false
@@ -191,7 +202,6 @@
 						async: true,
 						data: ajaxjson,
 						success: function(res) {
-							console.log(res)
 							yunfei = res.data[0].sum
 						}
 					});
@@ -216,7 +226,6 @@
 						dataType: 'json',
 						data: ajaxjs,
 						success: function(res) {
-							console.log(res)
 							plus.nativeUI.confirm("请选择您的支付方式！", function(e) {
 								if(e.index == 0) {
 									$.ajax({

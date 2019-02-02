@@ -1,73 +1,222 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
-		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
 	</head>
+
 	<body>
 		<div class="wrapper chat">
 			<!--头部-->
 			<div class="header">
 				<div class="aside  mui-action-back">
-					<img src="img/Shape.png" class="back"/>
+					<img src="img/Shape.png" class="back" />
 				</div>
 				<div class="head-main">
-					苏伟
+					客服中心
 				</div>
 				<div class="aside">
-					<img src="img/bottom02.png" style="width: .4rem;"/>
+					<img src="img/bottom02.png" style="width: .4rem;" />
 				</div>
 			</div>
 			<div class="main">
-				<div class="new-box box02">
-					<!--<img src="img/index.jpg" class="avatar"/>-->
-					<div class="new-text">
-						XXXXXXXXXXXXXXXXXXXXXXXXXXXXxXXXXXXXXXXXXXXXXXXXXXXXXXXXXx
-					</div>
-					<img src="img/index.jpg" class="avatar"/>
-				</div>
-				<div class="new-box">
-					<img src="img/index.jpg" class="avatar"/>
-					<div class="new-text">
-						XXXXXXXXXXXXXXXXXXXXXXXXXXXXxXXXXXXXXXXXXXXXXXXXXXXXXXXXXx
-					</div>
-					<!--<img src="img/index.jpg" class="avatar"/>-->
-				</div>
-				<div class="new-box ">
-					<img src="img/index.jpg" class="avatar"/>
-					<div class="new-text">
-						XXXXXXXXXXXXXXXXXXXXXXXXXXXXxXXXXXXXXXXXXXXXXXXXXXXXXXXXXx
-					</div>
-					<!--<img src="img/index.jpg" class="avatar"/>-->
-				</div>
+				
 			</div>
 			<div class="bottom">
-				<img src="img/photo.png"/>
-				<input type="text" placeholder="请输入对话内容"/>
-				<img src="img/laugh.png"/>
+				<input type="text" placeholder="请输入对话内容" style="margin-left: .2rem;" id="message" />
+				<!--<img src="img/laugh.png" />-->
 				<div class="submit">
 					发送
 				</div>
 			</div>
 		</div>
 	</body>
+	<script src="https://cdn.ronghub.com/RongIMLib-2.3.5.min.js"></script>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		new Vue({
-			el:'.wrapper',
-			data:{
-				
+			el: '.wrapper',
+			data: {
+				token: ''
 			},
-			mounted:function(){
-				
+			mounted: function() {
+				this.myajax()
 			},
-			methods:{
-				
+			methods: {
+				myajax: function() {
+					var that = this
+					$.ajax({
+						type: 'post',
+						url: url + '/businessside/?service=Chat.createToken',
+						dataType: 'json',
+						data: {
+							storeinfoid: localStorage.getItem('userid'),
+							name: localStorage.getItem('username')
+						},
+						success: function(res) {
+							//		初始化服务
+							RongIMLib.RongIMClient.init('lmxuhwagl5zhd')
+							RongIMClient.setConnectionStatusListener({
+								onChanged: function(status) {
+									switch(status) {
+										case RongIMLib.ConnectionStatus.CONNECTED:
+											console.log('链接成功');
+											break;
+										case RongIMLib.ConnectionStatus.CONNECTING:
+											console.log('正在链接');
+											break;
+										case RongIMLib.ConnectionStatus.DISCONNECTED:
+											console.log('断开连接');
+											break;
+										case RongIMLib.ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT:
+											console.log('其他设备登录');
+											break;
+										case RongIMLib.ConnectionStatus.DOMAIN_INCORRECT:
+											console.log('域名不正确');
+											break;
+										case RongIMLib.ConnectionStatus.NETWORK_UNAVAILABLE:
+											console.log('网络不可用');
+											break;
+									}
+								}
+							});
+
+							// 消息监听器
+							RongIMClient.setOnReceiveMessageListener({
+								// 接收到的消息
+								onReceived: function(message) {
+									// 判断消息类型
+									switch(message.messageType) {
+										case RongIMClient.MessageType.TextMessage:
+											// message.content.content => 消息内容
+											$('.main').append(`
+												<div class="new-box">
+													<img src="img/index.jpg" class="avatar" />
+													<div class="new-text">
+														${message.content.content}
+													</div>
+												</div>
+											`)
+											break;
+									}
+								}
+							});
+							//		连接服务器
+
+							RongIMClient.connect(JSON.parse(res.data).token, {
+								onSuccess: function(userId) {
+									console.log("Connect successfully." + userId);
+								},
+								onTokenIncorrect: function() {
+									console.log('token无效');
+								},
+								onError: function(errorCode) {
+									var info = '';
+									switch(errorCode) {
+										case RongIMLib.ErrorCode.TIMEOUT:
+											info = '超时';
+											break;
+										case RongIMLib.ConnectionState.UNACCEPTABLE_PAROTOCOL_VERSION:
+											info = '不可接受的协议版本';
+											break;
+										case RongIMLib.ConnectionState.IDENTIFIER_REJECTED:
+											info = 'appkey不正确';
+											break;
+										case RongIMLib.ConnectionState.SERVER_UNAVAILABLE:
+											info = '服务器不可用';
+											break;
+									}
+									console.log(errorCode);
+								}
+							});
+							//		重新连接
+							var callback = {
+								onSuccess: function(userId) {
+									console.log("Reconnect successfully." + userId);
+								},
+								onTokenIncorrect: function() {
+									console.log('token无效');
+								},
+								onError: function(errorCode) {
+									console.log(errorcode);
+								}
+							};
+							var config = {
+								// 默认 false, true 启用自动重连，启用则为必选参数
+								auto: true,
+								// 网络嗅探地址 [http(s)://]cdn.ronghub.com/RongIMLib-2.2.6.min.js 可选
+								url: 'cdn.ronghub.com/RongIMLib-2.2.6.min.js',
+								// 重试频率 [100, 1000, 3000, 6000, 10000, 18000] 单位为毫秒，可选
+								rate: [100, 1000, 3000, 6000, 10000]
+							};
+							RongIMClient.reconnect(callback, config);
+							//		发送文本消息
+							$('.submit').click(function() {
+								if($('#message').val() == '') {
+									return
+								}
+								$('.main').append(`
+									<div class="new-box box02">
+										<div class="new-text">
+											${$('#message').val()}
+										</div>
+										<img src="img/index.jpg" class="avatar" />
+									</div>
+								`)
+								var msg = new RongIMLib.TextMessage({
+									content: $('#message').val(),
+									extra: "附加信息"
+								});
+								var conversationtype = RongIMLib.ConversationType.PRIVATE; // 单聊,其他会话选择相应的消息类型即可。
+								var targetId = "1"; // 目标 Id
+								RongIMClient.getInstance().sendMessage(conversationtype, targetId, msg, {
+									onSuccess: function(message) {
+										//message 为发送的消息对象并且包含服务器返回的消息唯一Id和发送消息时间戳
+										$('#message').val('')
+										console.log("Send successfully");
+									},
+									onError: function(errorCode, message) {
+										var info = '';
+										switch(errorCode) {
+											case RongIMLib.ErrorCode.TIMEOUT:
+												info = '超时';
+												break;
+											case RongIMLib.ErrorCode.UNKNOWN:
+												info = '未知错误';
+												break;
+											case RongIMLib.ErrorCode.REJECTED_BY_BLACKLIST:
+												info = '在黑名单中，无法向对方发送消息';
+												break;
+											case RongIMLib.ErrorCode.NOT_IN_DISCUSSION:
+												info = '不在讨论组中';
+												break;
+											case RongIMLib.ErrorCode.NOT_IN_GROUP:
+												info = '不在群组中';
+												break;
+											case RongIMLib.ErrorCode.NOT_IN_CHATROOM:
+												info = '不在聊天室中';
+												break;
+											default:
+												info = x;
+												break;
+										}
+										console.log('发送失败:' + info);
+									}
+								});
+							})
+						}
+					})
+
+				}
 			}
 		})
 	</script>
+
 </html>

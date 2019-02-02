@@ -7,6 +7,8 @@
 		<script src="js/rem.js" type="text/javascript" charset="utf-8"></script>
 		<link rel="stylesheet" type="text/css" href="css/main.css"/>
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/jquery.weui.css" />
 	</head>
 	<body>
 		<div class="wrapper joinshop joinpartner">
@@ -24,16 +26,29 @@
 				<input type="text" placeholder="收货人姓名"/>
 				<input type="number" placeholder="手机号码"/>
 				<div class="input-group">
-					<input type="text" placeholder="省、市、区 "/>
-					<div class="text">请选择</div>
+					<input type="text" readonly id='city-picker' placeholder='请选择省市区县'  />
+					
 					<img src="img/arrright.png"/>
 				</div>
 				<input type="number" placeholder="详细地址"/>
 			</div>
 			<div class="bottom">
-				<span>确认添加</span>
+				<span>确认修改</span>
 			</div>
 		</div>
+		<script src="js/city-picker.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.weui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/layer.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("#city-picker").cityPicker({
+			        title: "选择省市区/县",
+			        onChange: function (picker, values, displayValues) {
+			            console.log(displayValues);
+			        }
+			    });
+			  })
+		</script>
 	</body>
 	<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
 </html>

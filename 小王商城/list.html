@@ -69,12 +69,13 @@
 				navindex: 1,
 				mydata: [],
 				pages:0,
-				pageNum:0
+				pageNum:1
 			},
 			methods: {
 				myscroll: function() {
 					var that = this
 					if(Math.abs($('.main-inner').offset().top) + $('.main').height() + 200 >= $('.main-inner').height()) {
+						that.myajax();
 						if(that.pages > that.pageNum) {
 							function plusReady() {
 								// 弹出系统等待对话框
@@ -91,7 +92,8 @@
 					}
 				},
 				navchange: function(index) {
-					this.navindex = index
+					this.navindex = index;
+					this.myajax();
 				},
 				opennew: function(id) {
 					localStorage.setItem('goodsid',id)
@@ -108,23 +110,23 @@
 					} else {
 						type = 'goodsprices_asc'
 					}
-					that.pageNum++
+					
 					$.ajax({
 						type: "post",
 						url: url + "shopsmain/?service=Productinfo.searchGoods",
 						async: true,
 						data: {
 							type:type,
-							limit:15,
+							limit:6,
 							page:that.pageNum,
-							infor:JSON.stringify({type:localStorage.getItem('goodsid')})
+							infor:JSON.stringify({type:0,goodsinfo:''})
 						},
 						dataType: 'json',
 						success: function(res) {
 							for(var i = 0; i < res.data.length; i++) {
 									that.mydata.push(res.data[i])
 							}
-							console.log(that.mydata)
+							console.log(res)
 						}
 					});
 				}

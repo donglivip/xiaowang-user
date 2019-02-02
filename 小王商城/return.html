@@ -32,7 +32,7 @@
 					</div>
 				</div>
 				<div class="order-main">
-					<div class="order-box" @click="opennew('orderdetail')" v-for="val in mydata">
+					<div class="order-box" @click="opennew('orderdetail',val.oderno)" v-for="val in mydata">
 						<div class="order-top">
 							<img :src="val.storeinfor.shopicon" class="avatar" />
 							<div class="shop-name">{{val.shopname}}</div>
@@ -55,7 +55,7 @@
 						</div>
 						<div class="setting" v-if="index=='daiTuiHuo'">
 							<div class="noorder" style="border: 0;"></div>
-							<div class="haveorder" @click="settingorder('isOver',val.oderno)">确认收货</div>
+							<div class="haveorder" @click.stop="settingorder('isPay',val.oderno)">撤销售后</div>
 						</div>
 					</div>
 				</div>
@@ -77,14 +77,12 @@
 					var that=this
 					$.ajax({
 						type: "post",
-						url: url + 'shopsmain/?service=Order.setOrderState',
+						url: url + 'shopsmain/?service=TuiHuo.canel',
 						async: true,
 						data: {
-							orderno: id,
-							type:type
+							ordernumber: id
 						},
 						success: function(data) {
-							console.log(data)
 							that.myajax()
 						}
 					});
@@ -94,6 +92,7 @@
 					this.myajax()
 				},
 				opennew: function(target, id) {
+					localStorage.setItem('oderno',id)
 					mui.openWindow({
 						url: './' + target + '.html',
 						id: target
