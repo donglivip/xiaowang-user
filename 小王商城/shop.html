@@ -74,21 +74,9 @@
 					</div>
 				</div>
 				<div class="ensure-box">
-					<div class="ensure">
+					<div class="ensure" v-for='val in huidata02'>
 						<img src="img/Authorization_success@3x.png" />
-						<span>全场包邮</span>
-					</div>
-					<div class="ensure">
-						<img src="img/Authorization_success@3x.png" />
-						<span>7天退换</span>
-					</div>
-					<div class="ensure">
-						<img src="img/Authorization_success@3x.png" />
-						<span>48小时发货</span>
-					</div>
-					<div class="ensure">
-						<img src="img/Authorization_success@3x.png" />
-						<span>假一赔十</span>
+						<span>{{val.saas_type}}</span>
 					</div>
 				</div>
 				<!--优惠卷-->
@@ -283,7 +271,8 @@
 				channel: [],
 				huidata: [],
 				goodsprices:0,
-				goodsid:''
+				goodsid:'',
+				huidata02:[]
 			},
 			methods: {
 				collect: function(id) {
@@ -572,8 +561,6 @@
 								res.data.newguige[i].index = 0
 							}
 							that.mydata = res.data;
-							console.log(res)
-							
 							//					获取优惠卷
 							$.ajax({
 								type: "post",
@@ -585,6 +572,19 @@
 								dataType: 'json',
 								success: function(data) {
 									that.huidata = data.data
+								}
+							});
+//							获取包邮信息
+							$.ajax({
+								type: "post",
+								url: url + 'businessside/?service=Store.getStoreSelectService',
+								async: true,
+								data: {
+									storeinfoid: res.data.storeid
+								},
+								dataType: 'json',
+								success: function(data) {
+									that.huidata02 = data.data
 								}
 							});
 							that.havegoodid()
