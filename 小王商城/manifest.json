@@ -177,7 +177,9 @@
 					"shopcart.html",
 					"collect.html",
 					"index.html",
-					"newcenter.html"
+					"newcenter.html",
+					"nav.html",
+					"partner.html"
 				],
 				"priority": 0
 			},
@@ -185,7 +187,8 @@
 				"resources": [],
 				"refer": [
 					"usercenter.html",
-					"index.html"
+					"index.html",
+					"agreement.html"
 				],
 				"priority": 0
 			},
@@ -194,7 +197,8 @@
 				"refer": [
 					"join-shop.html",
 					"nav02.html",
-					"nearby.html"
+					"nearby.html",
+					"index.html"
 				],
 				"priority": 0
 			},
@@ -218,7 +222,8 @@
 					"allrating.html",
 					"shopcart.html",
 					"chat.html",
-					"share.html"
+					"share.html",
+					"mlogin.html"
 				],
 				"priority": 0
 			},
@@ -242,6 +247,35 @@
 				"resources": [],
 				"refer": [
 					"shopcart.html",
+					"usercenter.html"
+				],
+				"priority": 0
+			},
+			"agreement.html": {
+				"resources": [],
+				"refer": [
+					"join-shop.html"
+				],
+				"priority": 0
+			},
+			"order.html": {
+				"resources": [],
+				"refer": [
+					"orderdetail.html",
+					"usercenter.html"
+				],
+				"priority": 0
+			},
+			"shopcart.html": {
+				"resources": [],
+				"refer": [
+					"usercenter.html"
+				],
+				"priority": 0
+			},
+			"partner.html": {
+				"resources": [],
+				"refer": [
 					"usercenter.html"
 				],
 				"priority": 0
@@ -354,11 +388,9 @@
 				"img/number (1).png",
 				"img/douzi.png",
 				"img/back-white.png",
-				"agreement.html",
 				"img/removered.png",
 				"css/layout.min.css",
 				"img/Authorization_success@3x.png",
-				"orderdetail.html",
 				"img/nav10.png",
 				"img/user03.png",
 				"img/bottom02-active.png",
@@ -379,7 +411,6 @@
 				"img/join0.png",
 				"img/qq.png",
 				"js/jquery.min.js",
-				"partner.html",
 				"search.html",
 				"js/jquery.scs.min.js",
 				"adresschange.html",

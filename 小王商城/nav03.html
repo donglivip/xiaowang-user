@@ -165,11 +165,7 @@
 				changenav04:function(id, name){
 					this.goodsType2id = id
 					this.goodsType2name = name
-					localStorage.setItem('goodsid01',id)
-					mui.openWindow({
-						url: './nav01.html',
-						id: 'nav01'
-					})
+					this.myajax()
 				},
 				changenav03: function(id, name) {
 					this.marketIdid = id

@@ -59,15 +59,15 @@
 		<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
-						if(window.history && window.history.pushState) {
-							$(window).on('popstate', function() {
-								window.history.pushState('forward', null, '#');
-								window.history.forward(1);
-							});
-						}
-						window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
+				if(window.history && window.history.pushState) {
+					$(window).on('popstate', function() {
+						window.history.pushState('forward', null, '#');
 						window.history.forward(1);
 					});
+				}
+				window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
+				window.history.forward(1);
+			});
 			//			15895225776 密码:123
 			$(function() {
 				$('.logins').click(function() {
@@ -102,7 +102,7 @@
 						storage["userphoto"] = userinfo.userphoto;
 						storage["loginname"] = userinfo.loginname;
 						storage["token"] = userinfo.token;
-						page('index');
+						page('usercenter');
 					},
 					error: function() {
 						alert('执行错误');
@@ -115,13 +115,14 @@
 					type: 'GET',
 					url: url + 'shopsmain/?service=Chat.createToken',
 					dataType: 'json',
-					success: function(data){
-						localStorage.setItem('token',data.data)
+					success: function(data) {
+						localStorage.setItem('token', data.data)
 					}
 				});
 				mui.openWindow({
 					url: './' + target + '.html',
-					id: target
+					id: target,
+							createNew: true
 				})
 			}
 
@@ -156,12 +157,12 @@
 									storage["userphoto"] = userinfo.userphoto;
 									storage["loginname"] = userinfo.loginname;
 									storage["token"] = userinfo.token;
-									page('index');
+									page('usercenter');
 								}
 							}
 						});
 					}, function(e) {
-						alert("登录认证失败！"+JSON.stringify(e));
+						alert("登录认证失败！" + JSON.stringify(e));
 					}, {});
 				}, function(e) {
 					alert("获取分享服务列表失败：" + e.message + " - " + e.code);

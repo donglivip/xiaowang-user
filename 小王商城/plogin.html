@@ -106,7 +106,7 @@
 																storage["loginname"] = userinfo.loginname;
 																storage["token"] = that.token;
 																plus.nativeUI.toast('注册成功，初始密码为123')
-																that.opennew('index')
+																that.opennew('usercenter')
 															}
 														}
 													});
@@ -121,7 +121,7 @@
 											storage["userphoto"] = userinfo.userphoto;
 											storage["loginname"] = userinfo.loginname;
 											storage["token"] = that.token;
-											that.opennew('index')
+											that.opennew('usercenter')
 										}
 									}
 								});
@@ -179,7 +179,8 @@
 					opennew: function(target, id) {
 						mui.openWindow({
 							url: './' + target + '.html',
-							id: target
+							id: target,
+							createNew: true
 						})
 					}
 				},
