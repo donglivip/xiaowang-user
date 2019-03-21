@@ -73,10 +73,12 @@
 						月销{{mydata.sales}}件
 					</div>
 				</div>
-				<div class="ensure-box">
-					<div class="ensure" v-for='val in huidata02'>
-						<img src="img/Authorization_success@3x.png" />
-						<span>{{val.saas_type}}</span>
+				<div class="ensure-box" v-if="huidata02.length!=0">
+					<div class="ensure-tab">
+						<div class="ensure" v-for='val in huidata02'>
+							<img src="img/Authorization_success@3x.png" />
+							<span>{{val.saas_type}}</span>
+						</div>
 					</div>
 				</div>
 				<!--优惠卷-->
